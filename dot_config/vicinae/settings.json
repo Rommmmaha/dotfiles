@@ -164,7 +164,7 @@
          "enabled": false
       },
       "raycast-compat": {
-         "enabled": true
+         "enabled": false
       },
       "system": {
          "enabled": false
