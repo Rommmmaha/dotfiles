@@ -1,6 +1,7 @@
 README.md
 {{- if eq .chezmoi.hostname "pc" }}
 .config/hypr/custom/hyprland-laptop.conf
+.config/hypr/custom/_ws.conf
 {{- end }}
 {{- if eq .chezmoi.hostname "laptop" }}
 .config/pipewire
