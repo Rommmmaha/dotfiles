@@ -151,14 +151,15 @@ bindm = $mainMod, mouse:273, resizewindow
 # =======================================================================================
 # Window Rules
 # =======================================================================================
-windowrule = renderunfocused, tag:game
-windowrule = noblur, tag:game
-windowrule = tile, tag:game
-windowrule = opaque, tag:game
-windowrule = forcergbx, tag:game
-
 windowrule = norounding, floating:0
 windowrule = noshadow, floating:0
+
+layerrule = blur, notifications
+layerrule = blur, vicinae
+layerrule = blur, gtk-layer-shell
+layerrule = ignorezero, notifications
+layerrule = ignorezero, vicinae
+layerrule = ignorezero, gtk-layer-shell
 
 windowrule = float, class:^(xdg-desktop-portal-gtk)$
 windowrule = float, class:^(org\.freedesktop\.impl\.portal\.desktop\.kde)$
@@ -173,6 +174,10 @@ windowrule = tag +game, class:^(Minecraft.*)$
 windowrule = tag +game, class:^(mcpelauncher-client)$
 windowrule = tag +game, class:^(steam_app_.*)$
 
-layerrule = ignorezero, notifications
+windowrule = renderunfocused, tag:game
+windowrule = noblur, tag:game
+windowrule = tile, tag:game
+windowrule = opaque, tag:game
+windowrule = forcergbx, tag:game
 
 source = $configPath/custom/hyprland-{{ .chezmoi.hostname }}.conf
