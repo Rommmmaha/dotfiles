@@ -1,0 +1,179 @@
+// This configuration is merged with the default vicinae configuration file, which you can obtain by running the `vicinae config default` command.
+// Every item defined in this file takes precedence over the values defined in the default config or any other imported file.
+//
+// You can make manual edits to this file, however you should keep in mind that this file may be written to by vicinae when a configuration change is made through the GUI.
+// When that happens, any custom comments or formatting will be lost.
+//
+// If you want to maintain a configuration file with your own comments and formatting, you should create a separate file and add it to the 'imports' array.
+//
+// Learn more about configuration at https://docs.vicinae.com/config
+
+{
+   "font": {
+      "normal": {
+         "family": "Montserrat",
+         "size": 12
+      }
+   },
+   "theme": {
+      "light": {
+         "name": "custom",
+         "icon_theme": "auto"
+      },
+      "dark": {
+         "name": "custom",
+         "icon_theme": "auto"
+      }
+   },
+   "launcher_window": {
+      "opacity": 0.33,
+      "client_side_decorations": {
+         "enabled": true,
+         "rounding": 0,
+         "border_width": 1
+      }
+   },
+   "favorites": [],
+   "providers": {
+      "applications": {
+         "enabled": true,
+         "entrypoints": {
+            "assistant": {
+               "enabled": false
+            },
+            "avahi-discover": {
+               "enabled": false
+            },
+            "bvnc": {
+               "enabled": false
+            },
+            "cups": {
+               "enabled": false
+            },
+            "designer": {
+               "enabled": false
+            },
+            "hplip": {
+               "enabled": false
+            },
+            "lstopo": {
+               "enabled": false
+            },
+            "micro": {
+               "enabled": false
+            },
+            "org.cachyos.scx-manager": {
+               "enabled": false
+            },
+            "qv4l2": {
+               "enabled": false
+            },
+            "xgps": {
+               "enabled": false
+            }
+         }
+      },
+      "calculator": {
+         "enabled": true,
+         "entrypoints": {
+            "history": {
+               "enabled": false
+            },
+            "refresh-rates": {
+               "enabled": false
+            }
+         }
+      },
+      "clipboard": {
+         "enabled": false,
+         "preferences": {
+            "ignorePasswords": false
+         },
+         "entrypoints": {
+            "clear": {
+               "enabled": false
+            },
+            "history": {
+               "enabled": true
+            }
+         }
+      },
+      "core": {
+         "enabled": false,
+         "entrypoints": {
+            "about": {
+               "enabled": false
+            },
+            "documentation": {
+               "enabled": false
+            },
+            "inspect-local-storage": {
+               "enabled": false
+            },
+            "keybind-settings": {
+               "enabled": false
+            },
+            "list-extensions": {
+               "enabled": false
+            },
+            "manage-fallback": {
+               "enabled": false
+            },
+            "oauth-token-store": {
+               "enabled": false
+            },
+            "open-config-file": {
+               "enabled": false
+            },
+            "open-default-config": {
+               "enabled": false
+            },
+            "refresh-apps": {
+               "enabled": true
+            },
+            "report-bug": {
+               "enabled": false
+            },
+            "search-emojis": {
+               "enabled": false
+            },
+            "settings": {
+               "enabled": true
+            },
+            "sponsor": {
+               "enabled": false
+            },
+            "store": {
+               "enabled": false
+            }
+         }
+      },
+      "developer": {
+         "enabled": false
+      },
+      "files": {
+         "enabled": false
+      },
+      "font": {
+         "enabled": false
+      },
+      "manage-shortcuts": {
+         "enabled": false
+      },
+      "power": {
+         "enabled": false
+      },
+      "raycast-compat": {
+         "enabled": true
+      },
+      "system": {
+         "enabled": false
+      },
+      "theme": {
+         "enabled": false
+      },
+      "wm": {
+         "enabled": false
+      }
+   }
+}

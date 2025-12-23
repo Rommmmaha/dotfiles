@@ -1,0 +1,19 @@
+(defpoll time :interval "1s" "date '+%H:%M:%S'")
+(defpoll date :interval "1s" "date '+%u-%d.%m.%Y'")
+(defwidget desktop_clock []
+  (box :orientation "v" :space-evenly false :class "main-container"
+    (label :class "clock-label" :text time)
+    (label :class "date-label"  :text date)
+    (calendar :class "cal-widget" :show-details true)
+  )
+)
+(defwindow desktop_info
+  :monitor 0
+  :stacking "bottom"
+  :focusable false
+  :geometry (geometry :x "30px"
+                      :y "30px"
+                      :width "400px"
+                      :anchor "center center")
+  (desktop_clock)
+)

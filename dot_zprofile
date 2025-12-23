@@ -1,0 +1,51 @@
+export XCURSOR_THEME="GoogleDot-Black"
+export XCURSOR_SIZE="22"
+export HYPRCURSOR_THEME="GoogleDot-Black"
+export HYPRCURSOR_SIZE="22"
+
+export XDG_MENU_PREFIX="arch-"
+export GDK_SCALE="1"
+
+export GTK_USE_PORTAL="1"
+
+export QT_QPA_PLATFORM="wayland"
+export QT_QPA_PLATFORMTHEME="qt6ct"
+export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+export QT_AUTO_SCREEN_SCALE_FACTOR="1"
+
+export ENABLE_GAMESCOPE_WSI="0"
+
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$HOME/.local/bin:$HOME/.bun/bin:$PATH"
+
+export EDITOR="micro"
+
+if [ "$(tty)" = "/dev/tty1" ]; then
+  uwsm start Hyprland
+  echo "========================================"
+  echo "   SESSION ENDED"
+  echo "========================================"
+  echo "   [1] Poweroff"
+  echo "   [2] Reboot"
+  echo "   [3] Restart session"
+  echo "   [*] Open ZSH"
+  echo "========================================"
+
+  read -k 1 key
+  case "$key" in
+    1)
+      systemctl poweroff
+      break
+      ;;
+    2)
+      systemctl reboot
+      break
+      ;;
+    3)
+      exec :
+      ;;
+    *)
+      exec zsh
+      ;;
+  esac
+fi

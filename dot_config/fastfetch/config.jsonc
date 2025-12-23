@@ -1,0 +1,22 @@
+{
+  "logo": {
+    "source": "CachyOS_small",
+    "padding": { "top": 4 }
+  },
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "kernel",
+    "uptime",
+    "packages",
+    "wm",
+    "separator",
+    "cpu",
+    "gpu",
+    "memory",
+    "swap",
+    "separator",
+    "disk"
+  ]
+}

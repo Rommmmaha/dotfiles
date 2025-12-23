@@ -1,0 +1,18 @@
+{
+  "name": "custom",
+  "colors": {
+    "window_bg": "#0000000",
+    "border": "#ffffff55",
+    "text_primary": "#ffffff",
+    "text_secondary": "#ffffffaa",
+    "input_bg": "transparent",
+    "input_text": "#ffffff",
+    "input_placeholder": "#ffffffaa",
+    "selection_bg": "#ffffffaa",
+    "selection_text": "#000000",
+    "accent": "#ffffffaa",
+    "success": "#a3be8c",
+    "warning": "#ebcb8b",
+    "error": "#bf616a"
+  }
+}
