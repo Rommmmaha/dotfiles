@@ -65,7 +65,6 @@ xwayland:force_zero_scaling = true
 # =======================================================================================
 # Autostart
 # =======================================================================================
-#exec-once = pw-loopback --name= "mic-monitor"
 exec-once = hyprlock
 exec-once = uwsm app -- eww daemon && eww open desktop_info
 exec-once = uwsm app -- hyprpaper
@@ -73,12 +72,7 @@ exec-once = uwsm app -- kdeconnectd
 exec-once = systemctl --user start hyprpolkitagent
 exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 exec-once = sh -c "XDG_MENU_PREFIX=plasma- kbuildsycoca6 --noincremental"
-
 exec-once = wl-clip-persist --clipboard regular
-#exec-once = wl-paste -t text -w cliphist store
-#exec-once = wl-paste -t image -w cliphist store
-
-#exec = gsettings set org.gnome.desktop.interface cursor-theme 'GoogleDot-Black'
 # =======================================================================================
 # Keybinds
 # =======================================================================================
@@ -98,6 +92,7 @@ bind = $mainMod, S, exec, uwsm app -- vicinae toggle
 bind = $mainMod, V, exec, vicinae vicinae://extensions/vicinae/clipboard/history
 bind = $mainMod, PERIOD, exec, vicinae vicinae://extensions/vicinae/core/search-emojis
 
+bind = SUPER, ESCAPE, exec, uwsm stop
 bind = , XF86PowerOff, exec, uwsm stop
 bind = $mainMod, L, exec, hyprlock
 bindi = , PRINT, exec, $makeScreenshot
@@ -187,4 +182,6 @@ windowrule = tile, tag:game
 windowrule = opaque, tag:game
 windowrule = forcergbx, tag:game
 
+{{- if regexMatch "^(pc|laptop)$" .chezmoi.hostname }}
 source = $configPath/custom/hyprland-{{ .chezmoi.hostname }}.conf
+{{- end }}

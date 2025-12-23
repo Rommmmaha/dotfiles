@@ -1,9 +1,11 @@
 README.md
-{{- if eq .chezmoi.hostname "pc" }}
-.config/hypr/custom/hyprland-laptop.conf
-.config/hypr/custom/_ws.conf
-{{- end }}
-{{- if eq .chezmoi.hostname "laptop" }}
+
+{{- if ne .chezmoi.hostname "pc" }}
 .config/pipewire
 .config/hypr/custom/hyprland-pc.conf
+{{- end }}
+
+{{- if ne .chezmoi.hostname "laptop" }}
+.config/hypr/custom/_ws.sh
+.config/hypr/custom/hyprland-laptop.conf
 {{- end }}
