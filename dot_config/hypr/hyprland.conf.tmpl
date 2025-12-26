@@ -16,7 +16,6 @@ general {
   border_size = 0
   layout = dwindle
   resize_on_border = false
-  #allow_tearing = true
   snap {
     enabled = true
     window_gap = 25
@@ -77,11 +76,7 @@ $makeScreenshot = uwsm app -- flameshot gui
 
 bind = $mainMod, RETURN, exec, uwsm app -- kitty
 bind = $mainMod, E, exec, uwsm app -- dolphin
-bind = $mainMod, X, exec, uwsm app -- code-insiders -n
-
-#bind = $mainMod, S, exec, uwsm app -- rofi -show drun -theme-str "entry{placeholder:\"$(date +'%T    %u-%d-%m-%Y')\";}" -show-icons
-#bind = $mainMod, PERIOD, exec, rofimoji -a copy
-#bind = , XF86Calculator, exec, rofi -show calc -modi calc
+bind = $mainMod, X, exec, uwsm app -- code-insiders -nq
 
 bind = $mainMod, S, exec, vicinae toggle
 bind = $mainMod, V, exec, vicinae vicinae://extensions/vicinae/clipboard/history
@@ -151,15 +146,11 @@ bindm = $mainMod, mouse:273, resizewindow
 windowrule = norounding, floating:0
 windowrule = noshadow, floating:0
 
-layerrule = blur, notifications
-layerrule = blur, vicinae
-layerrule = blur, gtk-layer-shell
-layerrule = ignorezero, notifications
-layerrule = ignorezero, vicinae
-layerrule = ignorezero, gtk-layer-shell
-
 windowrule = float, class:^(xdg-desktop-portal-gtk)$
 windowrule = float, class:^(org\.freedesktop\.impl\.portal\.desktop\.kde)$
+
+windowrule = tile, class:^(steam)$
+windowrule = suppressevent maximize fullscreen, class:^(steam)$
 
 windowrule = pin, class:^(flameshot)$
 windowrule = float, class:^(flameshot)$
@@ -175,9 +166,13 @@ windowrule = renderunfocused, tag:game
 windowrule = noblur, tag:game
 windowrule = tile, tag:game
 windowrule = opaque, tag:game
-windowrule = immediate, tag:game
 windowrule = forcergbx, tag:game
 
+layerrule = blur, ^(notifications|vicinae|gtk-layer-shell)$
+layerrule = ignorezero, ^(notifications|vicinae|gtk-layer-shell)$
+# =======================================================================================
+# Import Custom Rules
+# =======================================================================================
 {{- if regexMatch "^(pc|laptop)$" .chezmoi.hostname }}
 source = $configPath/custom/hyprland-{{ .chezmoi.hostname }}.conf
 {{- end }}

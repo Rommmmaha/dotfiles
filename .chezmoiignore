@@ -2,6 +2,7 @@ README.md
 
 {{- if ne .chezmoi.hostname "pc" }}
 .config/pipewire
+.config/hypr/custom/autostart.py
 .config/hypr/custom/hyprland-pc.conf
 {{- end }}
 

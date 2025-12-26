@@ -14,6 +14,7 @@ export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
 export QT_AUTO_SCREEN_SCALE_FACTOR="1"
 
 export ENABLE_GAMESCOPE_WSI="0"
+export LD_PRELOAD=""
 
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$HOME/.local/bin:$HOME/.bun/bin:$PATH"

@@ -4,7 +4,9 @@
   (box :orientation "v" :space-evenly false :class "main-container"
     (label :class "clock-label" :text time)
     (label :class "date-label"  :text date)
-    (calendar :class "cal-widget" :show-details true)
+    (calendar :class "cal-widget"
+              :show-details true
+              :active false)
   )
 )
 (defwindow desktop_info
