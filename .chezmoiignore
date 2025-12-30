@@ -1,4 +1,5 @@
 README.md
+packages.txt
 
 {{- if ne .chezmoi.hostname "pc" }}
 .config/pipewire
