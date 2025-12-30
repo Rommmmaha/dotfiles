@@ -9,12 +9,14 @@ export GDK_SCALE="1"
 export GTK_USE_PORTAL="1"
 
 export QT_QPA_PLATFORM="wayland"
-export QT_QPA_PLATFORMTHEME="qt6ct"
+export QT_QPA_PLATFORMTHEME="hyprqt6engine"
 export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
 export QT_AUTO_SCREEN_SCALE_FACTOR="1"
 
 export ENABLE_GAMESCOPE_WSI="0"
 export LD_PRELOAD=""
+
+export JAVA_HOME="/usr/lib/jvm/java-21-graalvm-ee"
 
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$HOME/.local/bin:$HOME/.bun/bin:$PATH"
@@ -22,7 +24,7 @@ export PATH="$HOME/.local/bin:$HOME/.bun/bin:$PATH"
 export EDITOR="micro"
 
 if [ "$(tty)" = "/dev/tty1" ]; then
-  uwsm start Hyprland
+  start-hyprland
   echo "========================================"
   echo "   SESSION ENDED"
   echo "========================================"

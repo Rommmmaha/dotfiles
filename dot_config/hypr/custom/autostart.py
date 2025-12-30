@@ -34,7 +34,7 @@ def main():
 
     rules = [
         {
-            "classes": ["Vivaldi-stable", "vivaldi-snapshot"],
+            "classes": ["Vivaldi-stable", "Vivaldi-snapshot"],
             "workspace": 3
         },
         {

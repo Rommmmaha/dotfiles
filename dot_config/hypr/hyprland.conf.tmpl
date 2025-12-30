@@ -31,6 +31,8 @@ decoration {
   blur {
     size = 2
     passes = 3
+    new_optimizations = true
+    noise = 0
   }
 }
 misc {
@@ -51,7 +53,6 @@ group:groupbar {
 }
 animations:enabled = false
 xwayland:force_zero_scaling = true
-opengl:nvidia_anti_flicker = false
 ecosystem{
   no_update_news = true
   no_donation_nag = true
@@ -60,9 +61,9 @@ ecosystem{
 # Autostart
 # =======================================================================================
 exec-once = hyprlock
-exec-once = uwsm app -- eww daemon && eww open desktop_info
-exec-once = uwsm app -- hyprpaper
-exec-once = uwsm app -- kdeconnectd
+exec-once = eww daemon && eww open desktop_info
+exec-once = hyprpaper
+exec-once = kdeconnectd
 exec-once = systemctl --user start hyprpolkitagent
 exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 exec-once = sh -c "XDG_MENU_PREFIX=plasma- kbuildsycoca6 --noincremental"
@@ -72,18 +73,19 @@ exec-once = wl-clip-persist --clipboard regular
 # =======================================================================================
 $mainMod = SUPER
 $configPath = $HOME/.config/hypr
-$makeScreenshot = uwsm app -- flameshot gui
+$makeScreenshot = flameshot gui
 
-bind = $mainMod, RETURN, exec, uwsm app -- kitty
-bind = $mainMod, E, exec, uwsm app -- dolphin
-bind = $mainMod, X, exec, uwsm app -- code-insiders -nq
+bind = $mainMod, RETURN, exec, kitty
+bind = $mainMod, E, exec, dolphin
+bind = $mainMod, X, exec, code-insiders -nq
+bind = $mainMod, R, exec, chezmoi apply --force
 
-bind = $mainMod, S, exec, vicinae toggle
-bind = $mainMod, V, exec, vicinae vicinae://extensions/vicinae/clipboard/history
-bind = $mainMod, PERIOD, exec, vicinae vicinae://extensions/vicinae/core/search-emojis
+bind = $mainMod, S, exec, rofi -show drun -show-icons
+bind = $mainMod, period, exec, rofi -modi "emoji:rofimoji" -show emoji
+bind = , XF86Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort
 
-bind = SUPER, ESCAPE, exec, uwsm stop
-bind = , XF86PowerOff, exec, uwsm stop
+bind = SUPER, ESCAPE, exit
+bind = , XF86PowerOff, exit
 bind = $mainMod, L, exec, hyprlock
 bindi = , PRINT, exec, $makeScreenshot
 bind = $mainMod SHIFT, S, exec, $makeScreenshot
@@ -143,33 +145,39 @@ bindm = $mainMod, mouse:273, resizewindow
 # =======================================================================================
 # Window Rules
 # =======================================================================================
-windowrule = norounding, floating:0
-windowrule = noshadow, floating:0
-
-windowrule = float, class:^(xdg-desktop-portal-gtk)$
-windowrule = float, class:^(org\.freedesktop\.impl\.portal\.desktop\.kde)$
-
-windowrule = tile, class:^(steam)$
-windowrule = suppressevent maximize fullscreen, class:^(steam)$
-
-windowrule = pin, class:^(flameshot)$
-windowrule = float, class:^(flameshot)$
-windowrule = maximize, class:^(flameshot)$
-windowrule = stayfocused, class:^(flameshot)$
-
-windowrule = tag +game, class:^(gamescope)$
-windowrule = tag +game, class:^(Minecraft.*)$
-windowrule = tag +game, class:^(mcpelauncher-client)$
-windowrule = tag +game, class:^(steam_app_.*)$
-
-windowrule = renderunfocused, tag:game
-windowrule = noblur, tag:game
-windowrule = tile, tag:game
-windowrule = opaque, tag:game
-windowrule = forcergbx, tag:game
-
-layerrule = blur, ^(notifications|vicinae|gtk-layer-shell)$
-layerrule = ignorezero, ^(notifications|vicinae|gtk-layer-shell)$
+windowrule = match:float false, no_shadow on
+windowrule {
+  name = floating
+  match:class = ^(xdg-desktop-portal-gtk|org\.freedesktop\.impl\.portal\.desktop\.kde)$
+  float = on
+}
+windowrule {
+  name = flameshot
+  match:class = ^(flameshot)$
+  float = on
+  maximize = on
+  size = 1920 1080
+  center = on
+  pin = on
+  stay_focused = on
+}
+windowrule {
+  name = game
+  match:class = ^(gamescope|Minecraft.*|mcpelauncher-client|steam_app_.*)$
+  tile = on
+  content = game
+  opaque = on
+  force_rgbx = on
+  render_unfocused = on
+}
+windowrule {
+  name = steam
+  match:class = steam
+  tile = on
+  suppress_event = maximize fullscreen
+}
+layerrule = match:namespace ^(notifications|rofi|gtk-layer-shell)$, blur on
+layerrule = match:namespace ^(notifications|rofi|gtk-layer-shell)$, ignore_alpha 0
 # =======================================================================================
 # Import Custom Rules
 # =======================================================================================
