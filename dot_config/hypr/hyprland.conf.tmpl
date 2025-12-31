@@ -37,12 +37,13 @@ decoration {
 }
 misc {
   disable_hyprland_logo = true
+  disable_splash_rendering = true
   background_color = 0
   render_unfocused_fps = 60
 }
 binds {
-  scroll_event_delay = 0
   hide_special_on_workspace_change = true
+  scroll_event_delay = 0
 }
 group:groupbar {
   indicator_height = 0
@@ -53,21 +54,22 @@ group:groupbar {
 }
 animations:enabled = false
 xwayland:force_zero_scaling = true
-ecosystem{
+ecosystem {
   no_update_news = true
   no_donation_nag = true
 }
 # =======================================================================================
 # Autostart
 # =======================================================================================
-exec-once = hyprlock
-exec-once = eww daemon && eww open desktop_info
-exec-once = hyprpaper
-exec-once = kdeconnectd
-exec-once = systemctl --user start hyprpolkitagent
 exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec-once = hyprlock
+exec-once = hyprpaper
+exec-once = systemctl --user start hyprpolkitagent
+exec-once = eww daemon && eww open desktop_info
+exec-once = kdeconnectd
 exec-once = sh -c "XDG_MENU_PREFIX=plasma- kbuildsycoca6 --noincremental"
 exec-once = wl-clip-persist --clipboard regular
+exec-once = wl-paste --watch clipvault store
 # =======================================================================================
 # Keybinds
 # =======================================================================================
@@ -78,11 +80,11 @@ $makeScreenshot = flameshot gui
 bind = $mainMod, RETURN, exec, kitty
 bind = $mainMod, E, exec, dolphin
 bind = $mainMod, X, exec, code-insiders -nq
-bind = $mainMod, R, exec, chezmoi apply --force
 
 bind = $mainMod, S, exec, rofi -show drun -show-icons
 bind = $mainMod, period, exec, rofi -modi "emoji:rofimoji" -show emoji
 bind = , XF86Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort
+bind = SUPER, V, exec, rofi -modi clipboard:$configPath/custom/_clipvault.sh -show clipboard -show-icons
 
 bind = SUPER, ESCAPE, exit
 bind = , XF86PowerOff, exit
