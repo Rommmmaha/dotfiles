@@ -74,7 +74,6 @@ exec-once = wl-paste --watch clipvault store
 # Keybinds
 # =======================================================================================
 $configPath = $HOME/.config/hypr
-$makeScreenshot = flameshot gui
 
 bind = SUPER, RETURN, exec, kitty
 bind = SUPER, E, exec, dolphin
@@ -88,8 +87,10 @@ bind = SUPER, V, exec, rofi -modi clipboard:$configPath/custom/_clipvault.sh -sh
 bind = SUPER, ESCAPE, exit
 bind = , XF86PowerOff, exit
 bind = SUPER, L, exec, hyprlock
-bindi = , PRINT, exec, $makeScreenshot
-bind = SUPER SHIFT, S, exec, $makeScreenshot
+
+bindi = , PRINT, exec, flameshot gui
+bind = SUPER SHIFT, S, exec, flameshot gui
+bind = SUPER, P, exec, [float] sh -c 'exec qview "$(ls -td $HOME/Pictures/Screenshots/* | head -n 1)"'
 
 bind = SUPER, W, killactive,
 bind = SUPER, F, togglefloating,
@@ -154,11 +155,10 @@ windowrule {
 }
 windowrule {
   name = flameshot
-  match:class = ^(flameshot)$
+  match:title = ^(flameshot)$
   float = on
-  maximize = on
   size = 1920 1080
-  center = on
+  move = 0 0
   pin = on
   stay_focused = on
 }
@@ -171,12 +171,8 @@ windowrule {
   force_rgbx = on
   render_unfocused = on
 }
-windowrule {
-  name = steam
-  match:class = steam
-  tile = on
-  suppress_event = maximize fullscreen
-}
+windowrule = match:class steam, tile on
+windowrule = match:class .*, suppress_event maximize fullscreen
 layerrule = match:namespace ^(notifications|rofi|gtk-layer-shell)$, blur on
 layerrule = match:namespace ^(notifications|rofi|gtk-layer-shell)$, ignore_alpha 0
 # =======================================================================================

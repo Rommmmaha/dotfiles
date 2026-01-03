@@ -3,7 +3,7 @@ export XCURSOR_SIZE="22"
 export HYPRCURSOR_THEME="GoogleDot-Black"
 export HYPRCURSOR_SIZE="22"
 
-export XDG_MENU_PREFIX="arch-"
+export XDG_MENU_PREFIX="plasma-"
 export GDK_SCALE="1"
 
 export GTK_USE_PORTAL="1"
@@ -13,7 +13,6 @@ export QT_QPA_PLATFORMTHEME="hyprqt6engine"
 export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
 export QT_AUTO_SCREEN_SCALE_FACTOR="1"
 
-export ENABLE_GAMESCOPE_WSI="0"
 export LD_PRELOAD=""
 
 export JAVA_HOME="/usr/lib/jvm/java-21-graalvm-ee"
@@ -25,6 +24,8 @@ export EDITOR="micro"
 
 if [ "$(tty)" = "/dev/tty1" ]; then
   start-hyprland
+
+  sleep 1
   echo "========================================"
   echo "   SESSION ENDED"
   echo "========================================"
