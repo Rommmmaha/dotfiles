@@ -39,7 +39,7 @@ misc {
   disable_hyprland_logo = true
   disable_splash_rendering = true
   background_color = 0
-  render_unfocused_fps = 60
+  render_unfocused_fps = 30
 }
 binds {
   hide_special_on_workspace_change = true
@@ -148,11 +148,10 @@ bindm = SUPER, mouse:273, resizewindow
 # Window Rules
 # =======================================================================================
 windowrule = match:float false, no_shadow on
-windowrule {
-  name = floating
-  match:class = ^(xdg-desktop-portal-gtk|org\.freedesktop\.impl\.portal\.desktop\.kde)$
-  float = on
-}
+#
+windowrule = match:class ^xdg-desktop-portal-gtk$, float on
+windowrule = match:class ^org\.freedesktop\.impl\.portal\.desktop\.kde$, float on
+#
 windowrule {
   name = flameshot
   match:title = ^(flameshot)$
@@ -163,15 +162,25 @@ windowrule {
   stay_focused = on
 }
 windowrule {
-  name = game
-  match:class = ^(gamescope|Minecraft.*|mcpelauncher-client|steam_app_.*)$
+  name = steam
+  match:class = ^(steam)$
   tile = on
+  suppress_event = maximize fullscreen
+}
+windowrule = match:class ^gamescope$, tag +game
+windowrule = match:class ^mcpelauncher-client$, tag +game
+windowrule = match:class ^steam_app_.*$, tag +game
+windowrule = match:title ^Minecraft.*$, tag +game
+windowrule {
+  name = game
+  match:tag = game
   opaque = on
   force_rgbx = on
   render_unfocused = on
 }
-windowrule = match:class steam, tile on
-windowrule = match:class .*, suppress_event maximize fullscreen
+# =======================================================================================
+# Layer Rules
+# =======================================================================================
 layerrule = match:namespace ^(notifications|rofi|gtk-layer-shell)$, blur on
 layerrule = match:namespace ^(notifications|rofi|gtk-layer-shell)$, ignore_alpha 0
 # =======================================================================================

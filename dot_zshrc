@@ -12,7 +12,7 @@ alias c="code-insiders"
 alias ls="eza --icons --group-directories-first"
 alias cat="bat --paging=never"
 alias tree="ls -T"
-alias cmatrix="cmatrix -C cyan"
+alias matrix="neo-matrix -D -c cyan"
 alias clear="printf '\033[2J\033[3J\033[1;1H'"
 alias _nmap='sudo nmap -T5 -n'
 alias edit=$EDITOR
@@ -20,11 +20,6 @@ alias nano=$EDITOR
 
 qr() {
   qrencode -s 15 -o - "$@" | feh -
-}
-acp() {
-  git add .
-  git commit -m "$1"
-  git push origin "$(git symbolic-ref --short HEAD)"
 }
 
 eval "$(starship init zsh)"
