@@ -8,6 +8,5 @@ packages.txt
 {{- end }}
 
 {{- if ne .chezmoi.hostname "laptop" }}
-.config/hypr/custom/_ws.sh
 .config/hypr/custom/hyprland-laptop.conf
 {{- end }}

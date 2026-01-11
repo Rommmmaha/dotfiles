@@ -1,15 +1,11 @@
 # =======================================================================================
-# Input
+# Variables
 # =======================================================================================
 input {
   kb_layout = us, ua
   kb_options = grp:caps_toggle,fkeys:basic_13-24
   numlock_by_default = true
-  follow_mouse = true
 }
-# =======================================================================================
-# Visuals
-# =======================================================================================
 general {
   gaps_in = 0
   gaps_out = 0
@@ -70,28 +66,36 @@ exec-once = eww daemon && eww open desktop_info
 exec-once = kdeconnectd
 exec-once = wl-clip-persist --clipboard regular
 exec-once = wl-paste --watch clipvault store
+exec-once = kitty --single-instance --start-as=hidden
 # =======================================================================================
 # Keybinds
 # =======================================================================================
 $configPath = $HOME/.config/hypr
 
-bind = SUPER, RETURN, exec, kitty
+# General
+bind = SUPER, RETURN, exec, kitty --single-instance
 bind = SUPER, E, exec, dolphin
 bind = SUPER, X, exec, code-insiders -nq
+bind = SUPER, C, exec, pwvucontrol
+bindl = SHIFT, ESCAPE, exec, playerctl play-pause
 
+# Screenshot
+bindi = , PRINT, exec, flameshot gui
+bind = SUPER SHIFT, S, exec, flameshot gui
+bind = SUPER, P, exec, [float] sh -c 'exec qview "$(ls -td $HOME/Pictures/Screenshots/* | head -n 1)"'
+
+# Rofi
 bind = SUPER, S, exec, rofi -show drun -show-icons
 bind = SUPER, PERIOD, exec, rofimoji
 bind = , XF86CALCULATOR, exec, rofi -show calc -modi calc -no-show-match -no-sort
 bind = SUPER, V, exec, rofi -modi clipboard:$configPath/custom/_clipvault.sh -show clipboard -show-icons
 
+# Session
 bind = SUPER, ESCAPE, exit
 bind = , XF86PowerOff, exit
 bind = SUPER, L, exec, hyprlock
 
-bindi = , PRINT, exec, flameshot gui
-bind = SUPER SHIFT, S, exec, flameshot gui
-bind = SUPER, P, exec, [float] sh -c 'exec qview "$(ls -td $HOME/Pictures/Screenshots/* | head -n 1)"'
-
+# Window managament
 bind = SUPER, W, killactive,
 bind = SUPER, F, togglefloating,
 bind = SUPER, A, fullscreen, 1
@@ -99,6 +103,7 @@ bind = SUPER, G, togglegroup
 bind = SUPER, Tab, cyclenext,
 bind = SUPER, Tab, bringactivetotop,
 
+# Workspaces
 bind = SUPER, 1, workspace, 1
 bind = SUPER, 2, workspace, 2
 bind = SUPER, 3, workspace, 3
@@ -110,6 +115,7 @@ bind = SUPER, 8, workspace, 8
 bind = SUPER, 9, workspace, 9
 bind = SUPER, 0, workspace, 10
 
+# Move to workspaces
 bind = SUPER SHIFT, 1, movetoworkspacesilent, 1
 bind = SUPER SHIFT, 2, movetoworkspacesilent, 2
 bind = SUPER SHIFT, 3, movetoworkspacesilent, 3
@@ -121,6 +127,7 @@ bind = SUPER SHIFT, 8, movetoworkspacesilent, 8
 bind = SUPER SHIFT, 9, movetoworkspacesilent, 9
 bind = SUPER SHIFT, 0, movetoworkspacesilent, 10
 
+# Workspaces (8-10)
 {{- if eq .chezmoi.hostname "pc" }}
 bind = SUPER, GRAVE, exec, _multitool ws 8
 bind = SUPER, Q, exec, _multitool ws 9
@@ -131,27 +138,32 @@ bind = SUPER, Q, exec, sh $configPath/custom/_ws.sh 9
 bind = SUPER, Z, exec, sh $configPath/custom/_ws.sh 10
 {{- end }}
 
+# Move to workspaces (8-10)
 bind = SUPER SHIFT, GRAVE, movetoworkspacesilent, 8
 bind = SUPER SHIFT, Q, movetoworkspacesilent, 9
 bind = SUPER SHIFT, Z, movetoworkspacesilent, 10
 
+# Move window
 bind = SUPER CTRL, LEFT, movewindow, l
 bind = SUPER CTRL, RIGHT, movewindow, r
 bind = SUPER CTRL, UP, movewindow, u
 bind = SUPER CTRL, DOWN, movewindow, d
 
-bindl = SHIFT, ESCAPE, exec, playerctl play-pause
-
+# Mouse binds
 bindm = SUPER, mouse:272, movewindow
 bindm = SUPER, mouse:273, resizewindow
 # =======================================================================================
 # Window Rules
 # =======================================================================================
+# Shadow only for floating
 windowrule = match:float false, no_shadow on
-#
+
+# Floating windows
+windowrule = match:class ^com\.saivert\.pwvucontrol$, float on
 windowrule = match:class ^xdg-desktop-portal-gtk$, float on
 windowrule = match:class ^org\.freedesktop\.impl\.portal\.desktop\.kde$, float on
-#
+
+# Flameshot window fix
 windowrule {
   name = flameshot
   match:title = ^(flameshot)$
@@ -161,12 +173,16 @@ windowrule {
   pin = on
   stay_focused = on
 }
+
+# Fix steam not tiling
 windowrule {
   name = steam
   match:class = ^(steam)$
   tile = on
   suppress_event = maximize fullscreen
 }
+
+# Games
 windowrule = match:class ^gamescope$, tag +game
 windowrule = match:class ^mcpelauncher-client$, tag +game
 windowrule = match:class ^steam_app_.*$, tag +game
@@ -184,7 +200,7 @@ windowrule {
 layerrule = match:namespace ^(notifications|rofi|gtk-layer-shell)$, blur on
 layerrule = match:namespace ^(notifications|rofi|gtk-layer-shell)$, ignore_alpha 0
 # =======================================================================================
-# Import Custom Rules
+# Device Specific Rules
 # =======================================================================================
 {{- if regexMatch "^(pc|laptop)$" .chezmoi.hostname }}
 source = $configPath/custom/hyprland-{{ .chezmoi.hostname }}.conf

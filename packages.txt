@@ -1,8 +1,7 @@
 bat
 btop
 chezmoi
-clipvault
-cmatrix
+clipvault-bin
 dnsmasq
 dolphin
 eww
@@ -10,6 +9,7 @@ eza
 fastfetch
 feh
 flameshot
+grim
 hyprland
 hyprlock
 hyprpaper
@@ -23,7 +23,8 @@ mkinitcpio-numlock
 mpv
 nmap
 noto-fonts-emoji
-pipewire
+nwg-look
+pwvucontrol
 playerctl
 qrencode
 rclone
@@ -33,10 +34,9 @@ rofimoji
 starship
 ttf-jetbrains-mono-nerd
 ttf-montserrat
-uwsm
 visual-studio-code-insiders-bin
-wireplumber
 wl-clip-persist
+wl-clipboard
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 xdg-desktop-portal-kde
