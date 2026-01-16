@@ -21,10 +21,11 @@ mako
 micro
 mkinitcpio-numlock
 mpv
+neo-matrix
 nmap
 noto-fonts-emoji
 nwg-look
-pwvucontrol
+pipemixer-git
 playerctl
 qrencode
 rclone

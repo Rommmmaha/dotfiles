@@ -76,7 +76,7 @@ $configPath = $HOME/.config/hypr
 bind = SUPER, RETURN, exec, kitty --single-instance
 bind = SUPER, E, exec, dolphin
 bind = SUPER, X, exec, code-insiders -nq
-bind = SUPER, C, exec, pwvucontrol
+bind = SUPER, C, exec, kitty --class pipemixer -e pipemixer
 bindl = SHIFT, ESCAPE, exec, playerctl play-pause
 
 # Screenshot
@@ -162,6 +162,15 @@ windowrule = match:float false, no_shadow on
 windowrule = match:class ^com\.saivert\.pwvucontrol$, float on
 windowrule = match:class ^xdg-desktop-portal-gtk$, float on
 windowrule = match:class ^org\.freedesktop\.impl\.portal\.desktop\.kde$, float on
+
+# Pipemixer
+windowrule {
+  name = pipemixer
+  match:class = ^(pipemixer)$
+  float = on
+  size = 860 540
+  center = on
+}
 
 # Flameshot window fix
 windowrule {
