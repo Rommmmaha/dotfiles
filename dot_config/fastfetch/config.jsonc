@@ -1,7 +1,9 @@
 {
   "logo": {
     "source": "CachyOS_small",
-    "padding": { "top": 4 }
+    "padding": {
+      "top": 2
+    }
   },
   "modules": [
     "title",
