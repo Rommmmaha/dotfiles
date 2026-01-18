@@ -7,7 +7,6 @@ source "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.z
 
 bindkey '^H' backward-kill-word
 
-alias update="yay -Syu && flatpak update -y && bun upgrade && bun update -g && flatpak remove --unused -y && yay -Yc"
 alias c="code-insiders"
 alias ls="eza --icons --group-directories-first"
 alias cat="bat --paging=never"
@@ -18,6 +17,12 @@ alias _nmap='sudo nmap -T5 -n'
 alias edit=$EDITOR
 alias nano=$EDITOR
 
+update() {
+  sudo -v
+  command -v yay >/dev/null && yay -Syu && yay -Yc
+  command -v flatpak >/dev/null && flatpak update -y && flatpak remove --unused -y
+  command -v bun >/dev/null && bun upgrade && bun update -g
+}
 qr() {
   qrencode -s 15 -o - "$@" | feh -
 }
