@@ -1,68 +1,45 @@
 (defpoll time :interval "1s" "date '+%H:%M:%S'")
 (defpoll date :interval "1s" "date '+%u/7 %d.%m.%Y'")
 
-;; Widget for Clock and Date (Top)
+;; --- Widgets ---
+
 (defwidget clock_widget []
-  (box :orientation "v" :space-evenly false :class "main-container"
+  (box :orientation "v"
+       :class "clock-container"
+       :space-evenly false
     (label :class "clock-label" :text time)
     (label :class "date-label"  :text date)
   )
 )
 
-;; Widget for Calendar (Bottom)
 (defwidget calendar_widget []
-  (box :orientation "v" :space-evenly false :class "main-container"
+  (box :orientation "v"
+       :class "cal-container"
     (calendar :class "cal-widget"
               :show-details true
               :active false)
   )
 )
 
-;; Top Right Window
-(defwindow top_info
-  :monitor 0
-  :stacking "bottom"
-  :focusable false
-  :geometry (geometry :x "30px"
-                      :y "30px"
-                      :width "400px"
-                      :anchor "top right")
-  (clock_widget)
-)
+;; --- Unified Container ---
 
-;; Bottom Right Window
-(defwindow bottom_info
-  :monitor 0
-  :stacking "bottom"
-  :focusable false
-  :geometry (geometry :x "30px"
-                      :y "30px"
-                      :width "400px"
-                      :anchor "bottom right")
-  (calendar_widget)
-)
-
-(defwidget tray []
+(defwidget main_widget []
   (box :orientation "v"
-       :class "tray-container"
        :space-evenly false
-       :halign "fill"
-    (systray :orientation "v"
-             :spacing 15
-             :icon-size 20
-             :halign "center" ;; This centers the icons horizontally
-             :prepend-shape-icons true)
+       :class "main-container"
+       :spacing 15
+    (clock_widget)
+    (calendar_widget)
   )
 )
 
-(defwindow tray_info
+;; --- Window ---
+
+(defwindow main
   :monitor 0
   :stacking "bottom"
-  :focusable false
   :geometry (geometry :x "30px"
-                      :y "0px"
-                      :width "60px"
-                      :height "200px"
-                      :anchor "right center")
-  (tray)
-)
+                      :y "30px"
+                      :width "400px"
+                      :anchor "center bottom")
+  (main_widget))

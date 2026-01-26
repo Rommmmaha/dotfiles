@@ -1,65 +1,69 @@
+/* --- Variables --- */
+$bg-color: rgba(0, 0, 0, 0.4);
+$border-style: 1px solid rgba(255, 255, 255, 0.2);
+$text-color: #ffffff;
+$accent-color: rgba(255, 255, 255, 0.2);
+
 * {
   all: unset;
   font-family: "Adwaita", sans-serif;
 }
 
-.main-container {
-  background-color: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 0px;
-  padding: 30px;
-  min-width: 340px;
+/* --- Base Widget Style --- */
+/* This class defines the look of the individual blocks */
+.widget-card {
+  background-color: $bg-color;
+  border: $border-style;
+  color: $text-color;
+  border-radius: 24px;
 }
 
+/* --- Specific Containers --- */
+/* All containers extend widget-card to keep separate backgrounds */
+
+.clock-container {
+  @extend .widget-card;
+  padding: 25px;
+}
+
+.cal-container {
+  @extend .widget-card;
+  padding: 25px;
+}
+
+/* --- Content Styling --- */
 .clock-label {
-  color: #ffffff;
   font-weight: 700;
   font-size: 2.4rem;
   font-feature-settings: "tnum";
-  margin-bottom: 10px;
 }
 
 .date-label {
-  color: #ffffff;
   font-weight: 500;
   font-size: 1.8rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: $border-style;
+  margin-top: 10px;
   padding-top: 10px;
 }
 
 .cal-widget {
-  color: #ffffff;
-
   header {
     color: #888888;
     font-weight: 800;
-    padding-bottom: 10px;
   }
 
   button {
-    color: #ffffff;
-    font-weight: 400;
+    color: $text-color;
     padding: 8px;
+    border-radius: 4px;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: $accent-color;
     }
   }
 
   &:selected {
-    background-color: #ffffff;
+    background-color: $text-color;
     color: #000000;
   }
-}
-
-calendar:selected {
-  background-color: white;
-  color: black;
-}
-
-.tray-container {
-  background-color: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 0px;
-  padding: 20px 0px;
 }
