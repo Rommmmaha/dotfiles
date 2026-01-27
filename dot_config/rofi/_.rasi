@@ -1,89 +1,84 @@
 * {
   font: "Montserrat 12";
+
   bg0: #00000099;
   bg1: #FFFFFF20;
   bg2: #FFFFFF30;
-  border-col: #ffffff33;
-
+  bd0: #ffffff33;
   fg0: #FFFFFF;
   fg1: #FFFFFF;
   fg2: #FFFFFF80;
 
   background-color: transparent;
   text-color: @fg0;
-
+  border: 0;
   margin: 0;
   padding: 0;
   spacing: 0;
 }
 
 window {
-  background-color: @bg0;
+  width: 400px;
   location: center;
-  width: 400;
+}
 
+mainbox {
+  spacing: 20px;
+  children: [ input-wrapper, listview ];
+}
+
+input-wrapper, listview {
+  background-color: @bg0;
   border: 1px;
-  border-color: @border-col;
-  border-radius: 0;
+  border-color: @bd0;
+  border-radius: 12px;
+}
+
+input-wrapper {
+  orientation: vertical;
+  padding: 12px;
+  spacing: 12px;
+  children: [ inputbar, message ];
+  expand: false;
 }
 
 inputbar {
-  font: "Montserrat 20";
-  padding: 12px;
-  spacing: 12px;
   children: [ entry ];
 }
 
-entry, element-icon, element-text {
-  vertical-align: 0.5;
-}
-
 entry {
-  font: inherit;
-  placeholder-color : @fg2;
-}
-
-message {
-  border: 1px 0 0;
-  border-color: @bg1;
-  background-color: @bg1;
+  font: "Montserrat 20";
+  placeholder-color: @fg2;
+  horizontal-align: 0.5;
 }
 
 textbox {
-  padding: 8px 24px;
+  text-color: @fg0;
+  horizontal-align: 0.5;
+}
+
+message {
+  expand: false;
 }
 
 listview {
   lines: 10;
   columns: 1;
-  fixed-height: false;
-  border: 1px 0 0;
-  border-color: @bg1;
+  fixed-height: true;
 }
 
 element {
-  padding: 8px 16px;
+  padding: 8px;
   spacing: 16px;
-  background-color: transparent;
 }
 
-element normal active {
-  text-color: @fg0;
-}
-
-element alternate active {
-  text-color: @fg0;
-}
-
-element selected normal, element selected active {
+element selected {
   background-color: @bg2;
   text-color: @fg1;
 }
 
-element-icon {
-  size: 1em;
-}
-
-element-text {
+element-icon, element-text {
+  size: 1.5em;
+  vertical-align: 0.5;
   text-color: inherit;
 }
