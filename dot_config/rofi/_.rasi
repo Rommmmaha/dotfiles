@@ -64,7 +64,8 @@ message {
 listview {
   lines: 10;
   columns: 1;
-  fixed-height: true;
+  fixed-height: false;
+  dynamic: true;
 }
 
 element {
