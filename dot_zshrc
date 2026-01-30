@@ -12,7 +12,7 @@ alias c="code"
 alias ls="eza --icons --group-directories-first"
 alias cat="bat --paging=never"
 alias tree="ls -T"
-alias matrix="neo-matrix -D -c gold"
+alias matrix="neo-matrix -D -c cyan"
 alias clear="printf '\033[2J\033[3J\033[1;1H'"
 alias _nmap='sudo nmap -T5 -n'
 alias edit=$EDITOR
