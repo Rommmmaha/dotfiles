@@ -129,15 +129,9 @@ bind = SUPER SHIFT, 9, movetoworkspacesilent, 9
 bind = SUPER SHIFT, 0, movetoworkspacesilent, 10
 
 # Workspaces (8-10)
-{{- if eq .chezmoi.hostname "pc" }}
 bind = SUPER, GRAVE, exec, _multitool ws 8
 bind = SUPER, Q, exec, _multitool ws 9
 bind = SUPER, Z, exec, _multitool ws 10
-{{- else }}
-bind = SUPER, GRAVE, exec, sh $configPath/custom/_ws.sh 8
-bind = SUPER, Q, exec, sh $configPath/custom/_ws.sh 9
-bind = SUPER, Z, exec, sh $configPath/custom/_ws.sh 10
-{{- end }}
 
 # Move to workspaces (8-10)
 bind = SUPER SHIFT, GRAVE, movetoworkspacesilent, 8

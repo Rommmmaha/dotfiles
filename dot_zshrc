@@ -4,7 +4,7 @@ plugins=(git archlinux zsh-autosuggestions)
 
 source "$ZSH/oh-my-zsh.sh"
 source "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-[ -s "/home/r/.bun/_bun" ] && source "/home/r/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 bindkey '^H' backward-kill-word
 
