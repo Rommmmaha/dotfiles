@@ -35,7 +35,6 @@ user_allow_other
 ```conf
 no-resolv
 port=0
-server=194.242.2.3
 server=1.1.1.1
 server=1.0.0.1
 ```

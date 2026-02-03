@@ -10,6 +10,7 @@ fastfetch
 feh
 flameshot
 grim
+hblock
 hyprland
 hyprlock
 hyprpaper
