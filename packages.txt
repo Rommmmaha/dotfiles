@@ -36,7 +36,7 @@ rofimoji
 starship
 ttf-jetbrains-mono-nerd
 ttf-montserrat
-visual-studio-code-insiders-bin
+visual-studio-code-bin
 wl-clip-persist
 wl-clipboard
 xdg-desktop-portal-gtk
