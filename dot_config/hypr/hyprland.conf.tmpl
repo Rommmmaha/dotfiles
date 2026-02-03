@@ -189,10 +189,11 @@ windowrule {
 windowrule = match:class ^gamescope$, tag +game
 windowrule = match:class ^mcpelauncher-client$, tag +game
 windowrule = match:class ^steam_app_.*$, tag +game
-windowrule = match:title ^Minecraft.*$, tag +game
+windowrule = match:class ^Minecraft.*$, tag +game
 windowrule {
   name = game
   match:tag = game
+  tile = on
   opaque = on
   force_rgbx = on
   render_unfocused = on
