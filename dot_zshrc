@@ -20,7 +20,7 @@ alias nano=$EDITOR
 
 update() {
   sudo -v
-  hblock -q
+  command -v hblock >/dev/null && hblock -q
   command -v yay >/dev/null && yay -Syu && yay -Yc
   command -v flatpak >/dev/null && flatpak update -y && flatpak remove --unused -y
   command -v bun >/dev/null && bun upgrade && bun update -g

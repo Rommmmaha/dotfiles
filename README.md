@@ -28,22 +28,15 @@ chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
 user_allow_other
 ```
 
-### DNS Configuration (Dnsmasq + NetworkManager)
+### DNS Configuration
 
-**File:** `/etc/dnsmasq.conf`
-
-```conf
-no-resolv
-port=0
-server=1.1.1.1
-server=1.0.0.1
-```
-
-**File:** `/etc/NetworkManager/NetworkManager.conf`
+**File:** `/etc/systemd/resolved.conf`
 
 ```conf
-[main]
-dns=dnsmasq
+[Resolve]
+DNS=1.1.1.1 1.0.0.1
+FallbackDNS=8.8.8.8 9.9.9.9
+Domains=~.
 ```
 
 ### Login Speed (Remove Password Delay)
@@ -58,9 +51,9 @@ unlock_time = 1
 *Add `nodelay` to the following lines:*
 
 ```conf
-auth       required                    pam_faillock.so      preauth
-auth       [success=1 default=bad]     pam_unix.so          try_first_pass nullok
-auth       [default=die]               pam_faillock.so      authfail
+auth required                pam_faillock.so preauth
+auth [success=1 default=bad] pam_unix.so     try_first_pass nullok
+auth [default=die]           pam_faillock.so authfail
 ```
 
 ### Locale Formatting (English UI, UA Formats)
