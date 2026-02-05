@@ -1,12 +1,12 @@
 README.md
 packages.txt
 
-{{- if ne .chezmoi.hostname "pc" }}
+{{- if ne .deviceType "pc" }}
 .config/pipewire
 .config/hypr/custom/autostart.py
 .config/hypr/custom/hyprland-pc.conf
 {{- end }}
 
-{{- if ne .chezmoi.hostname "laptop" }}
+{{- if ne .deviceType "laptop" }}
 .config/hypr/custom/hyprland-laptop.conf
 {{- end }}

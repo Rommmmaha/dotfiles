@@ -207,6 +207,6 @@ layerrule = match:namespace ^(notifications|rofi|gtk-layer-shell)$, ignore_alpha
 # =======================================================================================
 # Device Specific Rules
 # =======================================================================================
-{{- if regexMatch "^(pc|laptop)$" .chezmoi.hostname }}
-source = $configPath/custom/hyprland-{{ .chezmoi.hostname }}.conf
+{{- if regexMatch "^(pc|laptop)$" .deviceType }}
+source = $configPath/custom/hyprland-{{ .deviceType }}.conf
 {{- end }}
