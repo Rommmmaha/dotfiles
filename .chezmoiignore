@@ -3,7 +3,6 @@ packages.txt
 
 {{- if ne .deviceType "pc" }}
 .config/pipewire
-.config/hypr/custom/autostart.py
 .config/hypr/custom/hyprland-pc.conf
 {{- end }}
 

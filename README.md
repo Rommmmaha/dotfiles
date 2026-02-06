@@ -1,24 +1,22 @@
 # My CachyOS dotfiles
 
-## 📦 1. Packages
-
-### Install Command
-
-```sh
-yay -Syu --needed - < packages.txt
-```
-
-## 🚀 2. Apply Config
+## 🚀 1. Apply Config
 
 ```sh
 chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
 ```
 
-## 🔗 3. Chaotic-AUR
+## 📦 2. Install Packages
+
+```sh
+yay -Syu --needed - < ~/.local/share/chezmoi/packages.txt
+```
+
+## 🌌 3. Chaotic-AUR
 
 <https://aur.chaotic.cx/docs>
 
-## ⚙️ 4. System Level Changes (Manual)
+## ⚙️ 4. System-Wide Config (Manual)
 
 ### FUSE Configuration
 
