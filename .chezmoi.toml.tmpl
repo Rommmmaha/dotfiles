@@ -1,3 +1,3 @@
-{{- $deviceType := .chezmoi.hostname | trimPrefix "r_" -}}
+{{- $deviceType := .chezmoi.hostname | trimPrefix "r-" -}}
 [data]
   deviceType = {{ $deviceType | quote }}
