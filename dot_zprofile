@@ -24,17 +24,13 @@ export EDITOR="micro"
 
 if [ "$(tty)" = "/dev/tty1" ]; then
   start-hyprland
-
-  sleep 1
-  echo "========================================"
-  echo "   SESSION ENDED"
-  echo "========================================"
+  sleep 0.1
+  echo "\n\n\n\n\n========================================"
   echo "   [1] Poweroff"
   echo "   [2] Reboot"
   echo "   [3] Restart session"
   echo "   [*] Open ZSH"
   echo "========================================"
-
   read -k 1 key
   case "$key" in
     1)

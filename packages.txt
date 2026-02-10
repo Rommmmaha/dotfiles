@@ -42,5 +42,6 @@ wl-clipboard
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 xdg-desktop-portal-kde
+yt-dlp-nightly-bin
 zsh
 zsh-autosuggestions
