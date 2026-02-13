@@ -19,6 +19,13 @@ alias edit=$EDITOR
 alias nano=$EDITOR
 
 update() {
+  informant check
+  NEWS_COUNT=$?
+  if [ "$NEWS_COUNT" -gt 0 ]; then
+    informant list
+    echo "\e[90msudo informant read --all\e[0m"
+    return 1
+  fi
   sudo -v
   command -v hblock >/dev/null && hblock -q
   command -v yay >/dev/null && yay -Syu && yay -Yc
