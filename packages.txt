@@ -18,7 +18,6 @@ hyprpolkitagent
 hyprqt6engine
 kdeconnect
 kitty
-mako
 micro
 mkinitcpio-numlock
 mpv
@@ -26,7 +25,6 @@ neo-matrix
 nmap
 noto-fonts-emoji
 nwg-look
-pipemixer-git
 playerctl
 qrencode
 rclone
@@ -34,6 +32,7 @@ rofi
 rofi-calc
 rofimoji
 starship
+swaync
 ttf-jetbrains-mono-nerd
 ttf-montserrat
 visual-studio-code-bin

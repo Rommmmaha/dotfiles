@@ -202,8 +202,8 @@ windowrule {
 # =======================================================================================
 # Layer Rules
 # =======================================================================================
-layerrule = match:namespace ^(notifications|rofi|gtk-layer-shell)$, blur on
-layerrule = match:namespace ^(notifications|rofi|gtk-layer-shell)$, ignore_alpha 0
+layerrule = match:namespace ^(swaync-(notification-window|control-center)|rofi|gtk-layer-shell)$, blur on
+layerrule = match:namespace ^(swaync-(notification-window|control-center)|rofi|gtk-layer-shell)$, ignore_alpha 0
 # =======================================================================================
 # Device Specific Rules
 # =======================================================================================
