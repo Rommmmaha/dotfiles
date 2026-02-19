@@ -37,7 +37,7 @@ FallbackDNS=8.8.8.8 9.9.9.9
 Domains=~.
 ```
 
-### Login Speed (Remove Password Delay)
+### Remove sudo retry delay
 
 **File:** `/etc/security/faillock.conf`
 
@@ -96,4 +96,14 @@ sudo locale-gen
 
 ```sh
 sudo mkinitcpio -P
+```
+
+### Autologin
+
+**File:** `/etc/systemd/system/getty@tty1.service.d/autologin.conf`
+
+```sh
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin YOUR_USERNAME --noclear %I $TERM
 ```

@@ -23,29 +23,29 @@ export PATH="$HOME/.local/bin:$HOME/.bun/bin:$PATH"
 export EDITOR="micro"
 
 if [ "$(tty)" = "/dev/tty1" ]; then
-  start-hyprland
-  sleep 0.1
-  echo "\n\n\n\n\n========================================"
-  echo "   [1] Poweroff"
-  echo "   [2] Reboot"
-  echo "   [3] Restart session"
-  echo "   [*] Open ZSH"
-  echo "========================================"
-  read -k 1 key
-  case "$key" in
-    1)
-      systemctl poweroff
-      break
-      ;;
-    2)
-      systemctl reboot
-      break
-      ;;
-    3)
-      exec :
-      ;;
-    *)
-      exec zsh
-      ;;
-  esac
+  while true; do
+    start-hyprland
+    sleep 0.1
+    echo "\n\n\n\n\n========================================"
+    echo "   [1] Poweroff"
+    echo "   [2] Reboot"
+    echo "   [3] Restart session"
+    echo "   [*] Open ZSH"
+    echo "========================================"
+    read -k 1 key
+    case "$key" in
+      1)
+        systemctl poweroff
+        ;;
+      2)
+        systemctl reboot
+        ;;
+      3)
+        continue
+        ;;
+      *)
+        exec zsh
+        ;;
+    esac
+  done
 fi
