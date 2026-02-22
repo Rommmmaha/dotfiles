@@ -26,11 +26,13 @@ if [ "$(tty)" = "/dev/tty1" ]; then
   while true; do
     start-hyprland
     sleep 0.1
-    echo "\n\n\n\n\n========================================"
+    echo "\n\n\n\n\n"
+    echo "========================================"
     echo "   [1] Poweroff"
     echo "   [2] Reboot"
-    echo "   [3] Restart session"
-    echo "   [*] Open ZSH"
+    echo "   [3] Log out"
+    echo "   [4] Hyprland"
+    echo "   [*] ZSH"
     echo "========================================"
     read -k 1 key
     case "$key" in
@@ -41,10 +43,13 @@ if [ "$(tty)" = "/dev/tty1" ]; then
         systemctl reboot
         ;;
       3)
+        exit 0
+        ;;
+      4)
         continue
         ;;
       *)
-        exec zsh
+        zsh
         ;;
     esac
   done
