@@ -1,6 +1,11 @@
 README.md
 packages.txt
 
+{{- if not .isAuthor }}
+.ssh
+.ssh/**
+{{- end }}
+
 {{- if ne .deviceType "pc" }}
 .config/pipewire
 .config/hypr/custom/hyprland-pc.conf

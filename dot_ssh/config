@@ -1,0 +1,10 @@
+# git clone git@github.com-chnu:kordybanroman-chnu/REPOSITORY.git
+# git remote set-url origin git@github.com-chnu:kordybanroman-chnu/REPOSITORY.git
+Host github.com-chnu
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_chnu
+    IdentitiesOnly yes
+Host *
+    IdentityFile ~/.ssh/id_personal
+    IdentitiesOnly yes

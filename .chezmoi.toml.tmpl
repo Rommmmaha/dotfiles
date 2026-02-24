@@ -1,3 +1,8 @@
-{{- $deviceType := .chezmoi.hostname | trimPrefix "r-" -}}
+{{- $isAuthor := promptBoolOnce . "isAuthor" "Are you the author (Rommmmaha)" false -}}
+
+{{- $deviceChoices := list "pc" "laptop" "vm" "server" -}}
+{{- $deviceType := promptChoiceOnce . "deviceType" "What type of device" $deviceChoices "pc" -}}
+
 [data]
+  isAuthor = {{ $isAuthor }}
   deviceType = {{ $deviceType | quote }}

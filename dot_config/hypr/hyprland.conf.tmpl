@@ -145,6 +145,10 @@ bind = SUPER CTRL, RIGHT, movewindow, r
 bind = SUPER CTRL, UP, movewindow, u
 bind = SUPER CTRL, DOWN, movewindow, d
 
+# Brightness keys
+bindel = , XF86MonBrightnessUp, exec, brightnessctl set 10%+
+bindel = , XF86MonBrightnessDown, exec, brightnessctl set 10%-
+
 # Mouse binds
 bindm = SUPER, mouse:272, movewindow
 bindm = SUPER, mouse:273, resizewindow
@@ -206,6 +210,6 @@ layerrule = match:namespace ^(swaync-(notification-window|control-center)|rofi|g
 # =======================================================================================
 # Device Specific Rules
 # =======================================================================================
-{{- if regexMatch "^(pc|laptop)$" .deviceType }}
+{{- if and .isAuthor (has .deviceType (list "pc" "laptop")) }}
 source = $configPath/custom/hyprland-{{ .deviceType }}.conf
 {{- end }}
