@@ -7,6 +7,7 @@ input {
   numlock_by_default = true
 }
 general {
+  allow_tearing = true
   gaps_in = 0
   gaps_out = 0
   border_size = 0
@@ -159,13 +160,13 @@ bindm = SUPER, mouse:273, resizewindow
 windowrule = match:float false, no_shadow on
 
 # Floating windows
-windowrule = match:class ^xdg-desktop-portal-gtk$, float on
-windowrule = match:class ^org\.freedesktop\.impl\.portal\.desktop\.kde$, float on
+windowrule = match:class xdg-desktop-portal-gtk, float on
+windowrule = match:class org\.freedesktop\.impl\.portal\.desktop\.kde, float on
 
 # Pipemixer
 windowrule {
   name = volume-menu
-  match:class = ^(pipemixer|com\.saivert\.pwvucontrol)$
+  match:class = pipemixer|com\.saivert\.pwvucontrol
   float = on
   size = 860 540
   center = on
@@ -174,7 +175,7 @@ windowrule {
 # Flameshot
 windowrule {
   name = flameshot
-  match:title = ^(flameshot)$
+  match:title = flameshot
   float = on
   size = 1920 1080
   move = 0 0
@@ -183,17 +184,13 @@ windowrule {
 }
 
 # Steam window tiling
-windowrule {
-  name = steam
-  match:class = ^(steam)$
-  suppress_event = maximize fullscreen
-}
+windowrule = match:class steam, suppress_event maximize fullscreen
 
 # Games
-windowrule = match:class ^gamescope$, tag +game
-windowrule = match:class ^mcpelauncher-client$, tag +game
-windowrule = match:class ^steam_app_.*$, tag +game
-windowrule = match:class ^Minecraft.*$, tag +game
+windowrule = match:class gamescope, tag +game
+windowrule = match:class mcpelauncher-client, tag +game
+windowrule = match:class steam_app_.*, tag +game
+windowrule = match:class Minecraft.*, tag +game
 windowrule {
   name = game
   match:tag = game
@@ -201,12 +198,13 @@ windowrule {
   opaque = on
   force_rgbx = on
   render_unfocused = on
+  immediate = on
 }
 # =======================================================================================
 # Layer Rules
 # =======================================================================================
-layerrule = match:namespace ^(swaync-(notification-window|control-center)|rofi|gtk-layer-shell)$, blur on
-layerrule = match:namespace ^(swaync-(notification-window|control-center)|rofi|gtk-layer-shell)$, ignore_alpha 0
+layerrule = match:namespace swaync-(notification-window|control-center)|rofi|gtk-layer-shell, blur on
+layerrule = match:namespace swaync-(notification-window|control-center)|rofi|gtk-layer-shell, ignore_alpha 0
 # =======================================================================================
 # Device Specific Rules
 # =======================================================================================
