@@ -1,7 +1,7 @@
 export XCURSOR_THEME="GoogleDot-Black"
-export XCURSOR_SIZE="22"
+export XCURSOR_SIZE="16"
 export HYPRCURSOR_THEME="GoogleDot-Black"
-export HYPRCURSOR_SIZE="22"
+export HYPRCURSOR_SIZE="16"
 
 export XDG_MENU_PREFIX="plasma-"
 export GTK_USE_PORTAL="1"
