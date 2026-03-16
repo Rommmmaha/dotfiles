@@ -15,7 +15,7 @@ alias icat="kitty +kitten icat"
 alias tree="ls -T"
 alias matrix="neo-matrix -D -c gray"
 alias clear="printf '\033[2J\033[3J\033[1;1H'"
-alias _nmap='sudo nmap -T5 -n'
+alias nscan='sudo nmap -sS -T4 -Pn -n --min-rate 1000 --max-retries 2'
 alias edit=$EDITOR
 alias nano=$EDITOR
 
