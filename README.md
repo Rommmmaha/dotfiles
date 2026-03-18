@@ -9,7 +9,7 @@ chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
 ## 📦 2. Install Packages
 
 ```sh
-yay -Syu --needed - < ~/.local/share/chezmoi/packages.txt
+yay -Syu $(cat ~/.local/share/chezmoi/packages.txt) --needed
 ```
 
 ## 🌌 3. Chaotic-AUR
