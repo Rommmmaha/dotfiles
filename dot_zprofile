@@ -21,11 +21,12 @@ export JAVA_HOME="/usr/lib/jvm/java-21-graalvm-ee"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$HOME/.local/bin:$HOME/.bun/bin:$PATH"
 
+export PROTON_ENABLE_WAYLAND=1
+
 export EDITOR="micro"
 
 if [ "$(tty)" = "/dev/tty1" ]; then
   while true; do
-    start-hyprland
     sleep 0.1
     echo "\n\n\n\n\n"
     echo "========================================"
@@ -47,7 +48,7 @@ if [ "$(tty)" = "/dev/tty1" ]; then
         exit 0
         ;;
       4)
-        continue
+        start-hyprland
         ;;
       *)
         zsh
