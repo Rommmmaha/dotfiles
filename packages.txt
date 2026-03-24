@@ -8,6 +8,7 @@ eza
 fastfetch
 feh
 flameshot
+fzf
 googledot-cursor-theme
 grim
 hblock
@@ -45,5 +46,6 @@ wl-clipboard
 xdg-desktop-portal-hyprland
 xdg-desktop-portal-kde
 yt-dlp-nightly-bin
+zinit
+zoxide
 zsh
-zsh-autosuggestions
