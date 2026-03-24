@@ -10,6 +10,7 @@ bindkey '^H' backward-kill-word
 
 alias c="code"
 alias ls="eza --icons --group-directories-first"
+alias ff="fastfetch --config simple"
 alias cat="bat --paging=never"
 alias icat="kitty +kitten icat"
 alias tree="ls -T"

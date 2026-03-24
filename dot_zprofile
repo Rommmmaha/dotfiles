@@ -33,8 +33,9 @@ if [ "$(tty)" = "/dev/tty1" ]; then
     echo "   [1] Poweroff"
     echo "   [2] Reboot"
     echo "   [3] Log out"
-    echo "   [4] Hyprland"
-    echo "   [*] ZSH"
+    echo "   [4] ZSH"
+    echo ""
+    echo "   [*] Hyprland"
     echo "========================================"
     read -k 1 key
     case "$key" in
@@ -48,10 +49,10 @@ if [ "$(tty)" = "/dev/tty1" ]; then
         exit 0
         ;;
       4)
-        start-hyprland
+        zsh
         ;;
       *)
-        zsh
+        start-hyprland
         ;;
     esac
   done
