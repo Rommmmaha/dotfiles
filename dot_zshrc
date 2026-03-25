@@ -6,11 +6,6 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
-
-zinit snippet OMZL::git.zsh
-zinit snippet OMZP::git
-zinit snippet OMZP::sudo
-zinit snippet OMZP::archlinux
 # ==============================================================================
 # COMPLETION SYSTEM INITIALIZATION
 # ==============================================================================
@@ -20,8 +15,8 @@ zinit cdreplay -q
 # HISTORY SETTINGS
 # ==============================================================================
 HISTFILE="$HOME/.zsh_history"
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=500
+SAVEHIST=500
 HISTDUP=erase
 
 setopt appendhistory
@@ -38,21 +33,18 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
 
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:bat:*' fzf-preview 'cat $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --icons --group-directories-first -1 $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza --icons --group-directories-first -1 $realpath'
 zstyle ':fzf-tab:*' fzf-flags --color=fg:-1,fg+:#000000,bg:-1,bg+:#ffffff --color=hl:#ffffff,hl+:#000000,info:#afaf87,marker:#000000 --color=prompt:#ffffff,spinner:#ffffff,pointer:#000000,header:#87afaf --color=border:#ffffff,label:#aeaeae,query:#d9d9d9 --border-label="" --preview-window="border-rounded" --prompt="> " --marker=">" --pointer=">" --separator="─" --scrollbar="|"
 # ==============================================================================
 # KEYBINDINGS
 # ==============================================================================
 bindkey -e
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
-bindkey '^H' backward-kill-word
+bindkey '^[[3;5~' kill-word
 bindkey '^[[1;5D' backward-word
 bindkey '^[[1;5C' forward-word
-bindkey '^H' backward-kill-word
-bindkey '^[[3;5~' kill-word
 # ==============================================================================
 # ENVIRONMENT VARIABLES & TOOL INIT
 # ==============================================================================
@@ -78,14 +70,16 @@ alias nscan='sudo nmap -sS -T4 -Pn -n --min-rate 1000 --max-retries 2'
 alias edit=$EDITOR
 alias nano=$EDITOR
 
-update() {
+d() {
+    dolphin "$@" > /dev/null 2>&1 &!
+}
+qr() {
+  qrencode -s 15 -o - "$@" | feh -
+}
+upgrade() {
   sudo -v
   command -v hblock >/dev/null && hblock -q
   command -v yay >/dev/null && yay -Syu && yay -Yc
   command -v flatpak >/dev/null && flatpak update -y && flatpak remove --unused -y
   command -v bun >/dev/null && bun upgrade && bun update -g
-}
-
-qr() {
-  qrencode -s 15 -o - "$@" | feh -
 }
