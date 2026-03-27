@@ -71,8 +71,7 @@ alias clear="printf '\033[2J\033[3J\033[1;1H'"
 alias nscan='sudo nmap -sS -T4 -Pn -n --min-rate 1000 --max-retries 2'
 alias edit=$EDITOR
 alias nano=$EDITOR
-alias -g L="| less"
-alias -g C="| wl-copy"
+alias C="wl-copy"
 
 o() {
   xdg-open "$@" > /dev/null 2>&1 &!
