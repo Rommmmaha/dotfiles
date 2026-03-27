@@ -55,6 +55,7 @@ export NEWT_COLORS="$(< $HOME/.config/NEWT_COLORS.ini)"
 
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+eval "$(direnv hook zsh)"
 eval "$(starship init zsh)"
 # ==============================================================================
 # ALIASES & FUNCTIONS
