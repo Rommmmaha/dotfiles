@@ -2,10 +2,11 @@
 # PLUGIN MANAGER (ZINIT) & PLUGINS
 # ==============================================================================
 source "/usr/share/zinit/zinit.zsh"
-zinit light zsh-users/zsh-syntax-highlighting
-zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
+zinit wait"0" lucid for \
+  zsh-users/zsh-syntax-highlighting \
+  zsh-users/zsh-completions \
+  zsh-users/zsh-autosuggestions \
+  Aloxaf/fzf-tab
 # ==============================================================================
 # COMPLETION SYSTEM INITIALIZATION
 # ==============================================================================
@@ -19,7 +20,6 @@ HISTFILE="$HOME/.zsh_history"
 HISTSIZE=500
 SAVEHIST=500
 HISTDUP=erase
-
 setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
@@ -33,7 +33,6 @@ setopt hist_find_no_dups
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
-
 zstyle ':fzf-tab:complete:bat:*' fzf-preview 'cat $realpath'
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --icons --group-directories-first -1 $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza --icons --group-directories-first -1 $realpath'
@@ -42,10 +41,11 @@ zstyle ':fzf-tab:*' fzf-flags --color=fg:-1,fg+:#000000,bg:-1,bg+:#ffffff --colo
 # KEYBINDINGS
 # ==============================================================================
 bindkey -e
-bindkey '^[w' kill-region
+bindkey "^[[3~" delete-char
 bindkey '^[[3;5~' kill-word
-bindkey '^[[1;5D' backward-word
+bindkey '^H' backward-kill-word
 bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
 # ==============================================================================
 # ENVIRONMENT VARIABLES & TOOL INIT
 # ==============================================================================
