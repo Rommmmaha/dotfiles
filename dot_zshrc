@@ -6,6 +6,7 @@ zinit wait"0" lucid for \
   zsh-users/zsh-syntax-highlighting \
   zsh-users/zsh-completions \
   zsh-users/zsh-autosuggestions \
+  zsh-users/zsh-history-substring-search \
   Aloxaf/fzf-tab
 # ==============================================================================
 # COMPLETION SYSTEM INITIALIZATION
@@ -33,10 +34,13 @@ setopt hist_find_no_dups
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:bat:*' fzf-preview 'cat $realpath'
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --icons --group-directories-first -1 $realpath'
-zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza --icons --group-directories-first -1 $realpath'
-zstyle ':fzf-tab:*' fzf-flags --color=fg:-1,fg+:#000000,bg:-1,bg+:#ffffff --color=hl:#ffffff,hl+:#000000,info:#afaf87,marker:#000000 --color=prompt:#ffffff,spinner:#ffffff,pointer:#000000,header:#87afaf --color=border:#ffffff,label:#aeaeae,query:#d9d9d9 --border-label="" --preview-window="border-rounded" --prompt="> " --marker=">" --pointer=">" --separator="─" --scrollbar="|"
+zstyle ':fzf-tab:*' fzf-flags\
+  --color=fg:-1,fg+:#000000,bg:-1,bg+:#ffffff\
+  --color=hl:#00ff00,hl+:#000000,info:#00ff00,marker:#000000\
+  --color=prompt:#ffffff,spinner:#ffffff,pointer:#000000,header:#87afaf\
+  --color=border:#ffffff,label:#aeaeae,query:#d9d9d9\
+  --preview-window="border-double" --prompt="> " --marker="->" --pointer=""\
+  --separator="─" --scrollbar="╠"
 # ==============================================================================
 # KEYBINDINGS
 # ==============================================================================
@@ -46,6 +50,8 @@ bindkey '^[[3;5~' kill-word
 bindkey '^H' backward-kill-word
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 # ==============================================================================
 # ENVIRONMENT VARIABLES & TOOL INIT
 # ==============================================================================

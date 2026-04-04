@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 import sys,os
-os.environ.pop("LD_PRELOAD", None)
-
 launch_cmd =[
     "gamescope",
     "-w", "1920",
     "-h", "1080",
     "-S", "stretch"
 ]
-
 args = sys.argv[1:]
 game_args = []
 while args:
@@ -26,8 +23,6 @@ while args:
         game_args.append(arg)
         game_args.extend(args)
         break
-
 launch_cmd.extend(["--", "gamemoderun"])
 launch_cmd.extend(game_args)
-
 os.execvp(launch_cmd[0], launch_cmd)

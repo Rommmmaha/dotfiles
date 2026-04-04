@@ -3,12 +3,8 @@ import subprocess
 import re
 import time
 import sys
-
-
 def run_command(command, capture_output=True, text=True):
     return subprocess.run(command, capture_output=capture_output, text=text, check=True)
-
-
 def find_device():
     avahi_command = [
         "avahi-browse",
@@ -23,36 +19,25 @@ def find_device():
         output,
         re.DOTALL,
     )
-
     if not match:
         return None
-
     ip_address = match.group(1)
     port = match.group(2)
-
     print(f"--> Found device at {ip_address}:{port}")
     return f"{ip_address}:{port}"
-
-
 def connect_adb(address):
     run_command(["adb", "disconnect"])
     adb_command = ["adb", "connect", address]
-
     result = run_command(adb_command)
     output = result.stdout
-
     if "connected to" in output or "already connected to" in output:
         return True
     else:
         raise ConnectionError(f"Failed to connect with ADB. Output: {output}")
-
-
 def start_scrcpy():
     scrcpy_command = ["scrcpy", "--no-window", "--no-video", "--audio-bit-rate", "8M"]
     subprocess.run(scrcpy_command)
     print("-> scrcpy has been closed.")
-
-
 def main():
     while True:
         try:
@@ -69,7 +54,5 @@ def main():
         except Exception as e:
             print(f"\nERROR: {e}", file=sys.stderr)
         time.sleep(10)
-
-
 if __name__ == "__main__":
     main()
