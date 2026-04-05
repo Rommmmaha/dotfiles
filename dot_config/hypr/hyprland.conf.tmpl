@@ -32,6 +32,18 @@ decoration {
     noise = 0
   }
 }
+animations {
+  enabled = no
+  bezier = fluent_decel, 0, 0.2, 0.4, 1
+  bezier = easeOutExpo, 0.16, 1, 0.3, 1
+  animation = windows, 1, 3, fluent_decel, popin 80%
+  animation = windowsIn, 1, 3, easeOutExpo, popin 60%
+  animation = windowsOut, 1, 3, fluent_decel, popin 80%
+  animation = border, 1, 10, default
+  animation = fade, 1, 3, default
+  animation = workspaces, 1, 3.5, easeOutExpo, slide
+  animation = specialWorkspace, 1, 3, fluent_decel, slidevert
+}
 misc {
   disable_hyprland_logo = true
   disable_splash_rendering = true
@@ -49,7 +61,6 @@ group:groupbar {
   gaps_in = 0
   gaps_out = 0
 }
-animations:enabled = false
 xwayland:force_zero_scaling = true
 ecosystem {
   no_update_news = true
@@ -74,85 +85,86 @@ exec-once = kitty --single-instance --start-as=hidden
 $configPath = $HOME/.config/hypr
 
 # General
-bind = SUPER, RETURN, exec, kitty --single-instance
-bind = SUPER, E, exec, dolphin
-bind = SUPER, X, exec, code -nq
-bind = SUPER, C, exec, pwvucontrol
-#bind = SUPER, C, exec, kitty --class pipemixer -e pipemixer
-bindl = SHIFT, ESCAPE, exec, playerctl play-pause
+bind = Super, Return, exec, kitty --single-instance
+bind = Super, E, exec, dolphin
+bind = Super, X, exec, code -nq
+bind = Super, C, exec, pwvucontrol
+#bind = Super, C, exec, kitty --class pipemixer -e pipemixer
+bindl = Shift, Escape, exec, playerctl play-pause
+bind = Super, Backspace, exec, hyprctl keyword animations:enabled $(hyprctl getoption animations:enabled | grep -q "int: 1" && echo 0 || echo 1)
 
 # Screenshot
-bindi = , PRINT, exec, flameshot gui
-bind = SUPER SHIFT, S, exec, flameshot gui
-bind = SUPER, P, exec, [float] sh -c 'exec qview "$(ls -td $HOME/Pictures/Screenshots/* | head -n 1)"'
+bindi = , Print, exec, flameshot gui
+bind = Super Shift, S, exec, flameshot gui
+bind = Super, P, exec, [float] zsh -c 'exec oculante "$(print -r -- $HOME/Pictures/Screenshots/*(om[1]))"'
 
 # Rofi
-bind = SUPER, S, exec, rofi -show drun -show-icons
-bind = SUPER, D, exec, rofi -show window -show-icons
-bind = SUPER, PERIOD, exec, rofimoji
-bind = , XF86CALCULATOR, exec, rofi -show calc -modi calc -no-show-match -no-sort
-bind = SUPER, V, exec, rofi -modi clipboard:$configPath/custom/_clipvault.sh -show clipboard -show-icons
+bind = Super, S, exec, rofi -show drun -show-icons
+bind = Super, D, exec, rofi -show window -show-icons
+bind = Super, Period, exec, rofimoji
+bind = , XF86Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort
+bind = Super, V, exec, rofi -modi clipboard:$configPath/custom/_clipvault.sh -show clipboard -show-icons
 
 # Session
-bind = SUPER, ESCAPE, exit
+bind = Super, Escape, exit
 bind = , XF86PowerOff, exit
-bind = SUPER, L, exec, hyprlock
+bind = Super, L, exec, hyprlock
 
 # Window managament
-bind = SUPER, W, killactive,
-bind = SUPER, F, togglefloating,
-bind = SUPER, A, fullscreen, 1
-bind = SUPER, G, togglegroup
-bind = SUPER, Tab, cyclenext,
-bind = SUPER, Tab, bringactivetotop,
+bind = Super, W, killactive,
+bind = Super, F, togglefloating,
+bind = Super, A, fullscreen, 1
+bind = Super, G, togglegroup
+bind = Super, Tab, cyclenext,
+bind = Super, Tab, bringactivetotop,
 
 # Workspaces
-bind = SUPER, 1, workspace, 1
-bind = SUPER, 2, workspace, 2
-bind = SUPER, 3, workspace, 3
-bind = SUPER, 4, workspace, 4
-bind = SUPER, 5, workspace, 5
-bind = SUPER, 6, workspace, 6
-bind = SUPER, 7, workspace, 7
-bind = SUPER, 8, workspace, 8
-bind = SUPER, 9, workspace, 9
-bind = SUPER, 0, workspace, 10
+bind = Super, 1, workspace, 1
+bind = Super, 2, workspace, 2
+bind = Super, 3, workspace, 3
+bind = Super, 4, workspace, 4
+bind = Super, 5, workspace, 5
+bind = Super, 6, workspace, 6
+bind = Super, 7, workspace, 7
+bind = Super, 8, workspace, 8
+bind = Super, 9, workspace, 9
+bind = Super, 0, workspace, 10
 
 # Move to workspaces
-bind = SUPER SHIFT, 1, movetoworkspacesilent, 1
-bind = SUPER SHIFT, 2, movetoworkspacesilent, 2
-bind = SUPER SHIFT, 3, movetoworkspacesilent, 3
-bind = SUPER SHIFT, 4, movetoworkspacesilent, 4
-bind = SUPER SHIFT, 5, movetoworkspacesilent, 5
-bind = SUPER SHIFT, 6, movetoworkspacesilent, 6
-bind = SUPER SHIFT, 7, movetoworkspacesilent, 7
-bind = SUPER SHIFT, 8, movetoworkspacesilent, 8
-bind = SUPER SHIFT, 9, movetoworkspacesilent, 9
-bind = SUPER SHIFT, 0, movetoworkspacesilent, 10
+bind = Super Shift, 1, movetoworkspacesilent, 1
+bind = Super Shift, 2, movetoworkspacesilent, 2
+bind = Super Shift, 3, movetoworkspacesilent, 3
+bind = Super Shift, 4, movetoworkspacesilent, 4
+bind = Super Shift, 5, movetoworkspacesilent, 5
+bind = Super Shift, 6, movetoworkspacesilent, 6
+bind = Super Shift, 7, movetoworkspacesilent, 7
+bind = Super Shift, 8, movetoworkspacesilent, 8
+bind = Super Shift, 9, movetoworkspacesilent, 9
+bind = Super Shift, 0, movetoworkspacesilent, 10
 
 # Workspaces (8-10)
-bind = SUPER, GRAVE, exec, r_multitool ws 8
-bind = SUPER, Q, exec, r_multitool ws 9
-bind = SUPER, Z, exec, r_multitool ws 10
+bind = Super, GRAVE, exec, r_multitool ws 8
+bind = Super, Q, exec, r_multitool ws 9
+bind = Super, Z, exec, r_multitool ws 10
 
 # Move to workspaces (8-10)
-bind = SUPER SHIFT, GRAVE, movetoworkspacesilent, 8
-bind = SUPER SHIFT, Q, movetoworkspacesilent, 9
-bind = SUPER SHIFT, Z, movetoworkspacesilent, 10
+bind = Super Shift, GRAVE, movetoworkspacesilent, 8
+bind = Super Shift, Q, movetoworkspacesilent, 9
+bind = Super Shift, Z, movetoworkspacesilent, 10
 
 # Move window
-bind = SUPER CTRL, LEFT, movewindow, l
-bind = SUPER CTRL, RIGHT, movewindow, r
-bind = SUPER CTRL, UP, movewindow, u
-bind = SUPER CTRL, DOWN, movewindow, d
+bind = Super CTRL, LEFT, movewindow, l
+bind = Super CTRL, RIGHT, movewindow, r
+bind = Super CTRL, UP, movewindow, u
+bind = Super CTRL, DOWN, movewindow, d
 
 # Brightness keys
 bindel = , XF86MonBrightnessUp, exec, brightnessctl set 10%+
 bindel = , XF86MonBrightnessDown, exec, brightnessctl set 10%-
 
 # Mouse binds
-bindm = SUPER, mouse:272, movewindow
-bindm = SUPER, mouse:273, resizewindow
+bindm = Super, mouse:272, movewindow
+bindm = Super, mouse:273, resizewindow
 # =======================================================================================
 # Window Rules
 # =======================================================================================
