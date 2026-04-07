@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import sys,os
+import sys,os,shutil
 launch_cmd =[
     "gamescope",
     "-w", "1920",
@@ -23,6 +23,8 @@ while args:
         game_args.append(arg)
         game_args.extend(args)
         break
-launch_cmd.extend(["--", "gamemoderun"])
+launch_cmd.append("--")
+if shutil.which("gamemoderun"):
+    launch_cmd.append("gamemoderun")
 launch_cmd.extend(game_args)
 os.execvp(launch_cmd[0], launch_cmd)
