@@ -44,8 +44,8 @@ def main():
             print("Step 1:\tSearching for device with avahi-browse...")
             device_address = None
             while device_address is None:
-                time.sleep(1)
                 device_address = find_device()
+                time.sleep(1)
             print(f"Step 2:\tConnecting with 'adb connect {device_address}'...")
             if connect_adb(device_address):
                 print(f"-> Successfully connected to {device_address}")
@@ -53,6 +53,5 @@ def main():
             start_scrcpy()
         except Exception as e:
             print(f"\nERROR: {e}", file=sys.stderr)
-        time.sleep(10)
 if __name__ == "__main__":
     main()
