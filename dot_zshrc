@@ -67,6 +67,7 @@ eval "$(starship init zsh)"
 # ALIASES & FUNCTIONS
 # ==============================================================================
 alias c="code"
+alias ai="kilo"
 alias ls="eza --icons --group-directories-first"
 alias ff="fastfetch --config simple"
 alias cat="bat --paging=never"
