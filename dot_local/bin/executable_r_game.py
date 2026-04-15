@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-import sys,os,shutil
-launch_cmd =[
+import sys, os, shutil
+launch_cmd = [
     "gamescope",
     "-w", "1920",
     "-h", "1080",
@@ -27,4 +27,5 @@ launch_cmd.append("--")
 if shutil.which("gamemoderun"):
     launch_cmd.append("gamemoderun")
 launch_cmd.extend(game_args)
+os.environ["LD_PRELOAD"] = ""
 os.execvp(launch_cmd[0], launch_cmd)

@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-import subprocess
-import re
-import time
-import sys
+import subprocess, re, time, sys
 def run_command(command, capture_output=True, text=True):
     return subprocess.run(command, capture_output=capture_output, text=text, check=True)
 def find_device():

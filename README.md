@@ -12,11 +12,7 @@ chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
 yay -Sy $(cat ~/.local/share/chezmoi/packages.txt) --needed
 ```
 
-## 🌌 3. Chaotic-AUR
-
-<https://aur.chaotic.cx/docs>
-
-## ⚙️ 4. System-Wide Config (Manual)
+## ⚙️ 3. System-Wide Config (Manual)
 
 ### FUSE Configuration
 
