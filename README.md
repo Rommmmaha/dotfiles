@@ -1,4 +1,4 @@
-# My CachyOS dotfiles
+# Arch Linux dotfiles
 
 ## 🚀 1. Apply Config
 
@@ -9,7 +9,7 @@ chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
 ## 📦 2. Install Packages
 
 ```sh
-yay -Sy $(cat ~/.local/share/chezmoi/packages.txt) --needed
+yay -Sy - $(cat ~/.local/share/chezmoi/packages.txt) --needed
 ```
 
 ## ⚙️ 3. System-Wide Config (Manual)
@@ -81,12 +81,11 @@ LC_TIME=en_GB.UTF-8
 sudo locale-gen
 ```
 
-### Disable boot animation and enable Numlock
+### Enable Numlock on boot
 
 **File:** `/etc/mkinitcpio.conf`
 
-1. Remove `plymouth` from HOOKS.
-2. Add `numlock` before `block`.
+*Add `numlock` before `block`.*
 
 *Run after editing:*
 
