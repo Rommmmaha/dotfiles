@@ -11,9 +11,11 @@ from typing import Dict, Any
 
 CONFIG_PATH = os.path.expanduser("~/.config/r_game.json")
 DEFAULT_CONFIG_FILE = {
-    "apps": {},
+    "apps": {
+        "0": {"!env": {"STEAM_COMPAT_DATA_PATH": "~/Games/umu/umu-default"}},
+    },
     "default": {
-        "env": {"LD_PRELOAD": ""},
+        "!env": {},
         "gamemoderun": {"enable": True},
         "gamescope": {
             "enable": True,
@@ -24,7 +26,7 @@ DEFAULT_CONFIG_FILE = {
             "--expose-wayland": True,
         },
     },
-    "order": "gamescope gamemoderun",
+    "order": 'env LD_PRELOAD="" gamescope -- env -u LD_PRELOAD gamemoderun',
 }
 
 
@@ -95,7 +97,7 @@ def main() -> None:
         sys.exit(1)
     config = load_config(appid)
     env = os.environ.copy()
-    env_cfg = config.get("env", {})
+    env_cfg = config.get("!env", {})
     for k, v in env_cfg.items():
         val = str(v)
         if val.startswith("~/"):
