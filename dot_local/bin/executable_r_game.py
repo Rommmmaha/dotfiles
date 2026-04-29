@@ -12,7 +12,12 @@ from typing import Dict, Any
 CONFIG_PATH = os.path.expanduser("~/.config/r_game.json")
 DEFAULT_CONFIG_FILE = {
     "apps": {
-        "0": {"!env": {"STEAM_COMPAT_DATA_PATH": "~/Games/umu/umu-default"}},
+        "0": {
+            "!env": {
+                "LD_PRELOAD": "",
+                "STEAM_COMPAT_DATA_PATH": "~/Games/umu/umu-default",
+            }
+        },
     },
     "default": {
         "!env": {},
@@ -23,10 +28,9 @@ DEFAULT_CONFIG_FILE = {
             "--nested-height": "1080",
             "--scaler": "stretch",
             "--backend": "wayland",
-            "--expose-wayland": True,
         },
     },
-    "order": 'env LD_PRELOAD="" gamescope -- env -u LD_PRELOAD gamemoderun',
+    "order": "gamescope -- gamemoderun",
 }
 
 
@@ -100,6 +104,7 @@ def main() -> None:
     env_cfg = config.get("!env", {})
     for k, v in env_cfg.items():
         val = str(v)
+        val = os.path.expandvars(val)
         if val.startswith("~/"):
             val = os.path.expanduser(val)
         env[k] = val

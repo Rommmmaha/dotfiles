@@ -86,10 +86,3 @@ o() {
 qr() {
   qrencode -s 15 -o - "$@" | feh -
 }
-upgrade() {
-  sudo -v
-  command -v hblock >/dev/null && hblock -q
-  command -v yay >/dev/null && yay -Syu && yay -Yc
-  command -v flatpak >/dev/null && flatpak update -y && flatpak remove --unused -y
-  command -v bun >/dev/null && bun upgrade && bun update -g
-}
