@@ -25,7 +25,9 @@ mpv
 neo-matrix-git
 nmap
 noto-fonts
+noto-fonts-cjk
 noto-fonts-emoji
+noto-fonts-extra
 nvtop
 nwg-look
 oculante
@@ -38,6 +40,8 @@ rofi-calc
 rofimoji
 starship
 swaync
+topgrade
+trash-cli
 ttf-jetbrains-mono-nerd
 ttf-montserrat
 visual-studio-code-bin
