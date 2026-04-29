@@ -66,19 +66,22 @@ eval "$(starship init zsh)"
 # ==============================================================================
 # ALIASES & FUNCTIONS
 # ==============================================================================
-alias c="code"
-alias ai="kilo"
-alias ls="eza --icons --group-directories-first"
-alias ff="fastfetch --config simple"
-alias cat="bat --paging=never"
-alias icat="kitty +kitten icat"
-alias tree="ls -T"
-alias matrix="neo-matrix -D -c yellow"
-alias clear="printf '\033[2J\033[3J\033[1;1H'"
-alias nscan='sudo nmap -sS -T4 -Pn -n --min-rate 1000 --max-retries 2'
 alias edit=$EDITOR
 alias nano=$EDITOR
 alias C="wl-copy"
+
+alias c="code"
+alias ai="kilo"
+alias ff="fastfetch --config simple"
+alias icat="kitty +kitten icat"
+alias matrix="neo-matrix -D -c yellow"
+alias nscan='sudo nmap -sS -T4 -Pn -n --min-rate 1000 --max-retries 2'
+
+alias rm="trash"
+alias ls="eza --icons --group-directories-first"
+alias cat="bat --paging=never"
+alias tree="ls -T"
+alias clear="printf '\033[2J\033[3J\033[1;1H'"
 
 o() {
   xdg-open "$@" > /dev/null 2>&1 &!
