@@ -78,6 +78,7 @@ alias matrix="neo-matrix -D -c yellow"
 alias nscan='sudo nmap -sS -T4 -Pn -n --min-rate 1000 --max-retries 2'
 
 alias rm="trash"
+compdef _files trash
 alias ls="eza --icons --group-directories-first"
 alias cat="bat --paging=never"
 alias tree="ls -T"
