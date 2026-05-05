@@ -9,10 +9,14 @@ chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
 ## 📦 2. Install Packages
 
 ```sh
-yay -Sy - $(cat ~/.local/share/chezmoi/packages.txt) --needed
+yay -Sy --needed - $(cat ~/.local/share/chezmoi/packages.txt)
 ```
 
-## ⚙️ 3. System-Wide Config (Manual)
+## 🎹 3. Install zinit
+
+https://github.com/zdharma-continuum/zinit#install
+
+## ⚙️ 4. System-Wide Config (Manual)
 
 ### FUSE Configuration
 
@@ -85,7 +89,7 @@ sudo locale-gen
 
 **File:** `/etc/mkinitcpio.conf`
 
-*Add `numlock` before `block`.*
+*Add `sd-numlock` before `block`.*
 
 *Run after editing:*
 

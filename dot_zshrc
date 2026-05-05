@@ -1,7 +1,13 @@
 # ==============================================================================
 # PLUGIN MANAGER (ZINIT) & PLUGINS
 # ==============================================================================
-source "/usr/share/zinit/zinit.zsh"
+ZINIT_FILE="$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+if [[ -f "$ZINIT_FILE" ]]; then
+  source "$ZINIT_FILE"
+else
+  echo "https://github.com/zdharma-continuum/zinit#install"
+  zinit() { : }
+fi
 zinit wait"0" lucid for \
   zsh-users/zsh-syntax-highlighting \
   zsh-users/zsh-completions \

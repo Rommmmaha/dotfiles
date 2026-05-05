@@ -20,7 +20,7 @@ informant
 kdeconnect
 kitty
 micro
-mkinitcpio-numlock
+mkinitcpio-sd-numlock
 mpv
 neo-matrix-git
 nmap
@@ -50,6 +50,5 @@ wl-clipboard
 xdg-desktop-portal-hyprland
 xdg-desktop-portal-kde
 yt-dlp-nightly-bin
-zinit
 zoxide
 zsh
