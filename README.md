@@ -46,6 +46,7 @@ unlock_time = 1
 ```
 
 **File:** `/etc/pam.d/system-auth`
+
 *Add `nodelay` to the following lines:*
 
 ```conf
