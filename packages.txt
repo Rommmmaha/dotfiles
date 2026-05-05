@@ -8,6 +8,7 @@ eza
 fastfetch
 feh
 flameshot
+flatpak
 fzf
 googledot-cursor-theme
 grim
@@ -32,7 +33,6 @@ nvtop
 nwg-look
 oculante
 playerctl
-pwvucontrol
 qrencode
 rclone
 rofi
