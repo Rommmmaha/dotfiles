@@ -84,7 +84,6 @@ alias matrix="neo-matrix -D -c yellow"
 alias nscan='sudo nmap -sS -T4 -Pn -n --min-rate 1000 --max-retries 2'
 
 alias rm="trash"
-compdef _files trash
 alias ls="eza --icons --group-directories-first"
 alias cat="bat --paging=never"
 alias tree="ls -T"
@@ -96,3 +95,19 @@ o() {
 qr() {
   qrencode -s 15 -o - "$@" | feh -
 }
+# ==============================================================================
+# TAB COMPLETIONS
+# ==============================================================================
+_gamescope() {
+  local sep=${words[(i)--]}
+  if (( sep < CURRENT )); then
+     compset -n $sep
+    _precommand
+  fi
+}
+
+compdef _files o
+compdef _files trash
+compdef _precommand gamemoderun
+compdef _precommand r_game.py
+compdef _gamescope gamescope
