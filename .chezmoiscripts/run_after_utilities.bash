@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
-
-# ================= CONFIGURATION =================
+echo -e "\n[#] run_after_utilities.bash"
 URL="https://github.com/Rommmmaha/r-utils/releases/download/nightly/linux.tar.gz"
 INSTALL_DIR="$HOME/.local/bin"
 CACHE_DIR="$HOME/.cache/r-utils-updater"
 ETAG_FILE="$CACHE_DIR/latest.etag"
 ARCHIVE_FILE="$CACHE_DIR/linux.tar.gz"
-# =================================================
 mkdir -p "$INSTALL_DIR" "$CACHE_DIR"
 echo "[+] Checking for r-utils updates..."
 HTTP_CODE=$(curl -sL --fail --progress-bar \
@@ -21,4 +19,4 @@ if [ "$HTTP_CODE" -eq 304 ]; then
 fi
 echo "[+] New version downloaded! Extracting..."
 tar -xzf "$ARCHIVE_FILE" -C "$INSTALL_DIR"
-echo "[+] Done."
+echo "[!] Done."

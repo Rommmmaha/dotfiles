@@ -23,6 +23,8 @@ export PROTON_ENABLE_WAYLAND=1
 
 export EDITOR="micro"
 
+gsettings set org.gnome.desktop.interface gtk-theme Breeze
+
 if [ "$(tty)" = "/dev/tty1" ]; then
   while true; do
     sleep 0.1
