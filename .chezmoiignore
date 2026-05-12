@@ -6,11 +6,11 @@ packages.txt
 .ssh/**
 {{- end }}
 
-{{- if ne .deviceType "pc" }}
+{{- if or (not .isAuthor) (ne .deviceType "pc") }}
 .config/pipewire
-.config/hypr/custom/hyprland-pc.conf
+.config/hypr/custom/hyprland-pc.lua
 {{- end }}
 
-{{- if ne .deviceType "laptop" }}
-.config/hypr/custom/hyprland-laptop.conf
+{{- if or (not .isAuthor) (ne .deviceType "laptop") }}
+.config/hypr/custom/hyprland-laptop.lua
 {{- end }}
