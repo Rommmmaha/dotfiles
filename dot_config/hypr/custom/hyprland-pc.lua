@@ -28,7 +28,7 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("steam -silent")
   hl.exec_cmd(
     [[gpu-screen-recorder -w screen -f 60 -a X1.monitor -c mkv -bm qp -q ultra -tune quality -r 90 -o /mnt/Data/Clips;notify-send "gpu-screen-recorder died"]])
-  hl.exec_cmd("r_sndcpy.py")
+  hl.exec_cmd("r_sndcpy")
   hl.exec_cmd("r_overlay --udp 7435")
 end)
 -- =======================================================================================

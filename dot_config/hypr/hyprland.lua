@@ -101,7 +101,7 @@ end)
 hl.bind("SUPER + Return", hl.dsp.exec_cmd("kitty --single-instance"))
 hl.bind("SUPER + E", hl.dsp.exec_cmd("dolphin"))
 hl.bind("SUPER + X", hl.dsp.exec_cmd("code -nq"))
-hl.bind("SUPER + C", hl.dsp.exec_cmd("pwvucontrol"))
+hl.bind("SUPER + C", hl.dsp.exec_cmd("flatpak run com.saivert.pwvucontrol"))
 
 hl.bind("SHIFT + Escape", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 
@@ -113,16 +113,7 @@ end)
 -- Screenshot
 hl.bind("Print", hl.dsp.exec_cmd("flameshot gui"), { ignore_mods = true })
 hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("flameshot gui"))
-hl.bind("SUPER + P", function()
-  local handle = io.popen('ls -t "' .. home .. '/Pictures/Screenshots/"* 2>/dev/null | head -n 1')
-  if handle then
-    local newest_file = handle:read("*l")
-    handle:close()
-    if newest_file and newest_file ~= "" then
-      hl.dispatch(hl.dsp.exec_cmd("oculante \"" .. newest_file .. "\"", { float = true }))
-    end
-  end
-end)
+hl.bind("SUPER + P", hl.dsp.exec_cmd("xdg-open \"$(ls -td ~/Pictures/Screenshots/* | head -n 1)\"", { float = true }))
 
 -- Rofi
 hl.bind("SUPER + S", hl.dsp.exec_cmd("rofi -show drun -show-icons"))
