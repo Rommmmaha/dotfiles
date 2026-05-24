@@ -24,15 +24,12 @@ hl.config({
   },
   decoration = {
     shadow = {
-      sharp = true,
-      range = 1,
-      color = 0x33ffffff
+      range = 3,
+      color = 0xffffffff
     },
     blur = {
       size = 2,
-      passes = 3,
-      new_optimizations = true,
-      noise = 0
+      passes = 3
     }
   },
   animations = {

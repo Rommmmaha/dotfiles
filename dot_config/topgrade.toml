@@ -1,0 +1,3 @@
+[misc]
+pre_sudo = true
+no_self_update = true

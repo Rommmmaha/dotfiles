@@ -41,5 +41,5 @@
   :geometry (geometry :x "30px"
                       :y "30px"
                       :width "400px"
-                      :anchor "right bottom")
+                      :anchor "left bottom")
   (main_widget))
