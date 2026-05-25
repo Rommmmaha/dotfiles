@@ -5,8 +5,17 @@ ZINIT_FILE="$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 if [[ -f "$ZINIT_FILE" ]]; then
   source "$ZINIT_FILE"
 else
-  echo "https://github.com/zdharma-continuum/zinit#install"
-  zinit() { : }
+  printf "zinit is not installed. Do you want to install it right now? [y/N] "
+  read -r response
+  if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    echo "Installing zinit..."
+    bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+    zsh -ic "zinit self-update"
+    exec zsh
+  else
+    echo "Skipping installation. See https://github.com/zdharma-continuum/zinit#install"
+    zinit() { : }
+  fi
 fi
 zinit wait"0" lucid for \
   zsh-users/zsh-syntax-highlighting \
@@ -77,7 +86,6 @@ alias nano=$EDITOR
 alias C="wl-copy"
 
 alias c="code"
-alias ai="kilo"
 alias ff="fastfetch --config simple"
 alias icat="kitty +kitten icat"
 alias matrix="neo-matrix -D -c yellow"

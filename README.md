@@ -12,11 +12,7 @@ chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
 yay -Sy --needed - $(cat ~/.local/share/chezmoi/packages.txt)
 ```
 
-## 🎹 3. Install zinit
-
-https://github.com/zdharma-continuum/zinit#install
-
-## ⚙️ 4. System-Wide Config (Manual)
+## ⚙️ 3. System-Wide Config (Manual)
 
 ### FUSE Configuration
 
@@ -28,13 +24,18 @@ user_allow_other
 
 ### DNS Configuration
 
-**File:** `/etc/systemd/resolved.conf`
+**File:** `/etc/NetworkManager/NetworkManager.conf`
 
 ```conf
-[Resolve]
-DNS=1.1.1.1 1.0.0.1
-FallbackDNS=8.8.8.8 9.9.9.9
-Domains=~.
+[main]
+dns=dnsmasq
+```
+
+**File:** `/etc/NetworkManager/dnsmasq.d/dns.con`
+
+```conf
+server=1.1.1.1
+server=1.0.0.1
 ```
 
 ### Remove sudo retry delay
@@ -61,14 +62,16 @@ auth [default=die]           pam_faillock.so authfail
 
 ```conf
 en_US.UTF-8 UTF-8
-uk_UA.UTF-8 UTF-8
 en_GB.UTF-8 UTF-8
+uk_UA.UTF-8 UTF-8
 ```
 
 **File:** `/etc/locale.conf`
 
 ```conf
-LANG=en_GB.UTF-8
+LANG=en_US.UTF-8
+LC_COLLATE=en_US.UTF-8
+LC_TIME=en_GB.UTF-8
 LC_ADDRESS=uk_UA.UTF-8
 LC_IDENTIFICATION=uk_UA.UTF-8
 LC_MEASUREMENT=uk_UA.UTF-8
@@ -77,7 +80,6 @@ LC_NAME=uk_UA.UTF-8
 LC_NUMERIC=uk_UA.UTF-8
 LC_PAPER=uk_UA.UTF-8
 LC_TELEPHONE=uk_UA.UTF-8
-LC_TIME=en_GB.UTF-8
 ```
 
 *Run after editing:*
