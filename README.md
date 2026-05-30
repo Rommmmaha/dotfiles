@@ -1,18 +1,18 @@
-# Arch Linux dotfiles
+# 🐧 Arch Linux dotfiles
 
-## 🚀 1. Apply Config
+## 📝 User Config
 
 ```sh
 chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
 ```
 
-## 📦 2. Install Packages
+## 📦 Install Packages
 
 ```sh
 yay -Sy --needed - $(cat ~/.local/share/chezmoi/packages.txt)
 ```
 
-## ⚙️ 3. System-Wide Config (Manual)
+## ⚙️ System Config (Manual)
 
 ### FUSE Configuration
 
@@ -31,7 +31,7 @@ user_allow_other
 dns=dnsmasq
 ```
 
-**File:** `/etc/NetworkManager/dnsmasq.d/dns.con`
+**File:** `/etc/NetworkManager/dnsmasq.d/dns.conf`
 
 ```conf
 server=1.1.1.1
