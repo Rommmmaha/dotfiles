@@ -6,7 +6,7 @@ from pathlib import Path
 
 APPS = {
     "text": "code.desktop",
-    "image": "oculante.desktop",
+    "image": "com.interversehq.qView.desktop",
     "browser": "zen.desktop",
     "media": "mpv.desktop",
     "file_manager": "org.kde.dolphin.desktop",
