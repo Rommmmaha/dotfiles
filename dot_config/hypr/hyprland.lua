@@ -108,8 +108,11 @@ hl.bind("SUPER + Backspace", function()
 end)
 
 -- Screenshot
-hl.bind("Print", hl.dsp.exec_cmd("flameshot gui"), { ignore_mods = true })
-hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("flameshot gui"))
+
+SCREENSHOT =
+[[F=~/Pictures/Screenshots/$(date +'%yy%mm%dd_%Hh%Mm%Ss').png; flameshot gui --raw > "$F"; if [ -s "$F" ]; then wl-copy < "$F"; else rm "$F"; fi]]
+hl.bind("Print", hl.dsp.exec_cmd(SCREENSHOT, { ignore_mods = true }))
+hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd(SCREENSHOT))
 hl.bind("SUPER + P", hl.dsp.exec_cmd("xdg-open \"$(ls -td ~/Pictures/Screenshots/* | head -n 1)\"", { float = true }))
 
 -- Rofi
