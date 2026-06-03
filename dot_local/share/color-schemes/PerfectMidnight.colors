@@ -10,7 +10,7 @@ ChangeSelectionColor=true
 
 [Colors:Button]
 BackgroundAlternate=31,92,122
-BackgroundNormal=20,20,20
+BackgroundNormal=10,10,10
 DecorationFocus=66,182,240
 DecorationHover=66,182,240
 ForegroundActive=66,182,240
@@ -23,8 +23,8 @@ ForegroundPositive=40,189,115
 ForegroundVisited=167,112,194
 
 [Colors:Header]
-BackgroundAlternate=20,20,20
-BackgroundNormal=15,15,15
+BackgroundAlternate=10,10,10
+BackgroundNormal=10,10,10
 ForegroundInactive=150,150,150
 ForegroundNormal=255,255,255
 
@@ -32,7 +32,7 @@ ForegroundNormal=255,255,255
 BackgroundAlternate=31,92,122
 BackgroundNormal=66,182,240
 ForegroundActive=255,255,255
-ForegroundInactive=15,15,15
+ForegroundInactive=10,10,10
 ForegroundLink=255,255,255
 ForegroundNegative=189,40,40
 ForegroundNeutral=179,89,0
@@ -41,13 +41,13 @@ ForegroundPositive=31,147,89
 ForegroundVisited=167,112,194
 
 [Colors:Tooltip]
-BackgroundAlternate=15,15,15
+BackgroundAlternate=10,10,10
 BackgroundNormal=10,10,10
 ForegroundInactive=150,150,150
 ForegroundNormal=255,255,255
 
 [Colors:View]
-BackgroundAlternate=15,15,15
+BackgroundAlternate=10,10,10
 BackgroundNormal=10,10,10
 DecorationFocus=66,182,240
 DecorationHover=66,182,240
@@ -61,8 +61,8 @@ ForegroundPositive=40,189,115
 ForegroundVisited=167,112,194
 
 [Colors:Window]
-BackgroundAlternate=20,20,20
-BackgroundNormal=15,15,15
+BackgroundAlternate=10,10,10
+BackgroundNormal=10,10,10
 DecorationFocus=66,182,240
 DecorationHover=66,182,240
 ForegroundActive=66,182,240
@@ -83,7 +83,7 @@ shadeSortColumn=true
 contrast=4
 
 [WM]
-activeBackground=20,20,20
+activeBackground=10,10,10
 activeForeground=255,255,255
-inactiveBackground=15,15,15
+inactiveBackground=10,10,10
 inactiveForeground=150,150,150

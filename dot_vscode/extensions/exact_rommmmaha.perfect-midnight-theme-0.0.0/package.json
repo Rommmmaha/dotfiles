@@ -1,0 +1,25 @@
+{
+  "name": "perfect-midnight",
+  "displayName": "Perfect Midnight",
+  "description": "",
+  "version": "0.0.0",
+  "publisher": "Rommmmaha",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Perfect Midnight",
+        "uiTheme": "vs-dark",
+        "path": "./colors.json"
+      }
+    ]
+  },
+  "icon": "./icon.png"
+}

@@ -25,7 +25,7 @@ hl.config({
   decoration = {
     shadow = {
       range = 3,
-      color = 0xffffffff
+      color = 0x33ffffff
     },
     blur = {
       size = 2,
