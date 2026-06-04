@@ -1,5 +1,5 @@
 [ColorEffects:Disabled]
-Color=38,38,38
+Color=31,31,31
 ColorAmount=0
 ColorEffect=0
 ContrastAmount=0.65
@@ -10,7 +10,7 @@ ChangeSelectionColor=true
 
 [Colors:Button]
 BackgroundAlternate=51,102,128
-BackgroundNormal=8,8,8
+BackgroundNormal=0,0,0
 DecorationFocus=61,182,242
 DecorationHover=61,182,242
 ForegroundActive=61,182,242
@@ -23,8 +23,8 @@ ForegroundPositive=61,242,61
 ForegroundVisited=182,61,242
 
 [Colors:Header]
-BackgroundAlternate=8,8,8
-BackgroundNormal=8,8,8
+BackgroundAlternate=0,0,0
+BackgroundNormal=0,0,0
 ForegroundInactive=153,153,153
 ForegroundNormal=255,255,255
 
@@ -42,13 +42,13 @@ ForegroundVisited=182,61,242
 
 [Colors:Tooltip]
 BackgroundAlternate=15,15,15
-BackgroundNormal=8,8,8
+BackgroundNormal=0,0,0
 ForegroundInactive=153,153,153
 ForegroundNormal=255,255,255
 
 [Colors:View]
-BackgroundAlternate=8,8,8
-BackgroundNormal=8,8,8
+BackgroundAlternate=0,0,0
+BackgroundNormal=0,0,0
 DecorationFocus=61,182,242
 DecorationHover=61,182,242
 ForegroundActive=61,182,242
@@ -61,8 +61,8 @@ ForegroundPositive=61,242,61
 ForegroundVisited=182,61,242
 
 [Colors:Window]
-BackgroundAlternate=8,8,8
-BackgroundNormal=8,8,8
+BackgroundAlternate=0,0,0
+BackgroundNormal=0,0,0
 DecorationFocus=61,182,242
 DecorationHover=61,182,242
 ForegroundActive=61,182,242
@@ -83,7 +83,7 @@ shadeSortColumn=false
 contrast=4
 
 [WM]
-activeBackground=8,8,8
+activeBackground=0,0,0
 activeForeground=255,255,255
-inactiveBackground=8,8,8
+inactiveBackground=0,0,0
 inactiveForeground=153,153,153
