@@ -1,12 +1,12 @@
 {
   "name": "perfect-midnight",
   "displayName": "Perfect Midnight",
-  "description": "",
   "version": "0.0.0",
-  "publisher": "Rommmmaha",
+  "publisher": "rommmmaha",
+  "description": "",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.60.0"
+    "vscode": "^1.0.0"
   },
   "categories": [
     "Themes"
