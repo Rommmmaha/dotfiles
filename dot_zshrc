@@ -97,8 +97,11 @@ alias cat="bat --paging=never"
 alias tree="ls -T"
 alias clear="printf '\033[2J\033[3J\033[1;1H'"
 
+t() {
+  kitty "$@" </dev/null >/dev/null &!
+}
 o() {
-  xdg-open "$@" > /dev/null 2>&1 &!
+  xdg-open "$@" </dev/null >/dev/null &!
 }
 qr() {
   qrencode -s 15 -o - "$@" | feh -

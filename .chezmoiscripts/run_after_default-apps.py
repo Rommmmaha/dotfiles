@@ -13,6 +13,7 @@ APPS = {
 }
 CUSTOM_OVERRIDES = {
     "inode/directory": APPS["file_manager"],
+    "text/xml": APPS["text"],
     "application/xml": APPS["text"],
     "application/json": APPS["text"],
     "application/x-zerosize": APPS["text"],
