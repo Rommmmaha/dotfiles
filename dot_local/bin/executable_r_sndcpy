@@ -1,54 +1,240 @@
 #!/usr/bin/env python3
-import subprocess, re, time, sys
-def run_command(command, capture_output=True, text=True):
-    return subprocess.run(command, capture_output=capture_output, text=text, check=True)
-def find_device():
-    avahi_command = [
-        "avahi-browse",
-        "--resolve",
-        "--terminate",
-        "_adb-tls-connect._tcp",
-    ]
-    result = run_command(avahi_command)
-    output = result.stdout
-    match = re.search(
-        r"=.*?IPv4.*?\n.*?address = \[([^\]]+)\].*?\n.*?port = \[(\d+)\]",
-        output,
-        re.DOTALL,
-    )
-    if not match:
-        return None
-    ip_address = match.group(1)
-    port = match.group(2)
-    print(f"--> Found device at {ip_address}:{port}")
-    return f"{ip_address}:{port}"
-def connect_adb(address):
-    run_command(["adb", "disconnect"])
-    adb_command = ["adb", "connect", address]
-    result = run_command(adb_command)
-    output = result.stdout
-    if "connected to" in output or "already connected to" in output:
-        return True
-    else:
-        raise ConnectionError(f"Failed to connect with ADB. Output: {output}")
-def start_scrcpy():
-    scrcpy_command = ["scrcpy", "--no-window", "--no-video", "--audio-bit-rate", "8M"]
-    subprocess.run(scrcpy_command)
-    print("-> scrcpy has been closed.")
-def main():
+import ipaddress
+import queue
+import subprocess
+import sys
+import threading
+import time
+from dataclasses import dataclass
+from enum import Enum, auto
+
+CONNECT_SERVICE = "_adb-tls-connect._tcp"
+PAIRING_SERVICE = "_adb-tls-pairing._tcp"
+SCRCPY_ARGS = ["scrcpy", "--no-window", "--no-video", "--audio-bit-rate", "8M"]
+
+
+@dataclass
+class AvahiEvent:
+    kind: str
+    name: str
+    service: str
+    ip: str = None
+    port: int = None
+
+    @classmethod
+    def parse(cls, line):
+        parts = line.rstrip("\n").split(";")
+        if (
+            len(parts) < 6
+            or parts[0] not in ("+", "=", "-")
+            or parts[2] != "IPv4"
+            or parts[4] not in (CONNECT_SERVICE, PAIRING_SERVICE)
+        ):
+            return None
+
+        ip, port = None, None
+        if parts[0] == "=" and len(parts) >= 9:
+            try:
+                if not ipaddress.IPv4Address(parts[7].strip()).is_private:
+                    return None
+                ip = parts[7].strip()
+                port = int(parts[8].strip())
+            except ValueError:
+                return None
+        return cls(parts[0], parts[3], parts[4], ip, port)
+
+
+class Phase(Enum):
+    IDLE = auto()
+    PAIRING = auto()
+    CONNECTING = auto()
+    RUNNING = auto()
+
+
+@dataclass
+class DeviceState:
+    ip: str
+    name: str = ""
+    connect_port: int = None
+    pairing_port: int = None
+    phase: Phase = Phase.IDLE
+    scrcpy_proc: subprocess.Popen = None
+
+    @property
+    def connect_address(self):
+        return f"{self.ip}:{self.connect_port}"
+
+    @property
+    def pairing_address(self):
+        return f"{self.ip}:{self.pairing_port}"
+
+
+def avahi_watcher(ev_queue):
+    cmd = ["avahi-browse", "--all", "--resolve", "--no-fail", "--parsable"]
     while True:
         try:
-            print("Step 1:\tSearching for device with avahi-browse...")
-            device_address = None
-            while device_address is None:
-                device_address = find_device()
-                time.sleep(1)
-            print(f"Step 2:\tConnecting with 'adb connect {device_address}'...")
-            if connect_adb(device_address):
-                print(f"-> Successfully connected to {device_address}")
-            print("Step 3:\tStarting scrcpy...")
-            start_scrcpy()
-        except Exception as e:
-            print(f"\nERROR: {e}", file=sys.stderr)
+            proc = subprocess.Popen(
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True
+            )
+            for line in proc.stdout:
+                if ev := AvahiEvent.parse(line):
+                    ev_queue.put(ev)
+            proc.wait()
+        except FileNotFoundError:
+            pass
+        time.sleep(3)
+        ev_queue.put(None)
+
+
+def prompt_pin(ip, cb):
+    def _run():
+        try:
+            res = subprocess.run(
+                [
+                    "zenity",
+                    "--entry",
+                    "--hide-text",
+                    "--title=ADB Pairing",
+                    f"--text=PIN for {ip}",
+                ],
+                capture_output=True,
+                text=True,
+                timeout=120,
+            )
+            cb(res.stdout.strip() if res.returncode == 0 else None)
+        except (FileNotFoundError, subprocess.TimeoutExpired):
+            cb(None)
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def adb_pair(addr, pin):
+    try:
+        res = subprocess.run(
+            ["adb", "pair", addr],
+            input=f"{pin}\n",
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+        return "successfully paired" in (res.stdout + res.stderr).lower()
+    except subprocess.TimeoutExpired:
+        return False
+
+
+def adb_connect(addr):
+    subprocess.run(["adb", "disconnect"], capture_output=True)
+    for _ in range(3):
+        try:
+            res = subprocess.run(
+                ["adb", "connect", addr], capture_output=True, text=True, timeout=10
+            )
+            if "connected to" in res.stdout or "already connected" in res.stdout:
+                return True
+        except subprocess.TimeoutExpired:
+            pass
+        time.sleep(2)
+    return False
+
+
+def kill_scrcpy(proc):
+    if proc and proc.poll() is None:
+        proc.terminate()
+        try:
+            proc.wait(1)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+
+
+def main():
+    ev_queue = queue.Queue()
+    pin_q = queue.Queue()
+    devices = {}
+
+    threading.Thread(target=avahi_watcher, args=(ev_queue,), daemon=True).start()
+
+    while True:
+        while not pin_q.empty():
+            ip, pin = pin_q.get_nowait()
+            if (dev := devices.get(ip)) and dev.phase == Phase.PAIRING:
+                if pin and adb_pair(dev.pairing_address, pin):
+                    dev.phase = Phase.CONNECTING
+                    if adb_connect(dev.connect_address):
+                        dev.scrcpy_proc = subprocess.Popen(SCRCPY_ARGS)
+                        dev.phase = Phase.RUNNING
+                    else:
+                        dev.phase = Phase.IDLE
+                else:
+                    dev.phase = Phase.IDLE
+
+        for ip, dev in list(devices.items()):
+            if (
+                dev.phase == Phase.RUNNING
+                and dev.scrcpy_proc
+                and dev.scrcpy_proc.poll() is not None
+            ):
+                dev.scrcpy_proc = None
+                dev.phase = Phase.IDLE
+
+        try:
+            ev = ev_queue.get(timeout=0.1)
+        except queue.Empty:
+            continue
+
+        if ev is None:
+            for dev in devices.values():
+                kill_scrcpy(dev.scrcpy_proc)
+            devices.clear()
+            continue
+
+        if ev.kind == "+":
+            continue
+
+        if ev.kind == "=" and ev.ip:
+            dev = devices.setdefault(ev.ip, DeviceState(ip=ev.ip, name=ev.name))
+
+            if ev.service == CONNECT_SERVICE:
+                dev.connect_port = ev.port
+                if dev.phase == Phase.IDLE:
+                    if dev.pairing_port:
+                        dev.phase = Phase.PAIRING
+                        prompt_pin(ev.ip, lambda p, i=ev.ip: pin_q.put((i, p)))
+                    else:
+                        dev.phase = Phase.CONNECTING
+                        if adb_connect(dev.connect_address):
+                            dev.scrcpy_proc = subprocess.Popen(SCRCPY_ARGS)
+                            dev.phase = Phase.RUNNING
+                        else:
+                            dev.phase = Phase.IDLE
+
+            elif ev.service == PAIRING_SERVICE:
+                dev.pairing_port = ev.port
+                if dev.phase == Phase.IDLE and dev.connect_port:
+                    dev.phase = Phase.PAIRING
+                    prompt_pin(ev.ip, lambda p, i=ev.ip: pin_q.put((i, p)))
+
+        elif ev.kind == "-":
+            matched_ip = next(
+                (ip for ip, d in devices.items() if d.name == ev.name), None
+            )
+            if not matched_ip:
+                continue
+
+            dev = devices[matched_ip]
+            if ev.service == CONNECT_SERVICE:
+                dev.connect_port = None
+                if dev.phase in (Phase.RUNNING, Phase.CONNECTING):
+                    kill_scrcpy(dev.scrcpy_proc)
+                    dev.scrcpy_proc = None
+                    subprocess.run(["adb", "disconnect"], capture_output=True)
+                    dev.phase = Phase.IDLE
+
+            elif ev.service == PAIRING_SERVICE:
+                dev.pairing_port = None
+
+
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(0)
