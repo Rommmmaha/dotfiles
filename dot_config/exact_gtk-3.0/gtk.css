@@ -51,9 +51,13 @@
 @define-color theme_selected_bg_color_breeze #3db6f2;
 @define-color theme_selected_fg_color_breeze #ffffff;
 @define-color theme_text_color_breeze #ffffff;
+@define-color theme_titlebar_background_backdrop_breeze #000000;
 @define-color theme_titlebar_background_breeze #000000;
 @define-color theme_titlebar_background_light_breeze #000000;
+@define-color theme_titlebar_foreground_backdrop_breeze #ffffff;
 @define-color theme_titlebar_foreground_breeze #ffffff;
+@define-color theme_titlebar_foreground_insensitive_backdrop_breeze #666666;
+@define-color theme_titlebar_foreground_insensitive_breeze #666666;
 @define-color theme_unfocused_base_color_breeze #000000;
 @define-color theme_unfocused_bg_color_breeze #000000;
 @define-color theme_unfocused_fg_color_breeze #ffffff;
