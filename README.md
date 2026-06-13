@@ -2,27 +2,57 @@
 
 ## 📝 User Config
 
-```sh
-chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
-```
+<details>
+<summary>Install chezmoi</summary>
+
+  ```sh
+  sudo pacman -Syu chezmoi
+  ```
+</details>
+
+<details>
+<summary>Apply chezmoi</summary>
+
+  ```sh
+  chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
+  ```
+</details>
 
 ## 📦 Install Packages
 
-```sh
-yay -Sy --needed - $(cat ~/.local/share/chezmoi/packages.txt)
-```
+<details>
+<summary>Install yay</summary>
+
+  ```sh
+  sudo pacman -Syu --needed git base-devel
+  git clone https://aur.archlinux.org/yay-bin.git
+  cd yay-bin
+  makepkg -si
+  ```
+</details>
+
+<details>
+<summary>Install required packages</summary>
+
+  ```sh
+  yay -Sy --needed - $(cat ~/.local/share/chezmoi/packages.txt)
+  ```
+</details>
 
 ## ⚙️ System Config (Manual)
 
-### FUSE Configuration
+<details>
+<summary>FUSE Configuration</summary>
 
 **File:** `/etc/fuse.conf`
 
 ```conf
 user_allow_other
 ```
+</details>
 
-### DNS Configuration
+<details>
+<summary>DNS Configuration</summary>
 
 **File:** `/etc/NetworkManager/NetworkManager.conf`
 
@@ -37,8 +67,10 @@ dns=dnsmasq
 server=1.1.1.1
 server=1.0.0.1
 ```
+</details>
 
-### Remove sudo retry delay
+<details>
+<summary>Remove sudo retry delay</summary>
 
 **File:** `/etc/security/faillock.conf`
 
@@ -55,8 +87,10 @@ auth required                pam_faillock.so preauth
 auth [success=1 default=bad] pam_unix.so     try_first_pass nullok
 auth [default=die]           pam_faillock.so authfail
 ```
+</details>
 
-### Locale Formatting (English UI, UA Formats)
+<details>
+<summary>Locale Formatting (English UI, UA Formats)</summary>
 
 **File:** `/etc/locale.gen`
 
@@ -87,8 +121,10 @@ LC_TELEPHONE=uk_UA.UTF-8
 ```sh
 sudo locale-gen
 ```
+</details>
 
-### Enable Numlock on boot
+<details>
+<summary>Enable Numlock on boot</summary>
 
 **File:** `/etc/mkinitcpio.conf`
 
@@ -99,8 +135,10 @@ sudo locale-gen
 ```sh
 sudo mkinitcpio -P
 ```
+</details>
 
-### Autologin
+<details>
+<summary>Autologin</summary>
 
 **File:** `/etc/systemd/system/getty@tty1.service.d/autologin.conf`
 
@@ -109,3 +147,4 @@ sudo mkinitcpio -P
 ExecStart=
 ExecStart=-/sbin/agetty --autologin YOUR_USERNAME --noclear %I $TERM
 ```
+</details>
