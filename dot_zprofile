@@ -3,7 +3,7 @@ export XCURSOR_SIZE="16"
 export HYPRCURSOR_THEME="GoogleDot-Black"
 export HYPRCURSOR_SIZE="16"
 
-export XDG_MENU_PREFIX="plasma-"
+export XDG_MENU_PREFIX="arch-"
 export GTK_USE_PORTAL="1"
 
 export GDK_BACKEND="wayland,x11,*"
