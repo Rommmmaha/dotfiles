@@ -66,5 +66,6 @@ wl-clip-persist
 wl-clipboard
 wlrobs-hyprqt6engine
 xdg-desktop-portal-hyprland
+xdg-desktop-portal-lxqt
 yay-bin
 zsh

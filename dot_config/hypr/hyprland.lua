@@ -82,6 +82,7 @@ hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "f
 -- Autostart
 -- =======================================================================================
 hl.on("hyprland.start", function()
+  hl.exec_cmd("systemctl --user import-environment QT_QPA_PLATFORMTHEME")
   hl.exec_cmd("hyprpaper")
   hl.exec_cmd("systemctl --user start hyprpolkitagent")
   hl.exec_cmd("eww open main")

@@ -25,6 +25,8 @@ export EDITOR="micro"
 
 gsettings set org.gnome.desktop.interface gtk-theme Breeze
 
+systemctl --user import-environment QT_QPA_PLATFORMTHEME
+
 if [ "$(tty)" = "/dev/tty1" ]; then
   while true; do
     sleep 0.1
