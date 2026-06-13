@@ -4,66 +4,67 @@ local configPath = home .. "/.config/hypr"
 -- Variables
 -- =======================================================================================
 hl.config({
-  input = {
-    kb_layout = "us, ua",
-    kb_options = "grp:caps_toggle,fkeys:basic_13-24",
-    numlock_by_default = true
+  animations = {
+    enabled = false,
+  },
+  binds = {
+    hide_special_on_workspace_change = true,
+    scroll_event_delay = 0,
+  },
+  decoration = {
+    blur = {
+      passes = 3,
+      size = 2,
+    },
+    shadow = {
+      color = 0x33ffffff,
+      range = 3,
+    },
+  },
+  ecosystem = {
+    no_donation_nag = true,
+    no_update_news = true,
   },
   general = {
     allow_tearing = true,
+    border_size = 0,
     gaps_in = 0,
     gaps_out = 0,
-    border_size = 0,
     layout = "dwindle",
     resize_on_border = false,
     snap = {
       enabled = true,
+      monitor_gap = 25,
       window_gap = 25,
-      monitor_gap = 25
-    }
-  },
-  decoration = {
-    shadow = {
-      range = 3,
-      color = 0x33ffffff
     },
-    blur = {
-      size = 2,
-      passes = 3
-    }
-  },
-  animations = {
-    enabled = false
-  },
-  misc = {
-    disable_hyprland_logo = true,
-    disable_splash_rendering = true,
-    background_color = 0x000000,
-    render_unfocused_fps = 30
-  },
-  binds = {
-    hide_special_on_workspace_change = true,
-    scroll_event_delay = 0
   },
   group = {
     groupbar = {
-      indicator_height = 0,
-      text_color_inactive = 0x66ffffff,
       font_size = 10,
       gaps_in = 0,
-      gaps_out = 0
+      gaps_out = 0,
+      indicator_height = 0,
+      text_color_inactive = 0x66ffffff,
     }
+  },
+  input = {
+    kb_layout = "us, ua",
+    kb_options = "grp:caps_toggle,fkeys:basic_13-24",
+    numlock_by_default = true,
+  },
+  misc = {
+    background_color = 0x000000,
+    disable_hyprland_logo = true,
+    disable_splash_rendering = true,
+    initial_workspace_tracking = 0,
+    render_unfocused_fps = 30,
+  },
+  render = {
+    cm_enabled = false,
   },
   xwayland = {
     force_zero_scaling = true
   },
-  ecosystem = {
-    no_update_news = true,
-    no_donation_nag = true
-  },
-  render = {
-    cm_enabled = false
-  }
 })
 
 -- Animations Configuration
