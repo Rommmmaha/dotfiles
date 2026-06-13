@@ -40,10 +40,10 @@ if [ "$(tty)" = "/dev/tty1" ]; then
     read -k 1 key
     case "$key" in
       1)
-        systemctl poweroff
+        systemctl poweroff && exit 0
         ;;
       2)
-        systemctl reboot
+        systemctl reboot && exit 0
         ;;
       3)
         exit 0
