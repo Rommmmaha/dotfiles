@@ -60,6 +60,7 @@ zstyle ':fzf-tab:*' fzf-flags\
 # KEYBINDINGS
 # ==============================================================================
 bindkey -e
+bindkey -s '^V' ''
 bindkey "^[[3~" delete-char
 bindkey '^[[3;5~' kill-word
 bindkey '^H' backward-kill-word
