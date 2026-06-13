@@ -81,8 +81,6 @@ hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "f
 -- Autostart
 -- =======================================================================================
 hl.on("hyprland.start", function()
-  hl.exec_cmd("dbus-update-activation-environment --systemd --all")
-  hl.exec_cmd("systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
   hl.exec_cmd("hyprpaper")
   hl.exec_cmd("systemctl --user start hyprpolkitagent")
   hl.exec_cmd("eww open main")
@@ -108,9 +106,8 @@ hl.bind("SUPER + Backspace", function()
 end)
 
 -- Screenshot
-
 SCREENSHOT =
-[[F=~/Pictures/Screenshots/$(date +'%yy%mm%dd_%Hh%Mm%Ss').png; flameshot gui --raw > "$F"; if [ -s "$F" ]; then wl-copy < "$F"; else rm "$F"; fi]]
+[[flameshot gui && wl-copy < "$(ls -td ~/Pictures/Screenshots/*.png | head -n 1)"]]
 hl.bind("Print", hl.dsp.exec_cmd(SCREENSHOT), { ignore_mods = true })
 hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd(SCREENSHOT))
 hl.bind("SUPER + P", hl.dsp.exec_cmd("xdg-open \"$(ls -td ~/Pictures/Screenshots/* | head -n 1)\"", { float = true }))
