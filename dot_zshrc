@@ -89,7 +89,7 @@ alias C="wl-copy"
 alias c="code"
 alias ff="fastfetch --config simple"
 alias icat="kitty +kitten icat"
-alias matrix="neo-matrix -D -c yellow"
+alias matrix="cmatrix -C white"
 alias nscan='sudo nmap -sS -T4 -Pn -n --min-rate 1000 --max-retries 2'
 
 alias rm="trash"
