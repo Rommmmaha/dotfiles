@@ -4,5 +4,7 @@ hyprqt6engine
 informant
 mkinitcpio-sd-numlock
 topgrade-bin
+visual-studio-code-bin
 wlrobs-hg
 yay-bin
+zen-browser-bin
