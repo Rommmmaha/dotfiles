@@ -1,0 +1,8 @@
+arch-update
+eww
+hyprqt6engine
+informant
+mkinitcpio-sd-numlock
+topgrade-bin
+wlrobs-hg
+yay-bin

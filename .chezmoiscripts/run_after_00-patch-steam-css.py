@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-print("\n[#] run_after_patch-steam-css.py")
+print("\n[#] patch-steam-css.py")
 import sys
 from pathlib import Path
 

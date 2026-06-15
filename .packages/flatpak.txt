@@ -1,0 +1,4 @@
+com.github.tchx84.Flatseal
+com.interversehq.qView
+com.saivert.pwvucontrol
+io.github.cboxdoerfer.FSearch

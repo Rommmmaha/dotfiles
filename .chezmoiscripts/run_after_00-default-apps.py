@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-print("\n[#] run_after_default-apps.py")
+print("\n[#] default-apps.py")
 import subprocess
 import shutil
 from pathlib import Path

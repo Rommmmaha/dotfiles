@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-print("\n[#] run_after_flatpak-gtk.py")
+print("\n[#] flatpak-gtk-override.py")
 import subprocess
 import shutil
 import configparser

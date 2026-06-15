@@ -88,7 +88,8 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("eww open main")
   hl.exec_cmd("kdeconnectd")
   hl.exec_cmd("wl-clip-persist --clipboard regular")
-  hl.exec_cmd("wl-paste --watch clipvault store")
+  hl.exec_cmd("wl-paste --type text --watch cliphist store")
+  hl.exec_cmd("wl-paste --type image --watch cliphist store")
   hl.exec_cmd("kitty --single-instance --start-as=hidden")
 end)
 -- =======================================================================================
@@ -120,7 +121,7 @@ hl.bind("SUPER + D", hl.dsp.exec_cmd("rofi -show window -show-icons"))
 hl.bind("SUPER + Period", hl.dsp.exec_cmd("rofimoji"))
 hl.bind("XF86Calculator", hl.dsp.exec_cmd("rofi -show calc -modi calc -no-show-match -no-sort"))
 hl.bind("SUPER + V",
-  hl.dsp.exec_cmd("rofi -modi clipboard:" .. configPath .. "/custom/r_clipvault.sh -show clipboard -show-icons")
+  hl.dsp.exec_cmd("rofi -modi clipboard:" .. configPath .. "/custom/cliphist-rofi-img.bash -show clipboard -show-icons")
 )
 
 -- Session

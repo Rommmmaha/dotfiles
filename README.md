@@ -2,42 +2,10 @@
 
 ## 📝 User Config
 
-<details>
-<summary>Install chezmoi</summary>
-
-  ```sh
-  sudo pacman -Syu chezmoi
-  ```
-</details>
-
-<details>
-<summary>Apply chezmoi</summary>
-
-  ```sh
-  chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
-  ```
-</details>
-
-## 📦 Install Packages
-
-<details>
-<summary>Install yay</summary>
-
-  ```sh
-  sudo pacman -Syu --needed git base-devel
-  git clone https://aur.archlinux.org/yay-bin.git
-  cd yay-bin
-  makepkg -si
-  ```
-</details>
-
-<details>
-<summary>Install required packages</summary>
-
-  ```sh
-  yay -Sy --needed - $(cat ~/.local/share/chezmoi/packages.txt)
-  ```
-</details>
+```sh
+sudo pacman -Syu chezmoi
+chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
+```
 
 ## ⚙️ System Config (Manual)
 

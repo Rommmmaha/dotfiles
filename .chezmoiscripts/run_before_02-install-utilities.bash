@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo -e "\n[#] run_after_utilities.bash"
+echo -e "\n[#] install-utilities.bash"
 URL="https://github.com/Rommmmaha/r-utils/releases/download/nightly/linux.tar.gz"
 INSTALL_DIR="$HOME/.local/bin"
 CACHE_DIR="$HOME/.cache/r-utils-updater"
