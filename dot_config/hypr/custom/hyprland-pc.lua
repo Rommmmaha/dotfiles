@@ -23,7 +23,7 @@ hl.on("hyprland.start", function()
   hl.dispatch(hl.dsp.focus({ workspace = "2" }))
   hl.exec_cmd("rm -rf " .. os.getenv("HOME") .. "/.config/obs-studio/.sentinel")
   hl.exec_cmd("Telegram", { workspace = "1 silent" })
-  hl.exec_cmd("equibop", { workspace = "1 silent" })
+  hl.exec_cmd("flatpak run org.equicord.equibop", { workspace = "1 silent" })
   hl.exec_cmd("zen-browser", { workspace = "3 silent" })
   hl.exec_cmd("steam -silent")
   hl.exec_cmd(

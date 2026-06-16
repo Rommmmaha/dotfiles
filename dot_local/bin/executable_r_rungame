@@ -6,45 +6,231 @@ import shutil
 import subprocess
 import collections.abc
 import shlex
-from copy import deepcopy
-from typing import Dict, Any
+from typing import Any, Dict, List, Optional
 
 CONFIG_PATH = os.path.expanduser("~/.config/r/rungame.json")
-DEFAULT_CONFIG_FILE = {
+LOG_PATH = os.path.expanduser("~/.cache/r/rungame.log")
+
+DEFAULT_CONFIG: Dict[str, Any] = {
     "apps": {
         "0": {
-            "!env": {
-                "LD_PRELOAD": "",
+            "env": {
                 "STEAM_COMPAT_DATA_PATH": "~/Games/umu/umu-default",
             }
         },
-    },
-    "default": {
-        "!env": {},
-        "gamemoderun": {"enable": True},
-        "gamescope": {
-            "enable": True,
-            "--nested-width": "1920",
-            "--nested-height": "1080",
-            "--scaler": "stretch",
-            "--backend": "wayland",
+        "570": {
+            "env": {
+                "XKB_DEFAULT_OPTIONS": "grp:caps_toggle",
+            },
+            "postfix": "-novid -sdlaudiodriver pulse -map dota",
+        },
+        "730": {
+            "env": {
+                "XKB_DEFAULT_OPTIONS": "grp:caps_toggle",
+            },
+            "%gamescope%": {"flags": {"--force-grab-cursor": true}},
+            "postfix": "-novid -sdlaudiodriver pulse -nojoy",
         },
     },
-    "order": "gamescope -- gamemoderun",
+    "default": {
+        "env": {
+            "LD_PRELOAD": "",
+        },
+        "%gamescope%": {
+            "enable": True,
+            "command": "gamescope %flags% --",
+            "flags": {
+                "--nested-width": "1920",
+                "--nested-height": "1080",
+                "--backend": "wayland",
+                "--scaler": "stretch",
+                "--mangoapp": False,
+                "--rt": True,
+            },
+        },
+        "%gamemoderun%": {
+            "enable": True,
+            "command": "gamemoderun",
+        },
+    },
+    "order": "%gamescope% %gamemoderun%",
 }
 
 
-def deep_update(d: dict, u: dict) -> dict:
-    for k, v in u.items():
-        if isinstance(v, collections.abc.Mapping):
-            d[k] = deep_update(d.get(k, {}), v)
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+
+def is_tool_key(key: str) -> bool:
+    return key.startswith("%") and key.endswith("%")
+
+
+def deep_update(base: dict, override: dict) -> dict:
+    """Recursively merge *override* into *base* (in-place) and return it."""
+    for k, v in override.items():
+        if isinstance(v, collections.abc.Mapping) and isinstance(
+            base.get(k), collections.abc.Mapping
+        ):
+            deep_update(base[k], v)
         else:
-            d[k] = v
-    return d
+            base[k] = v
+    return base
 
 
-def get_appid() -> str:
-    """Extracts Steam AppID from environment or arguments."""
+def expand_value(val: str) -> str:
+    val = os.path.expandvars(val)
+    if val.startswith("~/"):
+        val = os.path.expanduser(val)
+    return val
+
+
+# ---------------------------------------------------------------------------
+# Config loading
+# ---------------------------------------------------------------------------
+
+
+def load_raw_config() -> Dict[str, Any]:
+    """Read config from disk, creating it from defaults if absent."""
+    if not os.path.exists(CONFIG_PATH):
+        try:
+            os.makedirs(os.path.dirname(CONFIG_PATH), exist_ok=True)
+            with open(CONFIG_PATH, "w") as f:
+                json.dump(DEFAULT_CONFIG, f, indent=4)
+        except Exception as e:
+            print(
+                f"[R] [WARNING] Could not create default config: {e}", file=sys.stderr
+            )
+        return DEFAULT_CONFIG
+
+    try:
+        with open(CONFIG_PATH, "r") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"[R] [ERROR] Could not read {CONFIG_PATH}: {e}", file=sys.stderr)
+        return DEFAULT_CONFIG
+
+
+def build_active_config(appid: Optional[str]) -> Dict[str, Any]:
+    """
+    Merge layers in order:
+      1. Built-in defaults  (DEFAULT_CONFIG["default"])
+      2. User file defaults (user_data["default"])
+      3. App-specific block (user_data["apps"][appid])
+
+    The top-level "order" key comes from the user file when present,
+    otherwise from the built-in defaults.
+    """
+    user_data = load_raw_config()
+
+    # Start from a deep copy of the built-in defaults so we never mutate them.
+    import copy
+
+    active: Dict[str, Any] = copy.deepcopy(DEFAULT_CONFIG.get("default", {}))
+
+    # Layer 1 – user-file "default" section overrides built-in defaults.
+    if "default" in user_data:
+        deep_update(active, user_data["default"])
+
+    # Layer 2 – app-specific overrides (only for recognised appids).
+    if appid and "apps" in user_data and appid in user_data["apps"]:
+        deep_update(active, user_data["apps"][appid])
+
+    # Attach the order string (user file wins, else built-in default).
+    active["order"] = user_data.get("order", DEFAULT_CONFIG.get("order", ""))
+
+    return active
+
+
+# ---------------------------------------------------------------------------
+# Command building
+# ---------------------------------------------------------------------------
+
+
+def flags_to_args(flags: Dict[str, Any]) -> List[str]:
+    """Convert a flags dict to a flat list of CLI arguments."""
+    args: List[str] = []
+    for flag, val in flags.items():
+        if isinstance(val, bool):
+            if val:
+                args.append(flag)
+            # False → omit entirely
+        elif val == "":
+            args.append(flag)
+        else:
+            args.extend([flag, str(val)])
+    return args
+
+
+def expand_tool_command(command_template: str, flags: Dict[str, Any]) -> List[str]:
+    """
+    Replace the literal ``%flags%`` placeholder inside *command_template* with
+    the expanded flag arguments, then return the whole thing as a list.
+
+    If there is no ``%flags%`` placeholder the flags are appended at the end
+    (before any trailing ``--`` separator that may be present).
+    """
+    flag_args = flags_to_args(flags)
+    flag_str = " ".join(shlex.quote(a) for a in flag_args)
+
+    if "%flags%" in command_template:
+        expanded = command_template.replace("%flags%", flag_str)
+        return shlex.split(expanded)
+
+    # No placeholder – append flags before a trailing "--" if present.
+    parts = shlex.split(command_template)
+    if parts and parts[-1] == "--":
+        return parts[:-1] + flag_args + ["--"]
+    return parts + flag_args
+
+
+def build_launch_command(config: Dict[str, Any], game_args: List[str]) -> List[str]:
+    """Assemble the full launch command from the active config."""
+    order_str: str = config.get("order", "")
+    order_tokens: List[str] = order_str.split()
+
+    launch_cmd: List[str] = []
+
+    for token in order_tokens:
+        if is_tool_key(token):
+            tool_cfg = config.get(token)
+            if tool_cfg is None:
+                # Token referenced in order but not defined → pass through as literal.
+                launch_cmd.append(token)
+                continue
+
+            if not tool_cfg.get("enable", True):
+                continue  # Disabled – skip entirely.
+
+            command_template: str = tool_cfg.get("command", token.strip("%"))
+            flags: Dict[str, Any] = tool_cfg.get("flags", {})
+            launch_cmd.extend(expand_tool_command(command_template, flags))
+        else:
+            # Plain token (e.g. "--") – pass through literally.
+            launch_cmd.append(token)
+
+    launch_cmd.extend(game_args)
+
+    # Append optional postfix.
+    postfix = config.get("postfix", "")
+    if postfix:
+        if isinstance(postfix, str):
+            launch_cmd.extend(shlex.split(postfix))
+        elif isinstance(postfix, list):
+            launch_cmd.extend(postfix)
+
+    return launch_cmd
+
+
+# ---------------------------------------------------------------------------
+# Misc utilities
+# ---------------------------------------------------------------------------
+
+
+def get_appid() -> Optional[str]:
+    """Extract the Steam AppID from the environment or the argument list."""
+    if "AppId" in os.environ:
+        return os.environ["AppId"]
     if "SteamAppId" in os.environ:
         return os.environ["SteamAppId"]
     for arg in sys.argv:
@@ -53,107 +239,63 @@ def get_appid() -> str:
     return None
 
 
-def load_config(appid: str) -> Dict[str, Any]:
-    """Loads and merges the correct configuration for the given AppID."""
-    active_config = {}
-    if not os.path.exists(CONFIG_PATH):
-        try:
-            os.makedirs(os.path.dirname(CONFIG_PATH), exist_ok=True)
-            with open(CONFIG_PATH, "w") as f:
-                json.dump(DEFAULT_CONFIG_FILE, f, indent=4)
-        except Exception as e:
-            print(
-                f"Warning: Could not create default config file: {e}", file=sys.stderr
-            )
-        user_data = DEFAULT_CONFIG_FILE
-    else:
-        try:
-            with open(CONFIG_PATH, "r") as f:
-                user_data = json.load(f)
-        except Exception as e:
-            print(f"Error reading {CONFIG_PATH}: {e}", file=sys.stderr)
-            user_data = DEFAULT_CONFIG_FILE
-    if "order" in user_data:
-        active_config["order"] = user_data["order"]
-    if "default" in user_data:
-        deep_update(active_config, user_data["default"])
-    if appid != None and "apps" in user_data and appid in user_data["apps"]:
-        deep_update(active_config, user_data["apps"][appid])
-    return active_config
-
-
 def send_notification(title: str, message: str) -> None:
+    print(f"[R] {title}\n{message}")
     if shutil.which("notify-send"):
         subprocess.run(["notify-send", title, message])
-    else:
-        print(f"--- {title} ---\n{message}")
+    try:
+        subprocess.run(["notify-send", title, LOG_PATH])
+        os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+        with open(LOG_PATH, "a") as f:
+            f.write(f"--- {title} ---\n{message}\n\n")
+    except:
+        pass
+
+
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
 
 
 def main() -> None:
     args = sys.argv[1:]
-    appid = get_appid()
-    debug_mode = False
-    if "--debug" in args:
-        args.remove("--debug")
-        debug_mode = True
-    if not args:
-        print("Error: No game command detected.", file=sys.stderr)
-        sys.exit(1)
-    config = load_config(appid)
-    env = os.environ.copy()
-    env_cfg = config.get("!env", {})
-    for k, v in env_cfg.items():
-        val = str(v)
-        val = os.path.expandvars(val)
-        if val.startswith("~/"):
-            val = os.path.expanduser(val)
-        env[k] = val
-    launch_cmd = []
-    order_val = config.get("order", "")
-    order = order_val.split() if isinstance(order_val, str) else list(order_val)
-    for tool in order:
-        tool_cfg = config.get(tool)
-        if tool_cfg is None:
-            launch_cmd.append(tool)
-            continue
-        if tool_cfg.get("enable", True) is False:
-            continue
-        launch_cmd.append(tool)
-        for k, v in tool_cfg.items():
-            if k == "enable":
-                continue
-            if isinstance(v, bool):
-                if v is True:
-                    launch_cmd.append(k)
-            elif v == "":
-                launch_cmd.append(k)
-            else:
-                launch_cmd.extend([k, str(v)])
-    launch_cmd.extend(args)
-    postfix = config.get("postfix", "")
-    if postfix:
-        if isinstance(postfix, str):
-            launch_cmd.extend(shlex.split(postfix))
-        elif isinstance(postfix, list):
-            launch_cmd.extend(postfix)
+
+    debug_mode = "--debug" in args
     if debug_mode:
-        env_str = ",".join([f'"{k}":"{v}"' for k, v in env_cfg.items()])
+        args.remove("--debug")
+
+    if not args:
+        print("[R] [ERROR] No game command detected.", file=sys.stderr)
+        sys.exit(1)
+
+    appid = get_appid()
+    config = build_active_config(appid)
+
+    # Build the environment.
+    env = os.environ.copy()
+    env_cfg: Dict[str, str] = config.get("env", {})
+    for k, v in env_cfg.items():
+        env[k] = expand_value(str(v))
+
+    # Build the launch command.
+    launch_cmd = build_launch_command(config, args)
+
+    if debug_mode:
+        env_str = ", ".join(f'"{k}": "{v}"' for k, v in env_cfg.items())
         msg = (
-            f"AppID Detected: {appid}\n"
-            f"Env: {env_str}\n"
-            f"Command:\n{' '.join(launch_cmd)}"
+            f"AppID: {appid}\n" f"Env: {env_str}\n" f"Command:\n{' '.join(launch_cmd)}"
         )
         send_notification("Game Wrapper Debug", msg)
-        print(f"\n[DEBUG ENV SETTINGS]\nenv: {env_str}")
-        print(f"[DEBUG LAUNCH CMD]\n{' '.join(launch_cmd)}\n")
         sys.exit(0)
+
     if not launch_cmd:
-        print("Error: Final launch command is empty.", file=sys.stderr)
+        print("[R] [ERROR] Final launch command is empty.", file=sys.stderr)
         sys.exit(1)
+
     try:
         os.execvpe(launch_cmd[0], launch_cmd, env)
     except Exception as e:
-        print(f"Error launching game: {e}", file=sys.stderr)
+        print(f"[R] [ERROR] Launching game: {e}", file=sys.stderr)
         sys.exit(1)
 
 
