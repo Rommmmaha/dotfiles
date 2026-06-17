@@ -28,7 +28,7 @@ DEFAULT_CONFIG: Dict[str, Any] = {
             "env": {
                 "XKB_DEFAULT_OPTIONS": "grp:caps_toggle",
             },
-            "%gamescope%": {"flags": {"--force-grab-cursor": true}},
+            "%gamescope%": {"flags": {"--force-grab-cursor": True}},
             "postfix": "-novid -sdlaudiodriver pulse -nojoy",
         },
     },
