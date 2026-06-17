@@ -28,34 +28,5 @@ gsettings set org.gnome.desktop.interface gtk-theme Breeze
 systemctl --user import-environment QT_QPA_PLATFORMTHEME
 
 if [ "$(tty)" = "/dev/tty1" ]; then
-  while true; do
-    sleep 0.1
-    echo "\n\n\n\n\n"
-    echo "========================================"
-    echo "   [1] Poweroff"
-    echo "   [2] Reboot"
-    echo "   [3] Log out"
-    echo "   [4] ZSH"
-    echo ""
-    echo "   [*] Hyprland"
-    echo "========================================"
-    read -k 1 key
-    case "$key" in
-      1)
-        systemctl poweroff && exit 0
-        ;;
-      2)
-        systemctl reboot && exit 0
-        ;;
-      3)
-        exit 0
-        ;;
-      4)
-        zsh
-        ;;
-      *)
-        start-hyprland
-        ;;
-    esac
-  done
+  exec start-hyprland
 fi

@@ -116,3 +116,13 @@ ExecStart=
 ExecStart=-/sbin/agetty --autologin YOUR_USERNAME --noclear %I $TERM
 ```
 </details>
+
+<details>
+<summary>Kill user processes on logout</summary>
+
+**File:** `/etc/systemd/logind.conf`
+
+```conf
+KillUserProcesses=yes
+```
+</details>
