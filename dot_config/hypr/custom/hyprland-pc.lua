@@ -31,7 +31,7 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("r_sndcpy")
   hl.exec_cmd("r_overlay --udp 7435")
 end)
-hl.window_rule({ match = { class = "discord" }, workspace = "1 silent" })
+hl.window_rule({ match = { class = "discord|vesktop|equibop" }, workspace = "1 silent" })
 -- =======================================================================================
 -- Keybinds
 -- =======================================================================================
