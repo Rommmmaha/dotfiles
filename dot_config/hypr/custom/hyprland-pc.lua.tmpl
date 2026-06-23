@@ -41,3 +41,7 @@ hl.bind("mouse:275", hl.dsp.exec_cmd("r_multitool ptt 1"), { ignore_mods = true 
 hl.bind("mouse:275", hl.dsp.exec_cmd("r_multitool ptt 0"), { ignore_mods = true, release = true })
 hl.bind("SUPER + mouse_up", hl.dsp.exec_cmd("r_multitool vol 2%-"), { bypass = true, locked = true })
 hl.bind("SUPER + mouse_down", hl.dsp.exec_cmd("r_multitool vol 2%+"), { bypass = true, locked = true })
+hl.bind("XF86Mail", hl.dsp.exec_cmd(
+  [[r_multitool ptt 1 --color 00AAFF && GROQ_API_KEY="{{ .GROQ_API_KEY }}" r_stt | wtype -d 10 -]]
+))
+hl.bind("XF86Mail", hl.dsp.exec_cmd("r_multitool ptt 0 && killall -USR1 r_stt"), { release = true })
