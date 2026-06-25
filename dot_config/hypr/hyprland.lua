@@ -82,9 +82,8 @@ hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "f
 -- Autostart
 -- =======================================================================================
 hl.on("hyprland.start", function()
-  hl.exec_cmd("systemctl --user import-environment QT_QPA_PLATFORMTHEME")
-  hl.exec_cmd("systemctl --user start hyprland-session.target")
-  hl.exec_cmd("systemctl --user start hyprpolkitagent")
+  hl.exec_cmd("systemctl --user restart hyprland-session.target")
+  hl.exec_cmd("systemctl --user restart hyprpolkitagent")
   hl.exec_cmd("hyprpaper")
   hl.exec_cmd("eww open main")
   hl.exec_cmd("kdeconnectd")
@@ -94,7 +93,7 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("kitty --single-instance --start-as=hidden")
 end)
 hl.on("hyprland.shutdown", function()
-  os.execute("systemctl --user stop hyprland-session.target && sleep 0.5")
+  os.execute("systemctl --user stop hyprland-session.target && sleep 0.1")
 end)
 -- =======================================================================================
 -- Keybinds
