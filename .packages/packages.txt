@@ -43,6 +43,7 @@ noto-fonts-emoji
 noto-fonts-extra
 ntfs-3g
 nvtop
+pacman-contrib
 playerctl
 starship
 swaync

@@ -1,4 +1,3 @@
-arch-update
 eww
 hyprqt6engine
 informant
