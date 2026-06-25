@@ -4,6 +4,6 @@ Type=Application
 Name=Log Out
 Comment=Force exit the current session
 Exec=loginctl terminate-session self
-Icon=system-log-out
+Icon=r/log-out
 Terminal=false
 Categories=System;Utility;
