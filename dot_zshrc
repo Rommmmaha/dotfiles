@@ -107,18 +107,22 @@ o() {
 qr() {
   qrencode -s 15 -o - "$@" | feh -
 }
-{{ if ne .GITHUB_TOKEN "" }}
-topgrade() {
-  GITHUB_TOKEN="{{ .GITHUB_TOKEN }}" command topgrade "$@"
+r_env() {
+  local has=0
+  for arg in "$@"; do [ "$arg" = "--" ] && has=1; done
+  if [ "$has" -eq 1 ]; then
+    command r_env "$@"
+  else
+    eval "$(command r_env "$@")"
+  fi
 }
-{{ end }}
 # ==============================================================================
 # TAB COMPLETIONS
 # ==============================================================================
 _gamescope() {
   local sep=${words[(i)--]}
   if (( sep < CURRENT )); then
-     compset -n $sep
+    compset -n $sep
     _precommand
   fi
 }
