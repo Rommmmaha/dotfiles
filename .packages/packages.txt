@@ -45,6 +45,7 @@ ntfs-3g
 nvtop
 pacman-contrib
 playerctl
+quickshell
 starship
 swaync
 trash-cli

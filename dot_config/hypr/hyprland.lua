@@ -85,7 +85,7 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("systemctl --user restart hyprland-session.target")
   hl.exec_cmd("systemctl --user restart hyprpolkitagent")
   hl.exec_cmd("hyprpaper")
-  hl.exec_cmd("eww open main")
+  hl.exec_cmd("quickshell")
   hl.exec_cmd("kdeconnectd")
   hl.exec_cmd("wl-clip-persist --clipboard regular")
   hl.exec_cmd("wl-paste --type text --watch cliphist store")
@@ -221,7 +221,7 @@ hl.window_rule({
 -- Layer Rules
 -- =======================================================================================
 hl.layer_rule({
-  match = { namespace = "swaync-(notification-window|control-center)|rofi|gtk-layer-shell" },
+  match = { namespace = "swaync-(notification-window|control-center)|rofi|r-clock" },
   blur = true,
   ignore_alpha = 0
 })
