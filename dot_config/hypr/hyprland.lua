@@ -40,11 +40,21 @@ hl.config({
   },
   group = {
     groupbar = {
-      font_size = 10,
+      font_size = 12,
       gaps_in = 0,
       gaps_out = 0,
+      gradient_rounding = 0,
+      gradients = true,
+      height = 16,
       indicator_height = 0,
-      text_color_inactive = 0x66ffffff,
+      rounding = 0,
+      text_color_inactive = 0x88ffffff,
+      col = {
+        active = 0xff000000,
+        inactive = 0xff000000,
+        locked_active = 0xff000000,
+        locked_inactive = 0xff000000
+      }
     }
   },
   input = {
