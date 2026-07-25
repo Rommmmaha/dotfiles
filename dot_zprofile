@@ -17,7 +17,12 @@ export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
 export QT_AUTO_SCREEN_SCALE_FACTOR="1"
 
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$HOME/.local/bin:$HOME/.bun/bin:$PATH"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME/bin:$PATH"
+
+export PATH="$HOME/.local/bin:$PATH"
 
 export PROTON_ENABLE_WAYLAND=1
 

@@ -28,6 +28,7 @@ hyprland
 hyprlock
 hyprpaper
 hyprpolkitagent
+hyprshutdown
 jq
 kdeconnect
 kimageformats

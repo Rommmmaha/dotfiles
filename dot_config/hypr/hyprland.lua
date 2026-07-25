@@ -139,8 +139,8 @@ hl.bind("XF86Calculator", hl.dsp.exec_cmd("rofi -show calc -modi calc -no-show-m
 hl.bind("SUPER + V", hl.dsp.exec_cmd("rofi -modi clipboard:r_cliphist-rofi -show clipboard -show-icons"))
 
 -- Session
-hl.bind("SUPER + Escape", hl.dsp.exit())
-hl.bind("XF86PowerOff", hl.dsp.exit())
+hl.bind("SUPER + Escape", hl.dsp.exec_cmd("hyprshutdown"))
+hl.bind("XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown"))
 hl.bind("SUPER + L", hl.dsp.exec_cmd("hyprlock"))
 
 -- Window management

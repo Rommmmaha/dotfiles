@@ -5,17 +5,9 @@ ZINIT_FILE="$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 if [[ -f "$ZINIT_FILE" ]]; then
   source "$ZINIT_FILE"
 else
-  printf "zinit is not installed. Do you want to install it right now? [y/N] "
-  read -r response
-  if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    echo "Installing zinit..."
-    NO_EDIT=1 NO_INPUT=1 bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
-    zsh -ic "zinit self-update"
-    exec zsh
-  else
-    echo "Skipping installation. See https://github.com/zdharma-continuum/zinit#install"
-    zinit() { : }
-  fi
+  NO_EDIT=1 NO_INPUT=1 bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+  zsh -ic "zinit self-update"
+  exec zsh
 fi
 zinit wait"0" lucid for \
   zsh-users/zsh-syntax-highlighting \
@@ -73,7 +65,7 @@ bindkey '^[[B' history-substring-search-down
 # ==============================================================================
 export NEWT_COLORS="$(< $HOME/.config/NEWT_COLORS.ini)"
 
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
 
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
