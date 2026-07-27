@@ -17,12 +17,14 @@ export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
 export QT_AUTO_SCREEN_SCALE_FACTOR="1"
 
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+[[ -d "$BUN_INSTALL/bin" ]] && path=("$BUN_INSTALL/bin" $path)
 
 export PNPM_HOME="$HOME/.local/share/pnpm"
-export PATH="$PNPM_HOME/bin:$PATH"
+[[ -d "$PNPM_HOME" ]] && path=("$PNPM_HOME/bin" $path)
 
-export PATH="$HOME/.local/bin:$PATH"
+[[ -d "$HOME/.cargo/bin" ]] && path=("$HOME/.cargo/bin" $path)
+
+[[ -d "$HOME/.local/bin" ]] && path=("$HOME/.local/bin" $path)
 
 export PROTON_ENABLE_WAYLAND=1
 
