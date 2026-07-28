@@ -5,7 +5,7 @@ import shutil
 from pathlib import Path
 
 APPS = {
-    "text": "code.desktop",
+    "text": "code-oss.desktop",
     "image": "com.interversehq.qView.desktop",
     "browser": "zen.desktop",
     "media": "mpv.desktop",
