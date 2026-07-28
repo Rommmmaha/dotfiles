@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 print("\n[#] default-apps.py")
-import subprocess
 import shutil
+import subprocess
 from pathlib import Path
 
 APPS = {

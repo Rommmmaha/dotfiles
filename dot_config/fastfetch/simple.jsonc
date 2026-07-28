@@ -1,9 +1,9 @@
 {
   "logo": {
-    "type": "small",
     "padding": {
       "top": 2
-    }
+    },
+    "type": "small"
   },
   "modules": [
     "title",

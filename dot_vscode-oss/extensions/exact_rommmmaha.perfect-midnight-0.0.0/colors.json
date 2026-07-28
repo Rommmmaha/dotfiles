@@ -220,21 +220,14 @@
   "tokenColors": [
     {
       "name": "Comments",
-      "scope": [
-        "comment",
-        "punctuation.definition.comment"
-      ],
+      "scope": ["comment", "punctuation.definition.comment"],
       "settings": {
         "foreground": "#666666"
       }
     },
     {
       "name": "Punctuation & Operators",
-      "scope": [
-        "punctuation",
-        "keyword.operator",
-        "meta.brace"
-      ],
+      "scope": ["punctuation", "keyword.operator", "meta.brace"],
       "settings": {
         "foreground": "#999999"
       }
@@ -282,10 +275,7 @@
     },
     {
       "name": "Strings",
-      "scope": [
-        "string",
-        "punctuation.definition.string"
-      ],
+      "scope": ["string", "punctuation.definition.string"],
       "settings": {
         "foreground": "#f2bc85"
       }

@@ -2,13 +2,13 @@ add_newline = false
 {{- if eq .deviceType "laptop" }}
 format = """$all$battery$character"""
 [battery]
-[[battery.display]]
-threshold = 100
-style = "bold green"
-[[battery.display]]
-threshold = 30
-style = "bold yellow"
-[[battery.display]]
-threshold = 15
-style = "bold red"
+  [[battery.display]]
+    threshold = 100
+    style = "bold green"
+  [[battery.display]]
+    threshold = 30
+    style = "bold yellow"
+  [[battery.display]]
+    threshold = 15
+    style = "bold red"
 {{- end }}

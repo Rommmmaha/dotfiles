@@ -41,13 +41,7 @@ setopt hist_find_no_dups
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
-zstyle ':fzf-tab:*' fzf-flags\
-  --color=fg:-1,fg+:#000000,bg:-1,bg+:#ffffff\
-  --color=hl:#00ff00,hl+:#000000,info:#00ff00,marker:#000000\
-  --color=prompt:#ffffff,spinner:#ffffff,pointer:#000000,header:#87afaf\
-  --color=border:#ffffff,label:#aeaeae,query:#d9d9d9\
-  --preview-window="border-double" --prompt="> " --marker="->" --pointer=""\
-  --separator="─" --scrollbar="╠"
+zstyle ':fzf-tab:*' fzf-flags --color=fg:-1,fg+:#000000,bg:-1,bg+:#ffffff --color=hl:#00ff00,hl+:#000000,info:#00ff00,marker:#000000 --color=prompt:#ffffff,spinner:#ffffff,pointer:#000000,header:#87afaf --color=border:#ffffff,label:#aeaeae,query:#d9d9d9 --preview-window="border-double" --prompt="> " --marker="->" --pointer="" --separator="─" --scrollbar="╠"
 # ==============================================================================
 # KEYBINDINGS
 # ==============================================================================
@@ -63,7 +57,7 @@ bindkey '^[[B' history-substring-search-down
 # ==============================================================================
 # ENVIRONMENT VARIABLES & TOOL INIT
 # ==============================================================================
-export NEWT_COLORS="$(< $HOME/.config/NEWT_COLORS.ini)"
+export NEWT_COLORS="$(<$HOME/.config/NEWT_COLORS.ini)"
 
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
 
@@ -91,10 +85,10 @@ alias tree="ls -T"
 alias clear="printf '\033[2J\033[3J\033[1;1H'"
 
 t() {
-  kitty "$@" </dev/null >/dev/null &!
+  kitty "$@" </dev/null >/dev/null &|
 }
 o() {
-  xdg-open "$@" </dev/null >/dev/null &!
+  xdg-open "$@" </dev/null >/dev/null &|
 }
 qr() {
   qrencode -s 15 -o - "$@" | feh -

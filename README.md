@@ -17,6 +17,7 @@ chezmoi init --apply https://github.com/Rommmmaha/dotfiles.git
 ```conf
 user_allow_other
 ```
+
 </details>
 
 <details>
@@ -35,6 +36,7 @@ dns=dnsmasq
 server=1.1.1.1
 server=1.0.0.1
 ```
+
 </details>
 
 <details>
@@ -48,13 +50,14 @@ unlock_time = 1
 
 **File:** `/etc/pam.d/system-auth`
 
-*Add `nodelay` to the following lines:*
+_Add `nodelay` to the following lines:_
 
 ```conf
 auth required                pam_faillock.so preauth
 auth [success=1 default=bad] pam_unix.so     try_first_pass nullok
 auth [default=die]           pam_faillock.so authfail
 ```
+
 </details>
 
 <details>
@@ -84,11 +87,12 @@ LC_PAPER=uk_UA.UTF-8
 LC_TELEPHONE=uk_UA.UTF-8
 ```
 
-*Run after editing:*
+_Run after editing:_
 
 ```sh
 sudo locale-gen
 ```
+
 </details>
 
 <details>
@@ -96,13 +100,14 @@ sudo locale-gen
 
 **File:** `/etc/mkinitcpio.conf`
 
-*Add `sd-numlock` before `block`.*
+_Add `sd-numlock` before `block`._
 
-*Run after editing:*
+_Run after editing:_
 
 ```sh
 sudo mkinitcpio -P
 ```
+
 </details>
 
 <details>
@@ -115,6 +120,7 @@ sudo mkinitcpio -P
 ExecStart=
 ExecStart=-/sbin/agetty --autologin YOUR_USERNAME --noclear %I $TERM
 ```
+
 </details>
 
 <details>
@@ -125,4 +131,5 @@ ExecStart=-/sbin/agetty --autologin YOUR_USERNAME --noclear %I $TERM
 ```conf
 KillUserProcesses=yes
 ```
+
 </details>

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 print("\n[#] flatpak-gtk-override.py")
-import subprocess
-import shutil
 import configparser
+import shutil
+import subprocess
 import sys
 
 
@@ -32,13 +32,9 @@ def main():
         fs_string = config.get("Context", "filesystems")
         existing_filesystems = [fs.strip() for fs in fs_string.split(";") if fs.strip()]
     required_overrides = ["xdg-config/gtk-3.0:ro", "xdg-config/gtk-4.0:ro"]
-    missing_overrides = [
-        fs for fs in required_overrides if fs not in existing_filesystems
-    ]
+    missing_overrides = [fs for fs in required_overrides if fs not in existing_filesystems]
     if not missing_overrides:
-        print(
-            "[+] All required GTK filesystem overrides are already present. Nothing to do."
-        )
+        print("[+] All required GTK filesystem overrides are already present. Nothing to do.")
         return
     print(f"[+] Missing filesystem overrides detected: {missing_overrides}")
     print("[+] Adding missing overrides...")

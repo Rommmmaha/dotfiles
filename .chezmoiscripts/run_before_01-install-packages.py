@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import subprocess
-import sys
 from pathlib import Path
 
 PKG_DIR = Path.home() / ".local/share/chezmoi/.packages"
@@ -16,11 +15,7 @@ def run(cmd, check=True, capture=True):
 
 def read_pkgs(filename):
     path = PKG_DIR / filename
-    return (
-        [l.strip() for l in path.read_text().splitlines() if l.strip()]
-        if path.exists()
-        else []
-    )
+    return [l.strip() for l in path.read_text().splitlines() if l.strip()] if path.exists() else []
 
 
 def missing_pacman(pkgs):
@@ -37,9 +32,7 @@ def missing_flatpak(pkgs):
 
 def install_pacman(pkgs):
     if pkgs:
-        subprocess.run(
-            ["sudo", "pacman", "-S", "--needed", "--noconfirm", *pkgs], check=True
-        )
+        subprocess.run(["sudo", "pacman", "-S", "--needed", "--noconfirm", *pkgs], check=True)
 
 
 def install_aur(pkgs):
