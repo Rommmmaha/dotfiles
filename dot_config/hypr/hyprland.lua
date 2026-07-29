@@ -17,7 +17,7 @@ hl.config({
       size = 2
     },
     shadow = {
-      color = 0x33ffffff,
+      color = "#ffffff33",
       range = 3
     }
   },
@@ -48,12 +48,12 @@ hl.config({
       height = 16,
       indicator_height = 0,
       rounding = 0,
-      text_color_inactive = 0x88ffffff,
+      text_color_inactive = "#ffffff88",
       col = {
-        active = 0xff000000,
-        inactive = 0xff000000,
-        locked_active = 0xff000000,
-        locked_inactive = 0xff000000
+        active = "#000000ff",
+        inactive = "#000000ff",
+        locked_active = "#000000ff",
+        locked_inactive = "#000000ff"
       }
     }
   },
@@ -63,7 +63,7 @@ hl.config({
     numlock_by_default = true
   },
   misc = {
-    background_color = 0x000000,
+    background_color = "#000000",
     disable_hyprland_logo = true,
     disable_splash_rendering = true,
     initial_workspace_tracking = 0,
