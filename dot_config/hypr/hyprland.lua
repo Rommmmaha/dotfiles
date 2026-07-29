@@ -5,25 +5,25 @@ local configPath = home .. "/.config/hypr"
 -- =======================================================================================
 hl.config({
   animations = {
-    enabled = false,
+    enabled = false
   },
   binds = {
     hide_special_on_workspace_change = true,
-    scroll_event_delay = 0,
+    scroll_event_delay = 0
   },
   decoration = {
     blur = {
       passes = 3,
-      size = 2,
-    },
+      size = 2
+    }
     shadow = {
       color = 0x33ffffff,
-      range = 3,
-    },
+      range = 3
+    }
   },
   ecosystem = {
     no_donation_nag = true,
-    no_update_news = true,
+    no_update_news = true
   },
   general = {
     allow_tearing = true,
@@ -35,8 +35,8 @@ hl.config({
     snap = {
       enabled = true,
       monitor_gap = 25,
-      window_gap = 25,
-    },
+      window_gap = 25
+    }
   },
   group = {
     groupbar = {
@@ -60,21 +60,21 @@ hl.config({
   input = {
     kb_layout = "us, ua",
     kb_options = "grp:caps_toggle,fkeys:basic_13-24",
-    numlock_by_default = true,
+    numlock_by_default = true
   },
   misc = {
     background_color = 0x000000,
     disable_hyprland_logo = true,
     disable_splash_rendering = true,
     initial_workspace_tracking = 0,
-    render_unfocused_fps = 30,
+    render_unfocused_fps = 30
   },
   render = {
-    cm_enabled = false,
+    cm_enabled = false
   },
   xwayland = {
     force_zero_scaling = true
-  },
+  }
 })
 
 -- Animations Configuration
@@ -105,7 +105,7 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("autostart")
 end)
 hl.on("hyprland.shutdown", function()
-  os.execute("systemctl --user stop hyprland-session.target && sleep 0.1")
+  os.execute("systemctl --user stop hyprland-session.target && sleep 1")
 end)
 -- =======================================================================================
 -- Keybinds
