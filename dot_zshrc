@@ -9,12 +9,13 @@ else
   zsh -ic "zinit self-update"
   exec zsh
 fi
+zinit wait"0" lucid blockf atpull'zinit creinstall -q .' for \
+  zsh-users/zsh-completions
 zinit wait"0" lucid for \
-  zsh-users/zsh-syntax-highlighting \
-  zsh-users/zsh-completions \
+  Aloxaf/fzf-tab \
   zsh-users/zsh-autosuggestions \
   zsh-users/zsh-history-substring-search \
-  Aloxaf/fzf-tab
+  zsh-users/zsh-syntax-highlighting
 # ==============================================================================
 # COMPLETION SYSTEM INITIALIZATION
 # ==============================================================================
