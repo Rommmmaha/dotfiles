@@ -15,7 +15,7 @@ hl.config({
     blur = {
       passes = 3,
       size = 2
-    }
+    },
     shadow = {
       color = 0x33ffffff,
       range = 3
