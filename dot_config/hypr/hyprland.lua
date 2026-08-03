@@ -121,8 +121,7 @@ hl.bind("SUPER + C", hl.dsp.exec_cmd("flatpak run com.saivert.pwvucontrol"))
 hl.bind("SHIFT + Escape", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 
 hl.bind("SUPER + Backspace", function()
-  local anims = hl.get_config("animations.enabled")
-  hl.config({ animations = { enabled = not anims } })
+  hl.config({ animations = { enabled = not hl.get_config("animations.enabled") } })
 end)
 
 -- Screenshot
