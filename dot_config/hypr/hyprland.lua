@@ -94,6 +94,7 @@ hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "f
 hl.on("hyprland.start", function()
   hl.exec_cmd("systemctl --user restart hyprland-session.target")
   hl.exec_cmd("systemctl --user restart hyprpolkitagent")
+  hl.exec_cmd("hyprpm reload")
   hl.exec_cmd("hyprpaper")
   hl.exec_cmd("quickshell")
   hl.exec_cmd("kdeconnectd")
@@ -238,10 +239,32 @@ hl.layer_rule({
 -- =======================================================================================
 -- Device Specific Rules
 -- =======================================================================================
-local handle = io.popen("ls \"" .. configPath .. "/custom/hyprland-\"*.lua 2>/dev/null")
-if handle then
-  for file in handle:lines() do
-    dofile(file)
-  end
-  handle:close()
+for f in io.popen('ls "' .. configPath .. '/custom/hyprland-"*.lua 2>/dev/null'):lines()
+do
+  require("custom." .. f:match("hyprland%-[^%.]+"))
+end
+-- =======================================================================================
+-- Plugins
+-- =======================================================================================
+if hl.plugin and hl.plugin.csgo_vulkan_fix then
+  hl.config({
+    plugin = {
+      csgo_vulkan_fix = {
+        fix_mouse = true,
+      }
+    }
+  })
+  hl.plugin.csgo_vulkan_fix.vkfix_app({ app = "cs2", w = 1920, h = 1080 })
+  hl.plugin.csgo_vulkan_fix.vkfix_app({ app = "dota2", w = 1920, h = 1080 })
+end
+if hl.plugin and hl.plugin.dynamic_cursors then
+  hl.config({
+    plugin = {
+      dynamic_cursors = {
+        shake = {
+          enabled = false
+        }
+      }
+    }
+  })
 end

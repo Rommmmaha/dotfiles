@@ -1,5 +1,3 @@
 {
-  "Lua.workspace.library": [
-    "/usr/share/hypr/stubs"
-  ]
+  "Lua.workspace.library": ["/usr/share/hypr/stubs"]
 }
