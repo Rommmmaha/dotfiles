@@ -245,25 +245,8 @@ end
 -- =======================================================================================
 -- Plugins
 -- =======================================================================================
-if hl.plugin and hl.plugin.csgo_vulkan_fix then
-  hl.config({
-    plugin = {
-      csgo_vulkan_fix = {
-        fix_mouse = true,
-      }
-    }
-  })
-  hl.plugin.csgo_vulkan_fix.vkfix_app({ app = "cs2", w = 1920, h = 1080 })
-  hl.plugin.csgo_vulkan_fix.vkfix_app({ app = "dota2", w = 1920, h = 1080 })
-end
-if hl.plugin and hl.plugin.dynamic_cursors then
-  hl.config({
-    plugin = {
-      dynamic_cursors = {
-        shake = {
-          enabled = false
-        }
-      }
-    }
-  })
+if hl.plugin then
+  if hl.plugin.hyprstretch then
+    hl.plugin.hyprstretch.app({ class = "(cs2|dota2|.*\\.exe)" })
+  end
 end
