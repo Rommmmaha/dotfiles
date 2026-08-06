@@ -6,3 +6,5 @@ indent_style = space
 insert_final_newline = true
 max_line_length = 65535
 trim_trailing_whitespace = true
+[*.py]
+indent_size = 4

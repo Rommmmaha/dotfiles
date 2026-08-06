@@ -4,80 +4,108 @@ import os
 import subprocess
 import time
 
+CACHE_FILE = os.path.expanduser("~/.cache/r/check-updates")
+
 
 def run_cmd(cmd):
-  try:
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-    is_success = False
-    if "checkupdates" in cmd[0]:
-      is_success = result.returncode in (0, 2)
-    elif "yay" in cmd[0]:
-      is_success = result.returncode in (0, 1)
-    else:
-      is_success = result.returncode == 0
-    if is_success:
-      return [l for l in result.stdout.strip().split("\n") if l]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=30, check=False)
+        is_success = False
+        if "checkupdates" in cmd[0]:
+            is_success = result.returncode in (0, 2)
+        elif "yay" in cmd[0]:
+            is_success = result.returncode in (0, 1)
+        else:
+            is_success = result.returncode == 0
+        if is_success:
+            return [l for l in result.stdout.strip().split("\n") if l]
+        return None
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        return None
+
+
+def read_cache():
+    if os.path.exists(CACHE_FILE):
+        try:
+            with open(CACHE_FILE, "r") as f:
+                return f.read().strip()
+        except OSError:
+            pass
     return None
-  except (subprocess.TimeoutExpired, FileNotFoundError):
-    return None
+
+
+def write_cache(content):
+    try:
+        os.makedirs(os.path.dirname(CACHE_FILE), exist_ok=True)
+        with open(CACHE_FILE, "w") as f:
+            f.write(content)
+    except OSError:
+        pass
 
 
 def send_notification():
-  official = run_cmd(["checkupdates"])
-  aur = run_cmd(["yay", "-Qua"])
-  if official is None or aur is None:
-    return
-  total = len(official) + len(aur)
-  if total == 0:
-    return
-  parts = []
-  if official:
-    parts.append(f"{len(official)} official")
-  if aur:
-    parts.append(f"{len(aur)} AUR")
-  summary = f"{total} update{'s' if total != 1 else ''} available"
-  if parts:
-    summary += f" ({', '.join(parts)})"
-  if aur:
-    pkg_list = "\n".join([f"  {p}" for p in aur[:20]])
-    if len(aur) > 20:
-      pkg_list += f"\n  ... and {len(aur) - 20} more"
-  else:
-    pkg_list = "  (No AUR updates)"
-  body = f"{summary}\n\n{pkg_list}"
-  icon = os.path.expanduser("~/.local/share/icons/r/update.svg")
-  subprocess.run(
-    [
-      "notify-send",
-      "--app-name=System",
-      f"--icon={icon}",
-      "Updates Available",
-      body,
-    ],
-    timeout=10,
-  )
-  print(summary)
+    official = run_cmd(["checkupdates"])
+    aur = run_cmd(["yay", "-Qua"])
+    if official is None or aur is None:
+        return
+    current_pkgs = sorted(official + aur)
+    current_content = "\n".join(current_pkgs)
+    cached_content = read_cache()
+    if current_content == cached_content:
+        return
+    write_cache(current_content)
+    total = len(official) + len(aur)
+    if total == 0:
+        return
+    parts = []
+    if official:
+        parts.append(f"{len(official)} official")
+    if aur:
+        parts.append(f"{len(aur)} AUR")
+    summary = f"{total} update{'s' if total != 1 else ''} available"
+    if parts:
+        summary += f" ({', '.join(parts)})"
+    if aur:
+        pkg_list = "\n".join([f"  {p}" for p in aur[:20]])
+        if len(aur) > 20:
+            pkg_list += f"\n  ... and {len(aur) - 20} more"
+    else:
+        pkg_list = "  (No AUR updates)"
+    body = f"{summary}\n\n{pkg_list}"
+    icon = os.path.expanduser("~/.local/share/icons/r/update.svg")
+    subprocess.run(
+        [
+            "notify-send",
+            "--app-name=System",
+            f"--icon={icon}",
+            "Updates Available",
+            body,
+        ],
+        timeout=10,
+        check=False,
+    )
+    print(summary)
 
 
 def main():
-  parser = argparse.ArgumentParser(description="Check for system updates")
-  parser.add_argument(
-    "--loop",
-    action="store_true",
-    help="check and send notification every hour",
-  )
-  args = parser.parse_args()
-  if args.loop:
-    next_run = time.time()
-    while True:
-      current_time = time.time()
-      if current_time >= next_run:
+    parser = argparse.ArgumentParser(description="Check for system updates")
+    parser.add_argument(
+        "--loop",
+        action="store_true",
+        help="check and send notification every hour",
+    )
+    args = parser.parse_args()
+    if args.loop:
+        next_run = time.time()
+        while True:
+            current_time = time.time()
+            if current_time >= next_run:
+                send_notification()
+                next_run = current_time + 3600
+            time.sleep(10)
+    else:
         send_notification()
-        next_run = current_time + 3600
-      time.sleep(10)
-  else:
-    send_notification()
 
 
 if __name__ == "__main__":
-  main()
+    main()
