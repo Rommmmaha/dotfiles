@@ -247,6 +247,9 @@ end
 -- =======================================================================================
 if hl.plugin then
   if hl.plugin.hyprstretch then
-    hl.plugin.hyprstretch.app({ class = "(cs2|dota2|.*\\.exe)" })
+    hl.plugin.hyprstretch.app({ class = "cs2" })
+    hl.plugin.hyprstretch.app({ class = "dota2" })
+    hl.plugin.hyprstretch.app({ class = ".*\\.exe" })
   end
+  hl.bind("SUPER + R", function() hl.plugin.hyprstretch.toggle() end)
 end
