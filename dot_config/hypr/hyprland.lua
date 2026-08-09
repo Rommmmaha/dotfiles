@@ -5,7 +5,7 @@ local configPath = home .. "/.config/hypr"
 -- =======================================================================================
 hl.config({
   animations = {
-    enabled = false
+    enabled = true
   },
   binds = {
     hide_special_on_workspace_change = true,
@@ -76,18 +76,30 @@ hl.config({
     force_zero_scaling = true
   }
 })
-
--- Animations Configuration
-hl.curve("fluent_decel", { type = "bezier", points = { { 0, 0.2 }, { 0.4, 1 } } })
-hl.curve("easeOutExpo", { type = "bezier", points = { { 0.16, 1 }, { 0.3, 1 } } })
-
-hl.animation({ leaf = "windows", enabled = true, speed = 3, bezier = "fluent_decel", style = "popin 80%" })
-hl.animation({ leaf = "windowsIn", enabled = true, speed = 3, bezier = "easeOutExpo", style = "popin 60%" })
-hl.animation({ leaf = "windowsOut", enabled = true, speed = 3, bezier = "fluent_decel", style = "popin 80%" })
-hl.animation({ leaf = "border", enabled = true, speed = 10, bezier = "default" })
-hl.animation({ leaf = "fade", enabled = true, speed = 3, bezier = "default" })
-hl.animation({ leaf = "workspaces", enabled = true, speed = 3.5, bezier = "easeOutExpo", style = "slide" })
-hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "fluent_decel", style = "slidevert" })
+-- =======================================================================================
+-- ANIMATION CURVES
+-- =======================================================================================
+hl.curve("fade", { type = "bezier", points = { { 0.0, 0.0 }, { 1.0, 1.0 } } })
+hl.curve("ultra_snappy", { type = "bezier", points = { { 0.1, 0.9 }, { 0.1, 1.0 } } })
+hl.curve("fast_spring", { type = "spring", mass = 1, stiffness = 500, dampening = 45 })
+-- =======================================================================================
+-- ANIMATIONS
+-- =======================================================================================
+hl.animation({ leaf = "global", enabled = true, speed = 1.4, bezier = "ultra_snappy" })
+-- Window animations
+hl.animation({ leaf = "windowsIn", enabled = true, speed = 3.0, bezier = "ultra_snappy", style = "popin 0%" })
+hl.animation({ leaf = "windowsOut", enabled = true, speed = 3.0, bezier = "default", style = "popin 100%" })
+hl.animation({ leaf = "windowsMove", enabled = true, speed = 1.4, spring = "fast_spring" })
+-- Fade animations
+hl.animation({ leaf = "fade", enabled = true, speed = 1.0, bezier = "fade" })
+hl.animation({ leaf = "fadeOut", enabled = true, speed = 3.0, bezier = "fade" })
+hl.animation({ leaf = "fadeLayersOut", enabled = true, speed = 3.0, bezier = "fade" })
+hl.animation({ leaf = "fadePopupsOut", enabled = true, speed = 3.0, bezier = "fade" })
+hl.animation({ leaf = "fadeSwitch", enabled = true, speed = 1.0, bezier = "ultra_snappy" })
+-- Layer & Workspace animations
+hl.animation({ leaf = "layers", enabled = true, speed = 1.0, bezier = "ultra_snappy", style = "popin 90%" })
+hl.animation({ leaf = "workspaces", enabled = true, speed = 1.5, bezier = "ultra_snappy", style = "slidefade 10%" })
+hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 1.4, bezier = "ultra_snappy", style = "slidefade 10%" })
 -- =======================================================================================
 -- Autostart
 -- =======================================================================================
