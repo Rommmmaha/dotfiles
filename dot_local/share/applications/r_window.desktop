@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=r_window
+Comment=Blank black window
+Exec=/home/r/.local/bin/r_window
+Icon=r/window
+Terminal=false
+Categories=Utility;

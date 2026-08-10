@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=r_peek
+Comment=Mirror a window region
+Exec=/home/r/.local/bin/r_peek
+Icon=r/peek
+Terminal=false
+Categories=Utility;
