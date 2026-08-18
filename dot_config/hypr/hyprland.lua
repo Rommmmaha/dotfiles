@@ -127,7 +127,6 @@ end)
 hl.bind("SUPER + Return", hl.dsp.exec_cmd("kitty --single-instance"))
 hl.bind("SUPER + E", hl.dsp.exec_cmd("dolphin"))
 hl.bind("SUPER + X", hl.dsp.exec_cmd("code -nq"))
-hl.bind("SUPER + N", hl.dsp.exec_cmd("swaync-client -op"))
 hl.bind("SUPER + C", hl.dsp.exec_cmd("flatpak run com.saivert.pwvucontrol"))
 
 hl.bind("SHIFT + Escape", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
@@ -243,7 +242,7 @@ hl.window_rule({
 -- Layer Rules
 -- =======================================================================================
 hl.layer_rule({
-  match = { namespace = "swaync-(notification-window|control-center)|rofi|r-clock" },
+  match = { namespace = "rofi|r-(clock|notifications)" },
   blur = true,
   ignore_alpha = 0
 })

@@ -49,7 +49,6 @@ pacman-contrib
 playerctl
 quickshell
 starship
-swaync
 trash-cli
 ttf-jetbrains-mono-nerd
 unrar
