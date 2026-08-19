@@ -20,8 +20,16 @@ PanelWindow {
     top: 12
     right: 12
   }
-  implicitWidth: NotificationStyle.cardWidth
+  implicitWidth: Theme.cardWidth
   implicitHeight: notifColumn.childrenRect.height
+  property bool anyHovered: false
+  function updateHover() {
+    for (let i = 0; i < notifRepeater.count; i++) {
+      const item = notifRepeater.itemAt(i)
+      if (item && item.hovered) return true
+    }
+    return false
+  }
   ListModel {
     id: notifModel
   }
@@ -34,12 +42,14 @@ PanelWindow {
   Column {
     id: notifColumn
     anchors.fill: parent
-    spacing: NotificationStyle.cardSpacing
+    spacing: Theme.cardSpacing
     Repeater {
+      id: notifRepeater
       model: notifModel
       delegate: NotificationCard {
         required property var modelData
         notification: modelData.notif
+        hoverPaused: root.anyHovered
         width: parent.width
         height: exiting ? 0 : implicitHeight
         Behavior on height {
@@ -48,6 +58,7 @@ PanelWindow {
             easing.type: Easing.InOutCubic
           }
         }
+        onHoveredChanged: root.anyHovered = root.updateHover()
         onRemoved: notifId => root.removeNotification(notifId)
       }
     }

@@ -26,7 +26,7 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("discord", { workspace = "1 silent" })
   hl.exec_cmd("zen-browser", { workspace = "3 silent" })
   hl.exec_cmd("steam -silent")
-  hl.exec_cmd([[gpu-screen-recorder -w screen -f 144 -a X1.monitor -c mkv -bm qp -q ultra -tune quality -r 90 -o /mnt/Data/Clips;notify-send "gpu-screen-recorder died"]])
+  hl.exec_cmd("r_record stop")
   hl.exec_cmd("r_sndcpy")
   hl.exec_cmd("r_overlay --udp 7435")
 end)
@@ -35,6 +35,7 @@ hl.window_rule({ match = { class = "discord|vesktop|equibop" }, workspace = "1 s
 -- Keybinds
 -- =======================================================================================
 hl.bind("SUPER + F2", hl.dsp.exec_cmd("pkill -SIGUSR1 -f gpu-screen-recorder"))
+hl.bind("SUPER + F1", hl.dsp.exec_cmd("r_record toggle"))
 hl.bind("mouse:276", hl.dsp.exec_cmd("r_multitool cycle"), { ignore_mods = true })
 hl.bind("mouse:275", hl.dsp.exec_cmd("r_multitool ptt 1"), { ignore_mods = true })
 hl.bind("mouse:275", hl.dsp.exec_cmd("r_multitool ptt 0"), { ignore_mods = true, release = true })

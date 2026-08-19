@@ -18,9 +18,9 @@ PanelWindow {
   }
   Rectangle {
     anchors.fill: parent
-    color: Qt.rgba(0, 0, 0, 0.4)
-    radius: 24
-    border { width: 1; color: Qt.rgba(1, 1, 1, 0.2) }
+    color: Theme.background
+    radius: Theme.radius
+    border { width: 1; color: Theme.borderColor }
     ColumnLayout {
       id: mainLayout
       anchors { fill: parent; margins: 25 }
@@ -31,19 +31,19 @@ PanelWindow {
         Text {
           Layout.alignment: Qt.AlignHCenter
           text: Qt.formatDateTime(systemClock.date, "hh:mm:ss")
-          color: "#fff"
-          font { family: "Adwaita"; pixelSize: 32; bold: true }
+          color: Theme.textPrimary
+          font { family: Theme.fontFamily; pixelSize: 32; bold: true }
         }
         Rectangle {
           Layout.fillWidth: true
           height: 1
-          color: Qt.rgba(1, 1, 1, 0.2)
+          color: Theme.borderColor
         }
         Text {
           Layout.alignment: Qt.AlignHCenter
           text: (systemClock.date.getDay() || 7) + "/7 " + Qt.formatDateTime(systemClock.date, "dd.MM.yyyy")
-          color: "#fff"
-          font { family: "Adwaita"; pixelSize: 24; weight: Font.Medium }
+          color: Theme.textPrimary
+          font { family: Theme.fontFamily; pixelSize: 24; weight: Font.Medium }
         }
       }
       ColumnLayout {
@@ -54,8 +54,8 @@ PanelWindow {
           Layout.fillWidth: true
           delegate: Text {
             text: model.shortName
-            color: "#ddd"
-            font { family: "Adwaita"; bold: true }
+            color: Theme.textSecondary
+            font { family: Theme.fontFamily; bold: true }
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
           }
@@ -68,15 +68,15 @@ PanelWindow {
           Layout.fillWidth: true
           delegate: Text {
             text: model.day
-            font.family: "Adwaita"
+            font.family: Theme.fontFamily
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            color: model.today ? "#000" : (model.isCurrent ? "#fff" : "#999")
+            color: model.today ? Theme.onAccent : (model.isCurrent ? Theme.textPrimary : Theme.textMuted)
             Rectangle {
               anchors { fill: parent; leftMargin: 6; rightMargin: 6 }
               z: -1
               visible: model.today
-              color: "#fff"
+              color: Theme.accentNormal
               radius: 4
             }
           }

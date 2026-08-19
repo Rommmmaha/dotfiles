@@ -1,0 +1,343 @@
+#!/usr/bin/env python3
+"""
+gpu-screen-recorder manager
+
+Three commands:
+    start    kill shadowplay (replay buffer) and start full video recording
+    stop     ensure shadowplay (replay buffer) is running
+    toggle   start if not recording, stop if recording
+
+Only one gpu-screen-recorder instance is ever allowed to run at a time.
+Before doing anything, start/stop inspect whatever instance is *actually*
+running (by reading /proc/<pid>/cmdline) to figure out its real mode, and
+refuse to run if that would be a no-op:
+
+    start   aborts if a recording is already in progress
+    stop    aborts only if shadowplay is already running -- it does NOT
+            require a recording to be active, so it's safe to run from an
+            autostart script at login/boot to just get shadowplay going
+
+A desktop notification (via notify-send, if available) is sent for every
+action taken or aborted, so this is safe to bind to a hotkey with no
+terminal in sight.
+
+A small JSON file is also kept in /tmp for bookkeeping (last output file,
+pid, timestamp), but it is never trusted as the source of truth for
+whether something is running -- the live process is always checked, so
+the tool can't get confused by a stale state file (e.g. after a crash or
+a manual kill).
+
+Usage:
+    ./gsr_manager.py start
+    ./gsr_manager.py stop
+    ./gsr_manager.py toggle
+"""
+
+import json
+import os
+import shutil
+import signal
+import subprocess
+import sys
+import time
+from datetime import datetime
+from pathlib import Path
+
+PROC_NAME = "gpu-screen-recorder"
+
+CLIPS_DIR = "/mnt/Data/Clips"
+RECORDS_DIR = "/mnt/Data/Records"
+
+STATE_FILE = Path("/tmp/gsr_manager_state.json")
+
+NOTIFY_APP_NAME = "GPU Screen Recorder"
+
+SHADOWPLAY_CMD = [
+    "gpu-screen-recorder",
+    "-w",
+    "screen",
+    "-f",
+    "144",
+    "-a",
+    "X1.monitor",
+    "-c",
+    "mkv",
+    "-bm",
+    "qp",
+    "-q",
+    "ultra",
+    "-tune",
+    "quality",
+    "-r",
+    "90",
+    "-o",
+    CLIPS_DIR,
+]
+
+
+def recording_cmd():
+    """Build the recording command with a fresh timestamped output file."""
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    output_path = str(Path(RECORDS_DIR) / f"Record_{timestamp}.mkv")
+    cmd = [
+        "gpu-screen-recorder",
+        "-w",
+        "screen",
+        "-f",
+        "144",
+        "-a",
+        "X1.monitor",
+        "-c",
+        "mkv",
+        "-bm",
+        "qp",
+        "-q",
+        "ultra",
+        "-tune",
+        "quality",
+        "-o",
+        output_path,
+    ]
+    return cmd, output_path
+
+
+def read_cmdline(pid):
+    """Return a process's argv list by reading /proc, or None if unreadable."""
+    try:
+        raw = Path(f"/proc/{pid}/cmdline").read_bytes()
+    except (FileNotFoundError, ProcessLookupError, PermissionError):
+        return None
+    args = raw.decode(errors="replace").split("\0")
+    return [a for a in args if a]
+
+
+def get_pids():
+    """
+    PIDs of currently running gpu-screen-recorder processes.
+
+    Deliberately scans /proc directly instead of using `pgrep -x`: Linux
+    truncates process names (comm) to 15 characters, and "gpu-screen-recorder"
+    is 20 characters long, so `pgrep -x` against the full name can never
+    match. /proc/<pid>/cmdline stores the untruncated argv, so we compare
+    against that instead.
+    """
+    pids = []
+    for entry in os.listdir("/proc"):
+        if not entry.isdigit():
+            continue
+        pid = int(entry)
+        args = read_cmdline(pid)
+        if not args:
+            continue
+        if os.path.basename(args[0]) == PROC_NAME:
+            pids.append(pid)
+    return pids
+
+
+def process_mode(pid):
+    """
+    Figure out what a running gpu-screen-recorder instance is actually
+    doing by inspecting its real command line: shadowplay always carries
+    '-r <seconds>' (replay buffer), the full recording never does.
+    Returns "shadowplay", "recording", or None if undeterminable.
+    """
+    args = read_cmdline(pid)
+    if args is None:
+        return None
+    return "shadowplay" if "-r" in args else "recording"
+
+
+def current_state():
+    """
+    Inspect whatever gpu-screen-recorder instance(s) are actually running.
+    Returns (mode, pids):
+        (None, [])            nothing running
+        ("shadowplay", pids)
+        ("recording", pids)
+        ("unknown", pids)     running, but mode couldn't be determined
+    """
+    pids = get_pids()
+    if not pids:
+        return None, []
+
+    modes = {process_mode(pid) for pid in pids}
+    modes.discard(None)
+
+    if "recording" in modes:
+        return "recording", pids
+    if "shadowplay" in modes:
+        return "shadowplay", pids
+    return "unknown", pids
+
+
+def kill_all(timeout=5.0):
+    """
+    Kill any running gpu-screen-recorder instance(s). SIGINT first (its
+    normal stop-and-finalize signal), then SIGKILL for stragglers -- safe
+    since mkv survives a hard kill fine.
+    """
+    pids = get_pids()
+    if not pids:
+        return
+
+    for pid in pids:
+        try:
+            os.kill(pid, signal.SIGINT)
+        except ProcessLookupError:
+            pass
+
+    deadline = time.time() + timeout
+    while time.time() < deadline and get_pids():
+        time.sleep(0.2)
+
+    for pid in get_pids():
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+
+
+def launch(cmd):
+    """Start gpu-screen-recorder detached, so it survives this script exiting."""
+    try:
+        proc = subprocess.Popen(
+            cmd,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            stdin=subprocess.DEVNULL,
+            start_new_session=True,
+        )
+    except FileNotFoundError:
+        print(f"Error: '{cmd[0]}' not found on PATH.", file=sys.stderr)
+        sys.exit(1)
+    return proc.pid
+
+
+def write_state(mode, pid, output=None):
+    """Best-effort bookkeeping file in /tmp. Never used to gate decisions."""
+    data = {
+        "mode": mode,
+        "pid": pid,
+        "output": output,
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+    }
+    try:
+        STATE_FILE.write_text(json.dumps(data))
+    except OSError:
+        pass
+
+
+def read_state():
+    """Best-effort read of the bookkeeping file. Returns dict or None."""
+    try:
+        return json.loads(STATE_FILE.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def notify(title, message, urgency="normal"):
+    """
+    Fire a desktop notification if notify-send is available. Silently
+    does nothing if it isn't (e.g. headless / no notification daemon) --
+    this is purely a convenience, never required for the tool to work.
+    """
+    if shutil.which("notify-send") is None:
+        return
+    try:
+        subprocess.run(
+            ["notify-send", "-a", NOTIFY_APP_NAME, "-u", urgency, title, message],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+    except OSError:
+        pass
+
+
+def start():
+    mode, pids = current_state()
+    if mode == "recording":
+        msg = f"Already recording (pid {pids[0]}). Aborting."
+        print(msg, file=sys.stderr)
+        notify("Already recording", msg, urgency="normal")
+        sys.exit(1)
+    if mode == "unknown":
+        msg = f"gpu-screen-recorder is already running (pid(s) {pids}) but its mode couldn't be determined. Aborting to be safe."
+        print(msg, file=sys.stderr)
+        notify("gpu-screen-recorder: unknown state", msg, urgency="critical")
+        sys.exit(1)
+
+    kill_all()
+    Path(RECORDS_DIR).mkdir(parents=True, exist_ok=True)
+    cmd, output_path = recording_cmd()
+    pid = launch(cmd)
+    write_state("recording", pid, output_path)
+    msg = f"Recording started -> {output_path}"
+    print(msg)
+    notify("Recording started", f"Saving to {output_path}")
+
+
+def stop():
+    """
+    Ensure shadowplay (replay buffer) is running, stopping any active
+    recording first if needed.
+
+    Deliberately does NOT require a recording to be active -- this makes
+    it safe to call from an autostart script at login/boot, when nothing
+    is running yet, and it will just start shadowplay from a clean slate.
+    The only no-op case is when shadowplay is already running, to avoid
+    needlessly restarting (and losing) an existing replay buffer.
+    """
+    mode, pids = current_state()
+    if mode == "shadowplay":
+        msg = f"Shadowplay already running (pid {pids[0]}). Nothing to do."
+        print(msg, file=sys.stderr)
+        notify("Shadowplay already running", msg, urgency="normal")
+        sys.exit(1)
+    if mode == "unknown":
+        msg = f"gpu-screen-recorder is running (pid(s) {pids}) but its mode couldn't be determined. Aborting to be safe."
+        print(msg, file=sys.stderr)
+        notify("gpu-screen-recorder: unknown state", msg, urgency="critical")
+        sys.exit(1)
+
+    # grab the output path of the recording we're about to stop, if any,
+    # purely to make the notification more useful
+    prior_state = read_state()
+    prior_output = prior_state.get("output") if prior_state and prior_state.get("mode") == "recording" else None
+
+    kill_all()
+    Path(CLIPS_DIR).mkdir(parents=True, exist_ok=True)
+    pid = launch(SHADOWPLAY_CMD)
+    write_state("shadowplay", pid)
+    if mode == "recording":
+        print("Recording stopped. Shadowplay (replay buffer) started.")
+    else:
+        print("Shadowplay (replay buffer) started.")
+    body = f"Saved {prior_output}" if prior_output else "Shadowplay (replay buffer) started."
+    notify("Recording stopped" if mode == "recording" else "Shadowplay started", body)
+
+
+def toggle():
+    """start if not currently recording, stop if currently recording."""
+    mode, _ = current_state()
+    if mode == "recording":
+        stop()
+    else:
+        start()
+
+
+def main():
+    if shutil.which(PROC_NAME) is None:
+        print(f"Error: '{PROC_NAME}' is not installed / not on PATH.", file=sys.stderr)
+        sys.exit(1)
+
+    commands = {"start": start, "stop": stop, "toggle": toggle}
+    if len(sys.argv) != 2 or sys.argv[1] not in commands:
+        print(f"Usage: {sys.argv[0]} {{start|stop|toggle}}", file=sys.stderr)
+        sys.exit(1)
+
+    commands[sys.argv[1]]()
+
+
+if __name__ == "__main__":
+    main()
