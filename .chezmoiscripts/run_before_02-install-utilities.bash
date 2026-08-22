@@ -2,7 +2,7 @@
 echo -e "\n[#] install-utilities.bash"
 URL="https://github.com/Rommmmaha/r-utils/releases/download/nightly/linux.tar.gz"
 INSTALL_DIR="$HOME/.local/bin"
-CACHE_DIR="$HOME/.cache/r-utils-updater"
+CACHE_DIR="$HOME/.cache/r/updater/utils"
 ETAG_FILE="$CACHE_DIR/latest.etag"
 ARCHIVE_FILE="$CACHE_DIR/linux.tar.gz"
 mkdir -p "$INSTALL_DIR" "$CACHE_DIR"
