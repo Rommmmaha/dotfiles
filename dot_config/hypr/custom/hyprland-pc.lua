@@ -35,8 +35,8 @@ hl.window_rule({ match = { class = "discord|vesktop|equibop" }, workspace = "1 s
 -- =======================================================================================
 -- Keybinds
 -- =======================================================================================
-hl.bind("SUPER + F2", hl.dsp.exec_cmd("pkill -SIGUSR1 -f gpu-screen-recorder"))
-hl.bind("SUPER + F1", hl.dsp.exec_cmd("r_record toggle"))
+hl.bind("SUPER + F1", hl.dsp.exec_cmd("r_record toggle-mode"))
+hl.bind("SUPER + F2", hl.dsp.exec_cmd("r_record clip"))
 hl.bind("mouse:276", hl.dsp.exec_cmd("r_multitool cycle"), { ignore_mods = true })
 hl.bind("mouse:275", hl.dsp.exec_cmd("r_multitool ptt 1"), { ignore_mods = true })
 hl.bind("mouse:275", hl.dsp.exec_cmd("r_multitool ptt 0"), { ignore_mods = true, release = true })
