@@ -45,6 +45,11 @@ PanelWindow {
           color: Theme.textPrimary
           font { family: Theme.fontFamily; pixelSize: 24; weight: Font.Medium }
         }
+        Rectangle {
+          Layout.fillWidth: true
+          height: 1
+          color: Theme.borderColor
+        }
       }
       ColumnLayout {
         Layout.fillWidth: true
@@ -64,11 +69,14 @@ PanelWindow {
           id: grid
           month: systemClock.date.getMonth()
           year: systemClock.date.getFullYear()
-          locale: Qt.locale("en_US")
+          locale: Qt.locale("en_GB")
           Layout.fillWidth: true
           delegate: Text {
             text: model.day
-            font.family: Theme.fontFamily
+            font {
+              family: Theme.fontFamily
+              bold: model.today
+            }
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             color: model.today ? Theme.onAccent : (model.isCurrent ? Theme.textPrimary : Theme.textMuted)
@@ -76,7 +84,7 @@ PanelWindow {
               anchors { fill: parent; leftMargin: 6; rightMargin: 6 }
               z: -1
               visible: model.today
-              color: Theme.accentNormal
+              color: Theme.textMuted
               radius: 4
             }
           }
