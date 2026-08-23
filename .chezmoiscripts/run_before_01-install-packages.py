@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+print("\n[#] install-packages.py")
 import subprocess
 from pathlib import Path
 
