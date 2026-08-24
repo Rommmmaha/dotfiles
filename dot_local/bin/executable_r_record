@@ -317,10 +317,7 @@ def clip():
         notify("gpu-screen-recorder: unknown state", msg, urgency="critical")
         sys.exit(1)
     else:
-        msg = "Nothing running (not recording or in shadowplay mode)."
-        print(msg, file=sys.stderr)
-        notify("Not running", msg, urgency="normal")
-        sys.exit(1)
+        _start_shadowplay()
 
 
 def handle_gsr_callback(filepath, save_type):
