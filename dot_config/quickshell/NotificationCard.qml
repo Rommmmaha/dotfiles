@@ -48,6 +48,18 @@ Item {
     if (app.charAt(0) === "/" || app.startsWith("file:") || app.startsWith("data:")) return app
     return "image://icon/" + app
   }
+  property var receivedTime: new Date()
+  readonly property string timeString: {
+    let d = receivedTime
+    if (root.notification && root.notification.time !== undefined) {
+      const t = root.notification.time
+      if (t instanceof Date) d = t
+      else if (typeof t === "number") d = new Date(t > 1e12 ? t : t * 1000)
+      else if (t) d = new Date(t)
+    }
+    if (!(d instanceof Date)) d = new Date(d)
+    return Qt.formatTime(d, "HH:mm:ss")
+  }
   function sanitize(s) {
     return (s || "").replace(/<span\s[^>]*>/gi, "").replace(/<\/span>/gi, "")
   }
@@ -213,15 +225,27 @@ Item {
       ColumnLayout {
         Layout.fillWidth: true
         spacing: 2
-        Text {
+        RowLayout {
           Layout.fillWidth: true
-          text: root.notification.appName || ""
-          color: Theme.textMuted
-          font {
-            family: Theme.fontFamily
-            pixelSize: Theme.fontSizeApp
+          spacing: 6
+          Text {
+            Layout.fillWidth: true
+            text: root.notification.appName || ""
+            color: Theme.textMuted
+            font {
+              family: Theme.fontFamily
+              pixelSize: Theme.fontSizeApp
+            }
+            elide: Text.ElideRight
           }
-          elide: Text.ElideRight
+          Text {
+            text: root.timeString
+            color: Theme.textMuted
+            font {
+              family: Theme.fontFamily
+              pixelSize: Theme.fontSizeApp
+            }
+          }
         }
         Text {
           Layout.fillWidth: true
@@ -280,7 +304,7 @@ Item {
     Text {
       Layout.fillWidth: true
       visible: text !== ""
-      text: root.sanitize(root.notification.body)
+      text: root.sanitize(root.notification.body).replace(/\n/g, "<br>")
       color: Theme.textSecondary
       font {
         family: Theme.fontFamily
@@ -288,7 +312,6 @@ Item {
       }
       wrapMode: Text.Wrap
       textFormat: Text.StyledText
-      maximumLineCount: 4
       elide: Text.ElideRight
     }
       RowLayout {
