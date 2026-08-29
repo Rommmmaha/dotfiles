@@ -155,7 +155,12 @@ hl.bind("XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown"))
 hl.bind("SUPER + L", hl.dsp.exec_cmd("hyprlock"))
 
 -- Window management
-hl.bind("SUPER + W", hl.dsp.window.close())
+hl.bind("SUPER + W", function()
+  local w = hl.get_active_window()
+  if not w or w.class == "gamescope" then return end
+  hl.dispatch(hl.dsp.window.close({ window = w }))
+end)
+hl.bind("SUPER + F4", hl.dsp.window.kill())
 hl.bind("SUPER + F", hl.dsp.window.float({ action = "toggle" }))
 hl.bind("SUPER + A", hl.dsp.window.fullscreen({ mode = "maximized" }))
 hl.bind("SUPER + G", hl.dsp.group.toggle())
