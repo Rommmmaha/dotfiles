@@ -1,5 +1,6 @@
 local home = os.getenv("HOME")
 local configPath = home .. "/.config/hypr"
+local RUN = "systemd-run --user --scope --slice=app.slice -- "
 -- =======================================================================================
 -- Variables
 -- =======================================================================================
@@ -107,15 +108,15 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("systemctl --user restart hyprland-session.target")
   hl.exec_cmd("systemctl --user restart hyprpolkitagent")
   hl.exec_cmd("hyprpm reload")
-  hl.exec_cmd("hyprpaper")
-  hl.exec_cmd("quickshell")
-  hl.exec_cmd("kdeconnectd")
-  hl.exec_cmd("wl-clip-persist --clipboard regular")
-  hl.exec_cmd("wl-paste --type text --watch cliphist store")
-  hl.exec_cmd("wl-paste --type image --watch cliphist store")
-  hl.exec_cmd("kitty --single-instance --start-as=hidden")
-  hl.exec_cmd("r_check-updates --loop")
-  hl.exec_cmd("autostart")
+  hl.exec_cmd(RUN .. "hyprpaper")
+  hl.exec_cmd(RUN .. "qs")
+  hl.exec_cmd(RUN .. "kdeconnectd")
+  hl.exec_cmd(RUN .. "wl-clip-persist --clipboard regular")
+  hl.exec_cmd(RUN .. "wl-paste --type text --watch cliphist store")
+  hl.exec_cmd(RUN .. "wl-paste --type image --watch cliphist store")
+  hl.exec_cmd(RUN .. "kitty --single-instance --start-as=hidden")
+  hl.exec_cmd(RUN .. "r_check-updates --loop")
+  hl.exec_cmd(RUN .. "autostart")
 end)
 hl.on("hyprland.shutdown", function()
   os.execute("systemctl --user stop hyprland-session.target && sleep 1")
@@ -125,9 +126,9 @@ end)
 -- =======================================================================================
 -- General
 hl.bind("SUPER + Return", hl.dsp.exec_cmd("kitty --single-instance"))
-hl.bind("SUPER + E", hl.dsp.exec_cmd("dolphin"))
-hl.bind("SUPER + X", hl.dsp.exec_cmd("code -nq"))
-hl.bind("SUPER + C", hl.dsp.exec_cmd("flatpak run com.saivert.pwvucontrol"))
+hl.bind("SUPER + E", hl.dsp.exec_cmd(RUN .. "dolphin"))
+hl.bind("SUPER + X", hl.dsp.exec_cmd(RUN .. "code -nq"))
+hl.bind("SUPER + C", hl.dsp.exec_cmd(RUN .. "flatpak run com.saivert.pwvucontrol"))
 
 hl.bind("SHIFT + Escape", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 
@@ -152,7 +153,7 @@ hl.bind("SUPER + V", hl.dsp.exec_cmd("rofi -modi clipboard:r_cliphist-rofi -show
 -- Session
 hl.bind("SUPER + Escape", hl.dsp.exec_cmd("hyprshutdown"))
 hl.bind("XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown"))
-hl.bind("SUPER + L", hl.dsp.exec_cmd("hyprlock"))
+hl.bind("SUPER + L", hl.dsp.exec_cmd(RUN .. "hyprlock"))
 
 -- Window management
 hl.bind("SUPER + W", function()
