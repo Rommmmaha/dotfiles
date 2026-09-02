@@ -3,7 +3,6 @@ ark
 baobab
 bat
 bind
-bleachbit
 blueman
 bluez
 breeze
