@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 print("\n[#] patch-steam-css.py")
 import colorsys
+import json
 import re
 import shutil
 import sys
@@ -8,6 +9,7 @@ from pathlib import Path
 
 ROOT_DIR = Path.home() / ".local/share/Steam/steamui/css"
 BACKUP_DIR = ROOT_DIR / "backup"
+MANIFEST_PATH = BACKUP_DIR / "manifest.json"
 HIDE_CLASS = "_17uEBe5Ri8TMsnfELvs8-N"
 HIDE_ELEMENT = True
 NORMALIZE_COLORS_TO_HEX = True
@@ -128,19 +130,50 @@ def build_color_map():
     return color_map
 
 
+def _write_manifest(sizes: dict):
+    data = [{"name": k, "size": v} for k, v in sorted(sizes.items())]
+    MANIFEST_PATH.write_text(json.dumps(data, indent=2) + "\n")
+
+
+def _load_manifest() -> dict:
+    raw = json.loads(MANIFEST_PATH.read_text())
+    if isinstance(raw, dict):
+        return raw
+    return {e["name"]: e["size"] for e in raw}
+
+
 def sync_backup():
     if not ROOT_DIR.exists():
         print(f"[!] Root directory not found: {ROOT_DIR}")
         sys.exit(1)
     root_files = {p.name for p in ROOT_DIR.iterdir() if p.is_file()}
     if BACKUP_DIR.exists():
-        backup_files = {p.name for p in BACKUP_DIR.iterdir() if p.is_file()}
+        backup_files = {p.name for p in BACKUP_DIR.iterdir() if p.is_file() and p.name != MANIFEST_PATH.name}
         if root_files != backup_files:
+            print("[*] File list mismatch, rebuilding backup")
             shutil.rmtree(BACKUP_DIR)
+        elif not MANIFEST_PATH.exists():
+            sizes = {p.name: p.stat().st_size for p in BACKUP_DIR.iterdir() if p.is_file() and p.name != MANIFEST_PATH.name}
+            _write_manifest(sizes)
+            print(f"[*] Created manifest for {len(sizes)} files")
+        else:
+            try:
+                manifest_sizes = _load_manifest()
+            except (OSError, ValueError, KeyError) as e:
+                print(f"[!] Manifest corrupt ({e}), rebuilding backup")
+                shutil.rmtree(BACKUP_DIR)
+            else:
+                current_sizes = {p.name: p.stat().st_size for p in ROOT_DIR.iterdir() if p.is_file()}
+                if current_sizes != manifest_sizes:
+                    print("[*] Steam update detected (size mismatch), rebuilding backup")
+                    shutil.rmtree(BACKUP_DIR)
     if not BACKUP_DIR.exists():
         BACKUP_DIR.mkdir(parents=True, exist_ok=True)
         for name in root_files:
             shutil.copy2(ROOT_DIR / name, BACKUP_DIR / name)
+        sizes = {p.name: p.stat().st_size for p in BACKUP_DIR.iterdir() if p.is_file()}
+        _write_manifest(sizes)
+        print(f"[*] Backup created for {len(sizes)} files")
 
 
 def process_file(backup_path: Path, root_path: Path, color_map: dict):
@@ -174,7 +207,7 @@ def process_file(backup_path: Path, root_path: Path, color_map: dict):
 def main():
     sync_backup()
     color_map = build_color_map()
-    backup_files = [p for p in BACKUP_DIR.iterdir() if p.is_file()]
+    backup_files = [p for p in BACKUP_DIR.iterdir() if p.is_file() and p.name != MANIFEST_PATH.name]
     for backup_file in backup_files:
         process_file(backup_file, ROOT_DIR / backup_file.name, color_map)
 
