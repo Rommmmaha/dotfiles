@@ -68,13 +68,19 @@ hl.config({
     disable_hyprland_logo = true,
     disable_splash_rendering = true,
     initial_workspace_tracking = 0,
+    middle_click_paste = false,
     render_unfocused_fps = 30
   },
   render = {
-    cm_enabled = false
+    cm_enabled = false,
+    direct_scanout = 1,
+    new_render_scheduling = true
   },
   xwayland = {
     force_zero_scaling = true
+  },
+  opengl = {
+    nvidia_anti_flicker = false
   }
 })
 -- =======================================================================================
@@ -216,10 +222,10 @@ hl.window_rule({ match = { class = "xdg-desktop-portal-gtk" }, float = true })
 hl.window_rule({ match = { class = [[org\.freedesktop\.impl\.portal\.desktop\.kde]] }, float = true })
 
 hl.window_rule({
-  name = "volume-menu",
-  match = { class = [[pipemixer|com\.saivert\.pwvucontrol]] },
+  name = "pwvucontrol",
+  match = { class = [[com\.saivert\.pwvucontrol]] },
   float = true,
-  size = "{860, 540}",
+  pin = true,
   center = true
 })
 
@@ -237,7 +243,7 @@ hl.window_rule({ match = { class = "steam" }, suppress_event = "maximize fullscr
 
 hl.window_rule({
   name = "game",
-  match = { class = "gamescope|mcpelauncher-client|steam_app_.*|Minecraft.*" },
+  match = { class = "gamescope|steam_app_.*|Minecraft.*" },
   tile = true,
   opaque = true,
   force_rgbx = true,
