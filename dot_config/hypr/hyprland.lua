@@ -225,7 +225,6 @@ hl.window_rule({
   name = "pwvucontrol",
   match = { class = [[com\.saivert\.pwvucontrol]] },
   float = true,
-  pin = true,
   center = true
 })
 
