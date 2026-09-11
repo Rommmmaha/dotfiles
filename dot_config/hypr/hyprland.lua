@@ -253,7 +253,7 @@ hl.window_rule({
 -- Layer Rules
 -- =======================================================================================
 hl.layer_rule({
-  match = { namespace = "rofi|r-(clock|notifications)" },
+  match = { namespace = "rofi|r-(clock|notifications)|r_multitool-pill" },
   blur = true,
   ignore_alpha = 0
 })
