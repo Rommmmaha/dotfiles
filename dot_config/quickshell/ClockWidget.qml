@@ -25,7 +25,7 @@ PanelWindow {
         Layout.alignment: Qt.AlignHCenter
         text: Qt.formatDateTime(systemClock.date, "hh:mm:ss")
         color: Theme.textPrimary
-        font { family: Theme.fontFamily; pixelSize: 32; bold: true }
+        font { family: Theme.fontFamily; pixelSize: 64; bold: true }
       }
       Rectangle {
         Layout.fillWidth: true
