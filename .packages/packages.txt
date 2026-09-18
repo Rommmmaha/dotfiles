@@ -26,7 +26,6 @@ git
 grim
 hyprland
 hyprlock
-hyprpaper
 hyprpolkitagent
 hyprshutdown
 jq

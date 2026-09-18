@@ -1,0 +1,4 @@
+[Service]
+ExecStart=/usr/bin/quickshell
+Restart=always
+RestartSec=1s

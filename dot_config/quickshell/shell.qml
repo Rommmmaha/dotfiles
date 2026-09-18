@@ -11,6 +11,7 @@ ShellRoot {
     }
   }
   ClockWidget {}
+  Wallpaper {}
   NotificationOverlay {
     notifications: notifications
   }

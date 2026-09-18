@@ -2,6 +2,7 @@ pragma Singleton
 import Quickshell
 import QtQuick
 Singleton {
+  readonly property string wallpaper: "file://" + Quickshell.env("HOME") + "/.config/r/wallpapers/FrankulaWolfenstein:Dark_Side.jxl"
   readonly property string fontFamily: "Adwaita"
   readonly property color background: Qt.rgba(0, 0, 0, 0.5)
   readonly property color borderColor: Qt.rgba(1, 1, 1, 0.25)
