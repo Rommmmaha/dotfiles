@@ -10,6 +10,7 @@ PanelWindow {
   implicitHeight: mainLayout.implicitHeight + 50
   aboveWindows: false
   color: "transparent"
+  mask: Region {}
   SystemClock {
     id: systemClock
     precision: SystemClock.Seconds
