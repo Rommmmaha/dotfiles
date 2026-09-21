@@ -209,6 +209,10 @@ end
 hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set 10%+"), { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 10%-"), { locked = true, repeating = true })
 
+-- Volume control keys
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("r_multitool vol 2%-"), { bypass = true, locked = true })
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("r_multitool vol 2%+"), { bypass = true, locked = true })
+
 -- Mouse binds
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
@@ -268,9 +272,12 @@ end
 -- =======================================================================================
 if hl.plugin then
   if hl.plugin.hyprstretch then
+    hl.bind("SUPER + R", function() hl.plugin.hyprstretch.toggle() end)
     hl.plugin.hyprstretch.app({ class = "cs2" })
     hl.plugin.hyprstretch.app({ class = "dota2" })
     hl.plugin.hyprstretch.app({ class = ".*\\.exe" })
   end
-  hl.bind("SUPER + R", function() hl.plugin.hyprstretch.toggle() end)
+  if hl.plugin.hyprkbptr then
+    hl.bind("SUPER + Scroll_Lock", function() hl.plugin.hyprkbptr.toggle() end)
+  end
 end
