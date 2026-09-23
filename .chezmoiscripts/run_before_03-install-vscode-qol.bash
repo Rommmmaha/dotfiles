@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 command -v code >/dev/null 2>&1 || exit 0
 echo -e "\n[#] install-vscode-qol.bash"
-URL="https://github.com/Rommmmaha/vscode/releases/download/nightly/qol.vsix"
+URL="https://github.com/Rommmmaha/vscode/releases/download/nightly/r-qol.vsix"
 INSTALL_DIR="$HOME/.cache/r/updater/vscode-qol"
 ETAG_FILE="$INSTALL_DIR/latest.etag"
-VSIX_FILE="$INSTALL_DIR/qol.vsix"
+VSIX_FILE="$INSTALL_DIR/r-qol.vsix"
 mkdir -p "$INSTALL_DIR"
 echo "[+] Checking for VSCode extension updates..."
 HTTP_CODE=$(curl -sL --fail --progress-bar \
