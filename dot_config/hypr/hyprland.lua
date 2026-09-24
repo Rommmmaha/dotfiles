@@ -156,7 +156,6 @@ hl.bind("XF86Calculator", hl.dsp.exec_cmd("rofi -show calc -modi calc -no-show-m
 hl.bind("SUPER + V", hl.dsp.exec_cmd("rofi -modi clipboard:r_cliphist-rofi -show clipboard -show-icons"))
 
 -- Session
-hl.bind("SUPER + Escape", hl.dsp.exec_cmd("hyprshutdown"))
 hl.bind("XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown"))
 hl.bind("SUPER + L", hl.dsp.exec_cmd(RUN .. "hyprlock"))
 
@@ -278,6 +277,6 @@ if hl.plugin then
     hl.plugin.hyprstretch.app({ class = ".*\\.exe" })
   end
   if hl.plugin.hyprkbptr then
-    hl.bind("SUPER + Scroll_Lock", function() hl.plugin.hyprkbptr.toggle() end)
+    hl.bind("SUPER + Escape", function() hl.plugin.hyprkbptr.toggle() end)
   end
 end
