@@ -143,10 +143,10 @@ end)
 
 -- Screenshot
 SCREENSHOT =
-[[flameshot gui && wl-copy < "$(ls -td ~/Pictures/Screenshots/*.png | head -n 1)"]]
+[[flameshot gui && file="$(ls -td ~/Pictures/Screenshots/*.png 2>/dev/null | head -n 1)" && [ -n "$file" ] && wl-copy < "$file"]]
 hl.bind("Print", hl.dsp.exec_cmd(SCREENSHOT), { ignore_mods = true })
 hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd(SCREENSHOT))
-hl.bind("SUPER + P", hl.dsp.exec_cmd("xdg-open \"$(ls -td ~/Pictures/Screenshots/* | head -n 1)\"", { float = true }))
+hl.bind("SUPER + P", hl.dsp.exec_cmd("file=\"$(ls -td ~/Pictures/Screenshots/* 2>/dev/null | head -n 1)\"; [ -n \"$file\" ] && xdg-open \"$file\"", { float = true }))
 
 -- Rofi
 hl.bind("SUPER + S", hl.dsp.exec_cmd("rofi -show drun -show-icons"))
