@@ -61,7 +61,7 @@ Item {
     return Qt.formatTime(d, "HH:mm:ss")
   }
   function sanitize(s) {
-    return (s || "").replace(/<span\s[^>]*>/gi, "").replace(/<\/span>/gi, "")
+    return (s || "").replace(/<[^>]*>/g, "")
   }
   implicitWidth: Theme.cardWidth
   implicitHeight: content.implicitHeight + Theme.cardMargin * 2
@@ -232,6 +232,7 @@ Item {
             Layout.fillWidth: true
             text: root.notification.appName || ""
             color: Theme.textMuted
+            textFormat: Text.PlainText
             font {
               family: Theme.fontFamily
               pixelSize: Theme.fontSizeApp
@@ -251,6 +252,7 @@ Item {
           Layout.fillWidth: true
           text: root.notification.summary || ""
           color: Theme.textPrimary
+          textFormat: Text.PlainText
           font {
             family: Theme.fontFamily
             pixelSize: Theme.fontSizeSummary
@@ -304,14 +306,14 @@ Item {
     Text {
       Layout.fillWidth: true
       visible: text !== ""
-      text: root.sanitize(root.notification.body).replace(/\n/g, "<br>")
+      text: root.sanitize(root.notification.body)
       color: Theme.textSecondary
       font {
         family: Theme.fontFamily
         pixelSize: Theme.fontSizeBody
       }
       wrapMode: Text.Wrap
-      textFormat: Text.StyledText
+      textFormat: Text.PlainText
       elide: Text.ElideRight
     }
       RowLayout {
@@ -332,6 +334,7 @@ Item {
               id: actionText
               anchors.centerIn: parent
               text: modelData.text || modelData.identifier
+              textFormat: Text.PlainText
               color: hovered ? Theme.buttonTextHover : Theme.buttonText
               font {
                 family: Theme.fontFamily
