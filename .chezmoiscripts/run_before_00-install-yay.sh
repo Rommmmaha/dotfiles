@@ -1,7 +1,9 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+set -euo pipefail
 command -v yay >/dev/null 2>&1 && exit 0
 echo -e "\n[#] install-yay.sh"
 sudo pacman -S --needed --noconfirm base-devel git
-git clone --depth=1 https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
-(cd /tmp/yay-bin && makepkg -si --noconfirm)
-rm -rf /tmp/yay-bin
+TMPDIR=$(mktemp -d)
+trap 'rm -rf "$TMPDIR"' EXIT
+git clone --depth=1 https://aur.archlinux.org/yay-bin.git "$TMPDIR"
+(cd "$TMPDIR" && makepkg -si --noconfirm)
