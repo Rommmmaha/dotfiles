@@ -3,7 +3,6 @@ import json
 import os
 import shutil
 import signal
-import stat
 import subprocess
 import sys
 import time
@@ -239,16 +238,6 @@ def format_elapsed(delta):
     return f"{seconds}s"
 
 
-def _ensure_executable(path):
-    try:
-        st = os.stat(path)
-        want = st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
-        if st.st_mode != want:
-            os.chmod(path, want)
-    except OSError:
-        pass
-
-
 def _start_recording():
     kill_all()
     Path(OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
@@ -263,7 +252,6 @@ def _start_recording():
 def _start_shadowplay(prior_output=None, was_recording=False):
     kill_all()
     Path(OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
-    _ensure_executable(SCRIPT_PATH)
     pid = launch(SHADOWPLAY_CMD)
     write_state("shadowplay", pid)
     if was_recording:
