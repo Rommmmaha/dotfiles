@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 command -v code >/dev/null 2>&1 || exit 0
 echo -e "\n[#] install-vscode-qol.bash"
 URL="https://github.com/Rommmmaha/vscode/releases/download/nightly/r-qol.vsix"

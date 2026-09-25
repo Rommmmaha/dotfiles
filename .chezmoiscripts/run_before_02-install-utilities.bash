@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 echo -e "\n[#] install-utilities.bash"
 URL="https://github.com/Rommmmaha/r-utils/releases/download/nightly/linux.tar.gz"
 INSTALL_DIR="$HOME/.local/bin"
