@@ -1,3 +1,6 @@
 [misc]
-  pre_sudo = true
+  disable = ["containers"]
+  last = ["chezmoi"]
   no_self_update = true
+  notify_end = "never"
+  pre_sudo = true
