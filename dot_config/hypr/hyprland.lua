@@ -211,6 +211,7 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 10%-"), { lo
 -- Volume control keys
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("r_multitool vol 2%-"), { bypass = true, locked = true })
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("r_multitool vol 2%+"), { bypass = true, locked = true })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("r_multitool vol toggle"), { bypass = true, locked = true })
 
 -- Mouse binds
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
@@ -255,7 +256,7 @@ hl.window_rule({
 -- Layer Rules
 -- =======================================================================================
 hl.layer_rule({
-  match = { namespace = "rofi|r-(clock|notifications)|r_multitool-pill" },
+  match = { namespace = "rofi|r-(clock|notifications)|r_multitool-(pill|vol)" },
   blur = true,
   ignore_alpha = 0
 })
