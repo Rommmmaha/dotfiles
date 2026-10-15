@@ -13,6 +13,8 @@ APPS = {
 }
 CUSTOM_OVERRIDES = {
     "inode/directory": APPS["file_manager"],
+    "application/zip": "org.kde.ark.desktop",
+    "application/x-zip-compressed": "org.kde.ark.desktop",
     "text/xml": APPS["text"],
     "application/xml": APPS["text"],
     "application/json": APPS["text"],
