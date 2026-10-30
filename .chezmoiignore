@@ -8,6 +8,8 @@ packages.txt
 
 {{- if or (not .isAuthor) (ne .deviceType "pc") }}
 .config/pipewire
+.config/systemd/user/pw-links.service
+.local/bin/pw-links
 .config/hypr/custom/hyprland-pc.lua
 {{- end }}
 

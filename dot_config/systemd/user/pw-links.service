@@ -1,0 +1,11 @@
+[Unit]
+Description=Link X2 monitor and microphone into X1
+After=pipewire.service wireplumber.service
+Wants=pipewire.service wireplumber.service
+
+[Service]
+Type=oneshot
+ExecStart=-%h/.local/bin/pw-links
+
+[Install]
+WantedBy=pipewire.service wireplumber.service

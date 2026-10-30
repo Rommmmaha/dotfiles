@@ -1,0 +1,20 @@
+#!/bin/sh
+# Wait for the nodes wireplumber creates after pipewire starts.
+for _ in $(seq 20); do
+  ports=$(pw-link -io)
+  echo "$ports" | grep -q '^X1:monitor_FL$' &&
+    echo "$ports" | grep -q '^X2:monitor_FL$' &&
+    echo "$ports" | grep -q '^alsa_input.*:capture_FL$' &&
+    echo "$ports" | grep -q '^alsa_output.*:playback_FL$' &&
+    break
+  sleep 0.5
+done
+
+out=$(echo "$ports" | cut -d: -f1 | grep alsa_output | sort -u | head -n1)
+[ -n "$out" ] || exit 1
+
+for ch in FL FR; do
+  pw-link "X2:monitor_$ch" "X1:playback_$ch"
+  pw-link "alsa_input.pci-0000_00_1f.3.analog-stereo:capture_$ch" "X1:playback_$ch"
+  pw-link "X1:monitor_$ch" "$out:playback_$ch"
+done
