@@ -47,6 +47,7 @@ playerctl
 qrencode
 quickshell
 rofi
+rofi-calc
 rofimoji
 starship
 trash-cli
