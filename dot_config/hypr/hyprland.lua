@@ -242,7 +242,7 @@ hl.window_rule({ match = { class = "steam" }, suppress_event = "maximize fullscr
 
 hl.window_rule({
   name = "game",
-  match = { class = "gamescope|steam_app_.*|Minecraft.*" },
+  match = { class = "gamescope|steam_app_.*|Minecraft.*|com.mojang.minecraft" },
   tile = true,
   opaque = true,
   force_rgbx = true,
