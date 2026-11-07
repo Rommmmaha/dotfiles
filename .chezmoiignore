@@ -4,6 +4,7 @@ packages.txt
 {{- if not .isAuthor }}
 .ssh
 .ssh/**
+.config/hypr/custom/hyprland-author.lua
 {{- end }}
 
 {{- if or (not .isAuthor) (ne .deviceType "pc") }}
