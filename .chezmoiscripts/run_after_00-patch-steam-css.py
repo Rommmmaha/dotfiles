@@ -112,7 +112,10 @@ def make_color_replacer(color_map, normalize):
             r, g, b, a = parse_hex(token[1:])
         else:
             func, rest = token.split("(", 1)
-            r, g, b, a = parse_function(func, rest[:-1])
+            try:
+                r, g, b, a = parse_function(func, rest[:-1])
+            except ValueError:
+                return token  # relative color syntax like rgb(from ...) is not absolute yet
         target = color_map.get((r, g, b))
         if target is not None:
             return color_to_hex(target[0], target[1], target[2], a)
