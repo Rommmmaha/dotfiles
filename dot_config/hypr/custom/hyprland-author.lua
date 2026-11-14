@@ -1,7 +1,7 @@
 hl.window_rule({
   name = "brave-background",
-  match = { class = "brave-origin" },
+  match = { class = "Brave-origin" },
   workspace = "5 silent",
   no_initial_focus = true,
-  render_unfocused = true
+  render_unfocused = true,
 })
