@@ -12,6 +12,7 @@ Item {
   property bool pinned: false
   property bool forceTimeout: false
   property bool historyMode: false
+  property bool swiping: false
   function togglePin() {
     if (root.pinned) {
       root.forceTimeout = true
@@ -22,6 +23,7 @@ Item {
   property real progress: 1.0
   signal removed(int notifId)
   signal timedOut()
+  signal swiped()
   readonly property int notificationId: notification.id
   readonly property bool critical: notification.urgency === NotificationUrgency.Critical
   readonly property int timeoutMs: {
@@ -149,6 +151,39 @@ Item {
     Quickshell.execDetached(["wl-copy", root.buildMarkdown()])
     if (!root.historyMode) root.close(2)
   }
+  function swipeOut(direction) {
+    if (root.exiting || root.swiping) return
+    root.swiping = true
+    swipeX.to = direction * (root.width + 60)
+    swipeAnim.start()
+  }
+  ParallelAnimation {
+    id: swipeAnim
+    NumberAnimation {
+      id: swipeX
+      target: root
+      property: "x"
+      to: 0
+      duration: 180
+      easing.type: Easing.InCubic
+    }
+    NumberAnimation {
+      target: root
+      property: "opacity"
+      to: 0
+      duration: 180
+      easing.type: Easing.InCubic
+    }
+    onFinished: root.swiped()
+  }
+  NumberAnimation {
+    id: snapBack
+    target: root
+    property: "x"
+    to: 0
+    duration: 150
+    easing.type: Easing.OutCubic
+  }
   property bool exiting: false
   property bool alreadyClosed: false
   property int closeReason: 0
@@ -164,7 +199,18 @@ Item {
   MouseArea {
     anchors.fill: parent
     acceptedButtons: Qt.LeftButton
+    drag.target: root
+    drag.axis: Drag.XAxis
+    drag.minimumX: -root.width - 60
+    drag.maximumX: root.width + 60
     onClicked: if (!root.historyMode && root.clickDismiss) root.close(2)
+    onReleased: {
+      if (root.x !== 0) {
+        if (Math.abs(root.x) > root.width * 0.3) root.swipeOut(root.x < 0 ? -1 : 1)
+        else snapBack.start()
+      }
+    }
+    onCanceled: if (root.x !== 0) snapBack.start()
     cursorShape: Qt.PointingHandCursor
   }
   MouseArea {
