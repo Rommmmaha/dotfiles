@@ -11,6 +11,7 @@ Item {
   property bool hovered: false
   property bool pinned: false
   property bool forceTimeout: false
+  property bool historyMode: false
   function togglePin() {
     if (root.pinned) {
       root.forceTimeout = true
@@ -20,6 +21,7 @@ Item {
   }
   property real progress: 1.0
   signal removed(int notifId)
+  signal timedOut()
   readonly property int notificationId: notification.id
   readonly property bool critical: notification.urgency === NotificationUrgency.Critical
   readonly property int timeoutMs: {
@@ -71,7 +73,7 @@ Item {
     y: 20
   }
   Connections {
-    target: root.notification
+    target: root.historyMode ? null : root.notification
     function onClosed() {
       root.alreadyClosed = true
       if (!root.exiting) root.removed(root.notificationId)
@@ -122,8 +124,11 @@ Item {
   }
   function finish() {
     if (!root.alreadyClosed) {
-      if (root.closeReason === 1) root.notification.expire()
-      else if (root.closeReason === 2) root.notification.dismiss()
+      if (root.closeReason === 1) {
+        // snapshot before expire() destroys the notification
+        root.timedOut()
+        root.notification.expire()
+      } else if (root.closeReason === 2) root.notification.dismiss()
       else if (root.closeReason === 3) {
         const wasResident = root.notification.resident
         root.pendingAction.invoke()
@@ -142,7 +147,7 @@ Item {
   }
   function copyToClipboard() {
     Quickshell.execDetached(["wl-copy", root.buildMarkdown()])
-    root.close(2)
+    if (!root.historyMode) root.close(2)
   }
   property bool exiting: false
   property bool alreadyClosed: false
@@ -159,13 +164,13 @@ Item {
   MouseArea {
     anchors.fill: parent
     acceptedButtons: Qt.LeftButton
-    onClicked: if (root.clickDismiss) root.close(2)
+    onClicked: if (!root.historyMode && root.clickDismiss) root.close(2)
     cursorShape: Qt.PointingHandCursor
   }
   MouseArea {
     anchors.fill: parent
     acceptedButtons: Qt.RightButton
-    onClicked: root.togglePin()
+    onClicked: if (!root.historyMode) root.togglePin()
   }
   HoverHandler {
     onHoveredChanged: root.hovered = hovered
@@ -265,7 +270,7 @@ Item {
         Item {
           Layout.fillWidth: true
           Layout.preferredHeight: 2
-          visible: root.timeoutMs > 0
+          visible: root.timeoutMs > 0 && !root.historyMode
           Rectangle {
             anchors { left: parent.left; bottom: parent.bottom }
             width: parent.width * root.progress
@@ -319,7 +324,7 @@ Item {
       RowLayout {
         Layout.fillWidth: true
         spacing: 6
-        visible: root.notification.actions.length > 0
+        visible: root.notification.actions.length > 0 && !root.historyMode
         Repeater {
           model: root.notification.actions
           delegate: Rectangle {
@@ -355,7 +360,7 @@ Item {
   }
   Timer {
     interval: 50
-    running: root.timeoutMs > 0 && !root.hovered && !root.hoverPaused && !root.paused && !root.exiting
+    running: root.timeoutMs > 0 && !root.historyMode && !root.hovered && !root.hoverPaused && !root.paused && !root.exiting
     repeat: true
     onTriggered: {
       root.progress -= 50 / root.timeoutMs
