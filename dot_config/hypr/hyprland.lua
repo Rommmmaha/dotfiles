@@ -131,6 +131,7 @@ hl.bind("SUPER + Return", hl.dsp.exec_cmd("kitty --single-instance"))
 hl.bind("SUPER + E", hl.dsp.exec_cmd(RUN .. "dolphin"))
 hl.bind("SUPER + X", hl.dsp.exec_cmd(RUN .. "code -nq"))
 hl.bind("SUPER + C", hl.dsp.exec_cmd(RUN .. "flatpak run com.saivert.pwvucontrol"))
+hl.bind("SUPER + N", hl.dsp.exec_cmd("qs ipc call notifications toggleHistory"))
 
 hl.bind("SHIFT + Escape", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 
