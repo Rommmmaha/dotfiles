@@ -119,7 +119,7 @@ Item {
   }
   Component.onCompleted: enterAnim.start()
   function close(reason, action) {
-    if (root.exiting) return
+    if (root.exiting || root.swiping) return
     root.closeReason = reason
     root.pendingAction = action
     root.exiting = true
@@ -203,6 +203,7 @@ Item {
     drag.axis: Drag.XAxis
     drag.minimumX: -root.width - 60
     drag.maximumX: root.width + 60
+    onPressed: snapBack.stop()
     onClicked: if (!root.historyMode && root.clickDismiss) root.close(2)
     onReleased: {
       if (root.x !== 0) {
@@ -406,7 +407,7 @@ Item {
   }
   Timer {
     interval: 50
-    running: root.timeoutMs > 0 && !root.historyMode && !root.hovered && !root.hoverPaused && !root.paused && !root.exiting
+    running: root.timeoutMs > 0 && !root.historyMode && !root.swiping && !root.hovered && !root.hoverPaused && !root.paused && !root.exiting
     repeat: true
     onTriggered: {
       root.progress -= 50 / root.timeoutMs

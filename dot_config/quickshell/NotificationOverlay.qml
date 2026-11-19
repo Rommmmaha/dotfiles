@@ -31,7 +31,13 @@ PanelWindow {
   property bool anyHovered: false
   property bool historyOpen: false
   readonly property int historyLimit: 50
-  onHistoryOpenChanged: if (root.historyOpen) keyFocus.forceActiveFocus()
+  property int nextHistoryId: 0
+  onHistoryOpenChanged: {
+    if (root.historyOpen) {
+      flick.contentY = 0
+      keyFocus.forceActiveFocus()
+    }
+  }
   function updateHover() {
     for (let i = 0; i < notifRepeater.count; i++) {
       const item = notifRepeater.itemAt(i)
@@ -41,6 +47,7 @@ PanelWindow {
   }
   function addToHistory(notification, receivedAt) {
     historyModel.insert(0, {
+      historyId: root.nextHistoryId++,
       appName: notification.appName || "",
       appIcon: notification.appIcon || "",
       summary: notification.summary || "",
@@ -50,6 +57,14 @@ PanelWindow {
       receivedAt: receivedAt.getTime()
     })
     if (historyModel.count > root.historyLimit) historyModel.remove(root.historyLimit)
+  }
+  function removeHistory(historyId) {
+    for (let i = 0; i < historyModel.count; i++) {
+      if (historyModel.get(i).historyId === historyId) {
+        historyModel.remove(i)
+        return
+      }
+    }
   }
   ListModel {
     id: notifModel
@@ -199,7 +214,6 @@ PanelWindow {
           model: historyModel
           delegate: NotificationCard {
             required property var modelData
-            required property int index
             visible: root.historyOpen
             notification: ({
               id: -1,
@@ -219,7 +233,7 @@ PanelWindow {
             clickDismiss: false
             width: parent.width
             height: implicitHeight
-            onSwiped: historyModel.remove(index)
+            onSwiped: root.removeHistory(modelData.historyId)
           }
         }
       }
