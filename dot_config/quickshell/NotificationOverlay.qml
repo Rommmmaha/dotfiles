@@ -110,7 +110,7 @@ PanelWindow {
           anchors.verticalCenter: parent.verticalCenter
           implicitWidth: clearLabel.implicitWidth + 18
           implicitHeight: 28
-          radius: 7
+          radius: implicitHeight / 2
           color: clearMouse.containsMouse ? Theme.buttonBgHover : Theme.buttonBg
           Text {
             id: clearLabel
@@ -132,17 +132,22 @@ PanelWindow {
           }
         }
       }
-      Text {
+      Rectangle {
         visible: root.historyOpen && historyModel.count === 0
         width: parent.width
-        height: 40
-        text: "No timed-out notifications"
-        color: Theme.textMuted
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        font {
-          family: Theme.fontFamily
-          pixelSize: Theme.fontSizeBody
+        implicitHeight: 80
+        radius: Theme.cardRadius
+        color: Theme.background
+        border.width: 1
+        border.color: Theme.borderColor
+        Text {
+          anchors.centerIn: parent
+          text: "No timed-out notifications"
+          color: Theme.textMuted
+          font {
+            family: Theme.fontFamily
+            pixelSize: Theme.fontSizeBody
+          }
         }
       }
       Repeater {
